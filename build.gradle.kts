@@ -1,10 +1,11 @@
 plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("maven-publish")
 }
 
-group = "com.lucaf"
-version = "1.0"
+group = "com.github.LucaFontanot"
+version = "1.1"
 
 repositories {
     mavenCentral()
@@ -19,9 +20,23 @@ dependencies {
     implementation("com.fazecast:jSerialComm:2.11.0")
     implementation("com.ghgande:j2mod:3.2.1")
     compileOnly("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("org.projectlombok:lombok:1.18.34")
+
 }
 
 tasks.test {
     useJUnitPlatform()
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+publishing() {
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+        }
+    }
+}

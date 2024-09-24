@@ -4,157 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e5fb2621-6995-4806-ab46-e56e0bd89c50" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/RGI100_22.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/documentation.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/screenshots/00.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/screenshots/01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/screenshots/02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/screenshots/02b.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/screenshots/03.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/screenshots/04.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/screenshots/05.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/screenshots/05b.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/screenshots/06.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/screenshots/0a.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/Control.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/SAC_N.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/Status.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/documentation.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/screenshots/00.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/screenshots/01.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/screenshots/02.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/screenshots/03.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/screenshots/05.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/screenshots/0a.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/screenshots/16.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/screenshots/17.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/State.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/TRINAMIC/TMCLCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/TRINAMIC/TMCM_1140/TMCM_1140.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/TRINAMIC/TMCM_1140/documentation.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/TRINAMIC/USB.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/TRINAMIC/utils/USBReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/BusHWIdVector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/BusHardwareId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/BusHardwareOptions.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/BusHwOptionsDefault.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/BusScanInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ByteVector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/CanBaudRate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/CanBus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/CanOpenNmtService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/CanOpenNmtState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/DataTransferInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/DeviceConnectionStateInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/DeviceHandle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/DeviceId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/DeviceIdVector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/EtherCATBus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/EtherCATState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/IntVector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/Ixxat.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/IxxatAdapterBusNumber.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/LogLevel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/LogLevelConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/LogModule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/LogModuleConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/MacAddress.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/NanoLibAccessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/Nanolib.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/NanolibConstants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/NanolibJNI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/NlcCallback.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/NlcDataTransferCallback.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/NlcErrorCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/NlcLoggingCallback.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/NlcScanBusCallback.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ObjectCode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ObjectDictionary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ObjectEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ObjectEntryDataType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ObjectModificationAttribute.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ObjectPdoAccessAttribute.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ObjectSaveable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ObjectSdoAccessAttribute.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ObjectSubEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/OdIndex.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/OdIndexVector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/OdLibrary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/OdTypesHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/Peak.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/PeakAdapterBusNumber.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ProfinetDCP.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ProfinetDevice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ProfinetDeviceVector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/RESTfulBus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/Result.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultArrayByte.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultArrayInt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultBusHwIds.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultConnectionState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultDeviceHandle.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultDeviceId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultDeviceIds.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultInt.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultObjectDictionary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultObjectEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultObjectSubEntry.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultProfinetDevices.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultSampleDataArray.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultSamplerState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultString.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/ResultVoid.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SampleData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SampleDataVector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SampledValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SampledValueVector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SamplerConfiguration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SamplerInterface.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SamplerMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SamplerNotify.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SamplerState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SamplerTrigger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SamplerTriggerCondition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/Serial.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SerialBaudRate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/SerialParity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/StringIntMap.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/StringStringMap.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/helper/LibraryLoader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/helper/NanolibHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nanotec/nanolib/imaxdiv_t.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux/libnanolib_java.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux/libnanolibm_canopen.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux/libnanolibm_ethercat.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux/libnanolibm_modbus.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux/libnanolibm_restful-api.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux/libnanolibm_usbmsc.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux_arm64/libnanolib_java.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux_arm64/libnanolibm_canopen_arm64.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux_arm64/libnanolibm_ethercat_arm64.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux_arm64/libnanolibm_modbus_arm64.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux_arm64/libnanolibm_restful-api_arm64.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/linux_arm64/libnanolibm_usbmsc_arm64.so" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/win/nanolib_java.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/win/nanolibm_canopen.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/win/nanolibm_ethercat.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/win/nanolibm_modbus.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/win/nanolibm_restful-api.dll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nanolib/win/nanolibm_usbmsc.dll" afterDir="false" />
+    <list default="true" id="e5fb2621-6995-4806-ab46-e56e0bd89c50" name="Changes" comment="Library Upload">
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/RGI100_22.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/RGI100_22/RGI100_22.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,18 +29,34 @@
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="robotic-core" type="f1a62948:ProjectNode" />
+                <item name="robotic_core" type="f1a62948:ProjectNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="robotic-core" type="f1a62948:ProjectNode" />
+                <item name="robotic_core" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="robotic-core" type="f1a62948:ProjectNode" />
+                <item name="robotic_core" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="publishing" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="robotic_core" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="shadow" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="robotic_core" type="f1a62948:ProjectNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="robotic_core" type="f1a62948:ProjectNode" />
+                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
               </path>
             </expand>
             <select />
@@ -218,6 +86,9 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.robotic-core [build].executor": "Run",
+    "Gradle.robotic-core [publishToMavenLocal].executor": "Run",
+    "Gradle.robotic-core [publish].executor": "Run",
     "Gradle.robotic-core [shadowJar].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
@@ -227,10 +98,80 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.43793103",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Gradle.robotic-core [publishToMavenLocal]">
+    <configuration name="robotic-core [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="robotic-core [publishToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publishToMavenLocal" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="robotic-core [publish]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="publish" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="robotic-core [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -255,7 +196,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.robotic-core [publishToMavenLocal]" />
+        <item itemvalue="Gradle.robotic-core [publish]" />
         <item itemvalue="Gradle.robotic-core [shadowJar]" />
+        <item itemvalue="Gradle.robotic-core [build]" />
       </list>
     </recent_temporary>
   </component>
@@ -275,11 +219,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1727182547493</updated>
-      <workItem from="1727182548154" duration="1463000" />
+      <workItem from="1727182548154" duration="2859000" />
     </task>
+    <task id="LOCAL-00001" summary="Library Upload">
+      <option name="closed" value="true" />
+      <created>1727184134247</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1727184134247</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Library Upload" />
+    <option name="LAST_COMMIT_MESSAGE" value="Library Upload" />
   </component>
 </project>
