@@ -248,14 +248,15 @@ public class SAC_N {
      */
     public void initialize() {
         try {
-            if (!hasInitialized()) {
+            //if (!hasInitialized()) {
+                setEnabled(false);
                 clearErrors();
                 setEnabled(true);
                 writeRegister(INITIALIZATION, 1);
                 while (!hasInitialized()) {
                     Thread.sleep(300);
                 }
-            }
+            //}
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {

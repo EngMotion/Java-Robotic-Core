@@ -41,7 +41,7 @@ public class DHRobotics {
             sac_n.setSpeed(100);
             sac_n.setAcceleration(100);
             while (true){
-                Future<Boolean> task5 = sac_n.move_absoluteAndWait(7500);
+                Future<Boolean> task5 = sac_n.move_absoluteAndWait(15000);
                 Future<Boolean> task1 = rgi10022.moveToAbsoluteAngleAndWait(200);
                 Future<Boolean> task2 = rgi10022.setGripPositionAndWait(10);
                 task1.get();

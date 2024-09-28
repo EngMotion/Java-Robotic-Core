@@ -35,9 +35,19 @@ public class ControlWord {
     boolean enableOperation = false;
 
     /*
-     * Bit 4-6: Operation mode specific
+     * Bit 4: Operation mode specific
      */
-    int operationModeSpecific = 0;
+    boolean operationModeSpecific_4 = false;
+
+    /*
+     * Bit 5: Operation mode specific
+     */
+    boolean operationModeSpecific_5 = false;
+
+    /*
+     * Bit 6: Operation mode specific
+     */
+    boolean operationModeSpecific_6 = false;
 
     /*
      * Bit 7: Fault reset
@@ -59,7 +69,9 @@ public class ControlWord {
         controlWord |= enableVoltage ? 1 << 1 : 0;
         controlWord |= quickStop ? 1 << 2 : 0;
         controlWord |= enableOperation ? 1 << 3 : 0;
-        controlWord |= operationModeSpecific << 4;
+        controlWord |= operationModeSpecific_4 ? 1 << 4 : 0;
+        controlWord |= operationModeSpecific_5 ? 1 << 5 : 0;
+        controlWord |= operationModeSpecific_6 ? 1 << 6 : 0;
         controlWord |= faultReset ? 1 << 7 : 0;
         controlWord |= halt ? 1 << 8 : 0;
         return controlWord;
@@ -72,7 +84,9 @@ public class ControlWord {
                 ", enableVoltage=" + enableVoltage +
                 ", quickStop=" + quickStop +
                 ", enableOperation=" + enableOperation +
-                ", operationModeSpecific=" + operationModeSpecific +
+                ", operationModeSpecific_4=" + operationModeSpecific_4 +
+                ", operationModeSpecific_5=" + operationModeSpecific_5 +
+                ", operationModeSpecific_6=" + operationModeSpecific_6 +
                 ", faultReset=" + faultReset +
                 ", halt=" + halt +
                 "}";
@@ -83,17 +97,21 @@ public class ControlWord {
         enableVoltage = (controlWord & 1 << 1) == 1 << 1;
         quickStop = (controlWord & 1 << 2) == 1 << 2;
         enableOperation = (controlWord & 1 << 3) == 1 << 3;
-        operationModeSpecific = (controlWord & 0x70) >> 4;
+        operationModeSpecific_4 = (controlWord & 1 << 4) == 1 << 4;
+        operationModeSpecific_5 = (controlWord & 1 << 5) == 1 << 5;
+        operationModeSpecific_6 = (controlWord & 1 << 6) == 1 << 6;
         faultReset = (controlWord & 1 << 7) == 1 << 7;
         halt = (controlWord & 1 << 8) == 1 << 8;
     }
 
-    public ControlWord(boolean switchOn, boolean enableVoltage, boolean quickStop, boolean enableOperation, int operationModeSpecific, boolean faultReset, boolean halt) {
+    public ControlWord(boolean switchOn, boolean enableVoltage, boolean quickStop, boolean enableOperation, boolean operationModeSpecific_4, boolean operationModeSpecific_5, boolean operationModeSpecific_6, boolean faultReset, boolean halt) {
         this.switchOn = switchOn;
         this.enableVoltage = enableVoltage;
         this.quickStop = quickStop;
         this.enableOperation = enableOperation;
-        this.operationModeSpecific = operationModeSpecific;
+        this.operationModeSpecific_4 = operationModeSpecific_4;
+        this.operationModeSpecific_5 = operationModeSpecific_5;
+        this.operationModeSpecific_6 = operationModeSpecific_6;
         this.faultReset = faultReset;
         this.halt = halt;
     }

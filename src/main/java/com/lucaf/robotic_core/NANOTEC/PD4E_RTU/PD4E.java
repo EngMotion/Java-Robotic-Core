@@ -1,6 +1,7 @@
 package com.lucaf.robotic_core.NANOTEC.PD4E_RTU;
 
 import com.lucaf.robotic_core.Pair;
+import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import com.nanotec.nanolib.DeviceHandle;
 import com.nanotec.nanolib.OdIndex;
 import com.nanotec.nanolib.helper.NanolibHelper;
@@ -28,12 +29,12 @@ public class PD4E {
         return (int) nanolibHelper.readNumber(deviceHandle, register.first);
     }
 
-    private StatusWord getStatusWord() {
+    private StatusWord getStatusWord() throws DeviceCommunicationException {
         try {
             int statusWord = readRegister(STATUS_WORD);
             return new StatusWord(statusWord);
         } catch (NanolibHelper.NanolibException e) {
-            throw new RuntimeException(e);
+            throw new DeviceCommunicationException(e.getMessage());
         }
     }
 
@@ -47,8 +48,9 @@ public class PD4E {
         }
     }
 
+    private ControlWord operationControl;
 
-    public void start(int operationMode) {
+    public void start(int operationMode) throws DeviceCommunicationException {
         this.operationMode = Math.max(OperationMode.PROFILE_POSITION, Math.min(OperationMode.HOMING, operationMode));
         try {
             writeRegister(MODE_OF_OPERATION,operationMode);
@@ -76,63 +78,152 @@ public class PD4E {
             setControlWordAndWaitForAck(controlWord, new StatusWordCheck() {
                 @Override
                 public boolean checkStatusWord(StatusWord statusWord) {
-                    return statusWord.getStateCode() == StatusWord.States.OPERATION_ENABLED;
+                    return statusWord.getStateCode() == StatusWord.States.QUICK_STOP_ACTIVE || statusWord.getStateCode() == StatusWord.States.OPERATION_ENABLED;
                 }
             });
+            this.operationControl = controlWord;
         } catch (NanolibHelper.NanolibException e) {
-            throw new RuntimeException(e);
+            throw new DeviceCommunicationException(e.getMessage());
         }
     }
 
-    public void stop(){
+    public void stop() throws DeviceCommunicationException {
         try{
             ControlWord controlWord = new ControlWord(0);
             writeRegister(CONTROL_WORD, controlWord.toInt());
         } catch (NanolibHelper.NanolibException e) {
-            throw new RuntimeException(e);
+            throw new DeviceCommunicationException(e.getMessage());
         }
     }
 
-    public void setVelocity(int velocity){
-        if (operationMode != OperationMode.VELOCITY_MODE) throw new RuntimeException("Operation mode is not VELOCITY");
+    public void setVelocity(int velocity) throws DeviceCommunicationException {
+        if (operationMode != OperationMode.VELOCITY_MODE && operationMode != OperationMode.PROFILE_VELOCITY) throw new RuntimeException("Operation mode is not VELOCITY");
         try {
             writeRegister(TARGET_VELOCITY, velocity);
         } catch (NanolibHelper.NanolibException e) {
-            throw new RuntimeException(e);
+            throw new DeviceCommunicationException(e.getMessage());
         }
     }
-    public int getVelocity(){
-        if (operationMode != OperationMode.VELOCITY_MODE) throw new RuntimeException("Operation mode is not VELOCITY");
+    public int getVelocity() throws DeviceCommunicationException {
+        if (operationMode != OperationMode.VELOCITY_MODE && operationMode != OperationMode.PROFILE_VELOCITY) throw new RuntimeException("Operation mode is not VELOCITY");
         try {
             return readRegister(TARGET_VELOCITY);
         } catch (NanolibHelper.NanolibException e) {
-            throw new RuntimeException(e);
+            throw new DeviceCommunicationException(e.getMessage());
         }
     }
 
     int position = 0;
 
-    public void setPositionAbsolute(int position){
+    public void setPositionAbsolute(int position) throws DeviceCommunicationException {
         if (operationMode != OperationMode.PROFILE_POSITION) throw new RuntimeException("Operation mode is not PROFILE_POSITION");
         try {
             position = Math.max(-8388608, Math.min(8388607, position));
             this.position = position;
             writeRegister(TARGET_POSITION, position);
+            operationControl.setOperationModeSpecific_4(true);
+            operationControl.setOperationModeSpecific_5(true);
+            operationControl.setOperationModeSpecific_6(false);
+            setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
+                @Override
+                public boolean checkStatusWord(StatusWord statusWord) {
+                    return statusWord.targetReached;
+                }
+            });
+            operationControl.setOperationModeSpecific_4(false);
+            setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
+                @Override
+                public boolean checkStatusWord(StatusWord statusWord) {
+                    return true;
+                }
+            });
         } catch (NanolibHelper.NanolibException e) {
-            throw new RuntimeException(e);
+            throw new DeviceCommunicationException(e.getMessage());
         }
     }
 
-    public void setPositionRelative(int position){
-        setPositionAbsolute(this.position + position);
+    public void setPositionRelative(int position) throws DeviceCommunicationException {
+        if (operationMode != OperationMode.PROFILE_POSITION) throw new RuntimeException("Operation mode is not PROFILE_POSITION");
+        try {
+            position = Math.max(-8388608, Math.min(8388607, position));
+            this.position += position;
+            writeRegister(TARGET_POSITION, position);
+            operationControl.setOperationModeSpecific_4(true);
+            operationControl.setOperationModeSpecific_5(true);
+            operationControl.setOperationModeSpecific_6(true);
+            setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
+                @Override
+                public boolean checkStatusWord(StatusWord statusWord) {
+                    return statusWord.targetReached;
+                }
+            });
+            operationControl.setOperationModeSpecific_4(false);
+            setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
+                @Override
+                public boolean checkStatusWord(StatusWord statusWord) {
+                    return true;
+                }
+            });
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
-    public int getPosition(){
+    public int getPosition() throws DeviceCommunicationException {
         if (operationMode != OperationMode.VELOCITY_MODE) throw new RuntimeException("Operation mode is not VELOCITY");
         try {
             return readRegister(TARGET_POSITION);
         } catch (NanolibHelper.NanolibException e) {
-            throw new RuntimeException(e);
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    public void setTorque(int torque) throws DeviceCommunicationException {
+        if (operationMode != OperationMode.PROFILE_TORQUE) throw new RuntimeException("Operation mode is not VELOCITY");
+        try {
+            writeRegister(TARGET_TORQUE, torque);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    public int getTorque() throws DeviceCommunicationException {
+        if (operationMode != OperationMode.PROFILE_TORQUE) throw new RuntimeException("Operation mode is not VELOCITY");
+        try {
+            return readRegister(TARGET_TORQUE);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    public int getMaxCurrent() throws DeviceCommunicationException {
+        try {
+            return readRegister(MAX_MOTOR_CURRENT);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    public void setMaxCurrent(int current) throws DeviceCommunicationException {
+        try {
+            writeRegister(MAX_MOTOR_CURRENT, current);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+    public int getAcceleration() throws DeviceCommunicationException {
+        try {
+            return readRegister(PROFILE_ACCELERATION);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    public void setAcceleration(int acceleration) throws DeviceCommunicationException {
+        try {
+            writeRegister(PROFILE_ACCELERATION, acceleration);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
     }
 }
