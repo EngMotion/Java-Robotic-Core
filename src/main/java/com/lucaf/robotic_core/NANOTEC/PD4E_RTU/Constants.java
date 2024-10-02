@@ -83,11 +83,38 @@ public class Constants {
     public static final Pair<OdIndex, Integer> GEAR_RATIO_MOTION_REVOLUTIONS = new Pair<>(new OdIndex(0x6091, (short) 0x01),32);
     public static final Pair<OdIndex, Integer> GEAR_RATIO_SHAFT_REVOLUTIONS = new Pair<>(new OdIndex(0x6091, (short) 0x02),32);
 
-    public static final Pair<OdIndex, Integer> DIGITAL_INPUTS = new Pair<>(new OdIndex(0x60FD, (short) 0x00),32);
-    public static final Pair<OdIndex, Integer> DIGITAL_OUTPUTS = new Pair<>(new OdIndex(0x60FE, (short) 0x00),32);
+    public static final Pair<OdIndex, Integer> DIGITAL_INPUTS = new Pair<>(new OdIndex(0x60FD, (short) 0x01),32);
+
+    public static final Pair<OdIndex, Integer> INPUT_SPECIAL_FUNCTION = new Pair<>(new OdIndex(0x3240, (short) 0x01),32);
 
 
 
+    public static final Pair<OdIndex, Integer> DIGITAL_OUTPUTS = new Pair<>(new OdIndex(0x60FE, (short) 0x01),32);
+    /**
+     * This subindex is used to invert the logic (from normally closed logic to normally open logic).
+     */
+    public static final Pair<OdIndex, Integer> DIGITAL_OUTPUT_INVERTED = new Pair<>(new OdIndex(0x3250, (short) 0x02),32);
+    /**
+     * This subindex is used to force the output value if the bit has the value "1".
+     */
+    public static final Pair<OdIndex, Integer> DIGITAL_OUTPUT_FORCE_ENABLE = new Pair<>(new OdIndex(0x3250, (short) 0x03),32);
+    /**
+     * The value "0" returns a logical low level at the digital output; the value "1", on the other hand, returns a logical high level.
+     */
+    public static final Pair<OdIndex, Integer> DIGITAL_OUTPUT_LEVEL = new Pair<>(new OdIndex(0x3250, (short) 0x04),32);
+    /**
+     * This subindex is used to read the raw value of the digital output.
+     */
+    public static final Pair<OdIndex, Integer> DIGITAL_OUTPUT_RAW = new Pair<>(new OdIndex(0x3250, (short) 0x06),32);
+    /**
+     * If the subindex is set to "1", Output Routing is activated.
+     */
+    public static final Pair<OdIndex, Integer> DIGITAL_OUTPUT_OUTING = new Pair<>(new OdIndex(0x3250, (short) 0x08),32);
 
-
+    public static final Pair<OdIndex, Integer> HOME_OFFSET = new Pair<>(new OdIndex(0x607C, (short) 0x02),32);
+    public static class HomingMethod {
+        public static final int INDEX_SWITCH_CLOCKWISE = 19;
+        public static final int INDEX_SWITCH_COUNTER_CLOCKWISE = 20;
+    }
+    public static final Pair<OdIndex, Integer> HOME_METHOD = new Pair<>(new OdIndex(0x6098, (short) 0x00),8);
 }

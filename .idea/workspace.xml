@@ -4,14 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e5fb2621-6995-4806-ab46-e56e0bd89c50" name="Changes" comment="Library Upload">
-      <change afterPath="$PROJECT_DIR$/src/test/java/Nanotec_Carouseltest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/Nanotec_Griptest.java" afterDir="false" />
+    <list default="true" id="e5fb2621-6995-4806-ab46-e56e0bd89c50" name="Changes" comment="ADD Nanotec Tests. Add exceptions">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/NANOTEC/PD4E_RTU/DigitalOutputs.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/NANOTEC/PD4E_RTU/InputSpecialFunction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/NanotecCan.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/SAC_N.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/DH_ROBOTICS/SAC_N_M2/SAC_N.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/NANOTEC/PD4E_RTU/ControlWord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/NANOTEC/PD4E_RTU/ControlWord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/NANOTEC/PD4E_RTU/PD4E.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lucaf/robotic_core/NANOTEC/PD4E_RTU/PD4E.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/DHRobotics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/DHRobotics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Nanotec_Carouseltest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Nanotec_Carouseltest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +45,12 @@
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="robotic_core" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="shadow" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="robotic_core" type="f1a62948:ProjectNode" />
                 <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
               </path>
               <path>
@@ -61,8 +68,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -90,33 +97,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.robotic-core [:DHRobotics.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.robotic-core [:Nanotec_ControlWord.main()].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.robotic-core [build].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.robotic-core [publishToMavenLocal].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.robotic-core [publish].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.robotic-core [shadowJar].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/media/luca/Archivio/IdeaProjects/robotic-core&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.43793103&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.robotic-core [:DHRobotics.main()].executor": "Run",
+    "Gradle.robotic-core [:NanotecCan.main()].executor": "Run",
+    "Gradle.robotic-core [:Nanotec_Carouseltest.main()].executor": "Run",
+    "Gradle.robotic-core [:Nanotec_ControlWord.main()].executor": "Run",
+    "Gradle.robotic-core [build].executor": "Run",
+    "Gradle.robotic-core [publishToMavenLocal].executor": "Run",
+    "Gradle.robotic-core [publish].executor": "Run",
+    "Gradle.robotic-core [shadowJar].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/media/luca/Archivio/IdeaProjects/robotic-core",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.43793103",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
-  <component name="RunManager" selected="Application.DHRobotics">
+}]]></component>
+  <component name="RunManager" selected="Gradle.robotic-core [shadowJar]">
     <configuration name="DHRobotics" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="DHRobotics" />
+      <module name="robotic_core.test" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="NanotecCan" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="NanotecCan" />
+      <module name="robotic_core.test" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Nanotec_Carouseltest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Nanotec_Carouseltest" />
       <module name="robotic_core.test" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -129,7 +152,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="robotic-core [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="robotic-core [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -140,51 +163,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="robotic-core [publishToMavenLocal]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="publishToMavenLocal" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="robotic-core [publish]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="publish" />
+            <option value="shadowJar" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -197,11 +176,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.robotic-core [shadowJar]" />
+        <item itemvalue="Application.Nanotec_Carouseltest" />
+        <item itemvalue="Application.NanotecCan" />
         <item itemvalue="Application.DHRobotics" />
         <item itemvalue="Application.Nanotec_ControlWord" />
-        <item itemvalue="Gradle.robotic-core [build]" />
-        <item itemvalue="Gradle.robotic-core [publishToMavenLocal]" />
-        <item itemvalue="Gradle.robotic-core [publish]" />
       </list>
     </recent_temporary>
   </component>
@@ -232,7 +211,9 @@
       <workItem from="1727190613102" duration="105000" />
       <workItem from="1727190722946" duration="8391000" />
       <workItem from="1727255017618" duration="5746000" />
-      <workItem from="1727501048987" duration="1293000" />
+      <workItem from="1727501048987" duration="2494000" />
+      <workItem from="1727608659777" duration="579000" />
+      <workItem from="1727858220440" duration="9911000" />
     </task>
     <task id="LOCAL-00001" summary="Library Upload">
       <option name="closed" value="true" />
@@ -242,7 +223,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727184134247</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="ADD Nanotec Tests. Add exceptions">
+      <option name="closed" value="true" />
+      <created>1727502446770</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727502446770</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,6 +239,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Library Upload" />
-    <option name="LAST_COMMIT_MESSAGE" value="Library Upload" />
+    <MESSAGE value="ADD Nanotec Tests. Add exceptions" />
+    <option name="LAST_COMMIT_MESSAGE" value="ADD Nanotec Tests. Add exceptions" />
   </component>
 </project>
