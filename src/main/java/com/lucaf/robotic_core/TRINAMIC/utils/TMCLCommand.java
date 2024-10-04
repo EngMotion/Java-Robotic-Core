@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.TRINAMIC;
+package com.lucaf.robotic_core.TRINAMIC.utils;
 
 import java.nio.ByteBuffer;
 

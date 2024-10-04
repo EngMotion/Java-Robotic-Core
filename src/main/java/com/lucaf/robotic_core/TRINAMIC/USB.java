@@ -1,6 +1,7 @@
 package com.lucaf.robotic_core.TRINAMIC;
 
-import com.lucaf.robotic_core.TRINAMIC.utils.USBReader;
+import com.lucaf.robotic_core.TRINAMIC.utils.TMCLCommand;
+import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
@@ -32,19 +33,13 @@ public class USB implements SerialPortEventListener {
         serialPort.addEventListener(this);
     }
 
-    private List<USBReader> readers = new ArrayList<>();
-
-    public void addEventListener(USBReader reader) {
-        readers.add(reader);
-    }
-
     CountDownLatch latch = new CountDownLatch(1);
 
     byte[] expected = new byte[0];
 
     TMCLCommand lastResponse = null;
 
-    public synchronized TMCLCommand write(TMCLCommand command)  {
+    public synchronized TMCLCommand write(TMCLCommand command) throws DeviceCommunicationException {
         latch = new CountDownLatch(1);
         try {
             serialPort.purgePort(SerialPort.PURGE_RXCLEAR);
@@ -54,34 +49,20 @@ public class USB implements SerialPortEventListener {
             serialPort.writeBytes(command.getFrame());
             latch.await(1000, TimeUnit.MILLISECONDS);
             return lastResponse;
-        } catch (SerialPortException e) {
-            notifyException(e);
-        } catch (InterruptedException e) {
-            notifyException(new SerialPortException(com, "Interrupted", "Interrupted"));
-        }
-        return null;
-
-    }
-
-    private void notifyException(SerialPortException e) {
-        for (USBReader reader : readers) {
-            reader.onSerialEcxception(e);
+        } catch (SerialPortException | InterruptedException e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
     }
 
     @Override
     public void serialEvent(SerialPortEvent serialPortEvent) {
-        if(serialPortEvent.isRXCHAR()){
-            if(serialPortEvent.getEventValue()>0){
+        if (serialPortEvent.isRXCHAR()) {
+            if (serialPortEvent.getEventValue() > 0) {
                 try {
-                    TMCLCommand frame = new TMCLCommand(serialPort.readBytes(serialPortEvent.getEventValue()));
-                    for (USBReader reader : readers) {
-                        reader.onData(frame);
-                    }
-                    lastResponse = frame;
+                    lastResponse = new TMCLCommand(serialPort.readBytes(serialPortEvent.getEventValue()));
                     latch.countDown();
                 } catch (SerialPortException e) {
-                    notifyException(e);
+                    e.printStackTrace();
                 }
             }
         }
