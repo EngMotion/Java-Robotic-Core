@@ -5,6 +5,7 @@ import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.procimg.Register;
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
 import com.lucaf.robotic_core.State;
+import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import lombok.Setter;
 
 import java.util.HashMap;
@@ -139,17 +140,15 @@ public class RGI100_22 {
      * @param register the register to read
      * @return the response of the device
      */
-    private synchronized int readRegister(byte[] register) {
-        try {
-            int startRegister = register[0] << 8 | register[1];
-            Register[] regs = rs485.readMultipleRegisters(id, startRegister, 1);
-            if (regs != null) {
-                return regs[0].getValue();
-            }
-            return -1;
-        } catch (ModbusException e) {
-            return -1;
+    private synchronized int readRegister(byte[] register) throws ModbusException {
+
+        int startRegister = register[0] << 8 | register[1];
+        Register[] regs = rs485.readMultipleRegisters(id, startRegister, 1);
+        if (regs != null) {
+            return regs[0].getValue();
         }
+        return -1;
+
     }
 
     /**
@@ -159,14 +158,11 @@ public class RGI100_22 {
      * @param data     the data to write
      * @return true if the write is successful, false otherwise
      */
-    private synchronized boolean writeRegister(byte[] register, int data) {
-        try {
-            int startRegister = register[0] << 8 | register[1];
-            rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
-            return true;
-        } catch (ModbusException e) {
-            return false;
-        }
+    private synchronized boolean writeRegister(byte[] register, int data) throws ModbusException {
+        int startRegister = register[0] << 8 | register[1];
+        rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
+        return true;
+
     }
 
     /**
@@ -174,12 +170,16 @@ public class RGI100_22 {
      *
      * @return true if the grip is initialized, false otherwise
      */
-    public boolean hasGripInitialized() {
-        int response = readRegister(FEEDBACK_INITIALIZATION_GRIP_STATE);
-        if (response == -1) {
-            return false;
+    public boolean hasGripInitialized() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(FEEDBACK_INITIALIZATION_GRIP_STATE);
+            if (response == -1) {
+                return false;
+            }
+            return response == 1;
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
-        return response == 1;
     }
 
     /**
@@ -187,12 +187,16 @@ public class RGI100_22 {
      *
      * @return true if the rotation is initialized, false otherwise
      */
-    public boolean hasRotationInitialized() {
-        int response = readRegister(FEEDBACK_INITIALIZATION_ROTATION_STATE);
-        if (response == -1) {
-            return false;
+    public boolean hasRotationInitialized() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(FEEDBACK_INITIALIZATION_ROTATION_STATE);
+            if (response == -1) {
+                return false;
+            }
+            return response == 1;
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
-        return response == 1;
     }
 
     /**
@@ -200,7 +204,7 @@ public class RGI100_22 {
      *
      * @throws InterruptedException if the thread is interrupted
      */
-    public void initialize() {
+    public void initialize() throws DeviceCommunicationException {
         try {
             //If the grip and the rotation are already initialized, return
             if (!(hasGripInitialized() && hasRotationInitialized())) {
@@ -209,31 +213,15 @@ public class RGI100_22 {
                     Thread.sleep(500);
                 }
             }
-        } catch (InterruptedException e) {
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         } finally {
             is_initialized.set(true);
-            /*try {
-
-                if (target_angle.get() != 0) {
-                    if (Main.DEVELOPER_MODE) System.out.println("MOVING TO ANGLE: " + target_angle.get());
-                    int angle = target_angle.get() % 360;
-                    Future<Boolean> task = moveToAbsoluteAngleAndWait(angle);
-                    task.get();
-                }
-                if(target_position.get() != 0){
-                    if (Main.DEVELOPER_MODE) System.out.println("MOVING TO POSITION: " + target_position.get());
-                    Future<Boolean> task = setGripPositionAndWait(target_position.get());
-                    task.get();
-                }
-            } catch (Exception e) {
-                if (Main.DEVELOPER_MODE) e.printStackTrace();
-            }*/
             target_angle.set(0);
             target_position.set(0);
             current_angle.set(0);
             current_position.set(0);
             stateFunction.notifyStateChange();
-
         }
     }
 
@@ -242,8 +230,12 @@ public class RGI100_22 {
      *
      * @param angle the angle to move to
      */
-    public void moveToAbsoluteAngle(int angle) {
-        writeRegister(ABSOLUTE_ROTATION, angle);
+    public void moveToAbsoluteAngle(int angle) throws DeviceCommunicationException {
+        try {
+            writeRegister(ABSOLUTE_ROTATION, angle);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
     /**
@@ -251,8 +243,12 @@ public class RGI100_22 {
      *
      * @param angle the angle to move to
      */
-    public void moveToRelativeAngle(int angle) {
-        writeRegister(RELATIVE_ROTATION, angle);
+    public void moveToRelativeAngle(int angle) throws DeviceCommunicationException {
+        try {
+            writeRegister(RELATIVE_ROTATION, angle);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
     /**
@@ -272,17 +268,21 @@ public class RGI100_22 {
      *
      * @return the feedback of the position
      */
-    public PositionFeedback isRotationMoving() {
-        int response = readRegister(FEEDBACK_ROTATION_STATE);
-        if (response == -1) {
-            return PositionFeedback.MOVING;
+    public PositionFeedback isRotationMoving() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(FEEDBACK_ROTATION_STATE);
+            if (response == -1) {
+                return PositionFeedback.MOVING;
+            }
+            return switch (response) {
+                case 0 -> PositionFeedback.MOVING;
+                case 1 -> PositionFeedback.REACHED;
+                case 2 -> PositionFeedback.BLOCKED;
+                default -> PositionFeedback.MOVING;
+            };
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
-        return switch (response) {
-            case 0 -> PositionFeedback.MOVING;
-            case 1 -> PositionFeedback.REACHED;
-            case 2 -> PositionFeedback.BLOCKED;
-            default -> PositionFeedback.MOVING;
-        };
     }
 
     /**
@@ -290,18 +290,22 @@ public class RGI100_22 {
      *
      * @return the feedback of the position
      */
-    public PositionFeedback isGripMoving() {
-        int response = readRegister(FEEDBACK_GRIP_STATE);
-        if (response == -1) {
-            return PositionFeedback.MOVING;
+    public PositionFeedback isGripMoving() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(FEEDBACK_GRIP_STATE);
+            if (response == -1) {
+                return PositionFeedback.MOVING;
+            }
+            return switch (response) {
+                case 0 -> PositionFeedback.MOVING;
+                case 1 -> PositionFeedback.REACHED_WITH_OBJ;
+                case 2 -> PositionFeedback.REACHED_WITHOUT_OBJ;
+                case 3 -> PositionFeedback.FALL;
+                default -> PositionFeedback.MOVING;
+            };
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
-        return switch (response) {
-            case 0 -> PositionFeedback.MOVING;
-            case 1 -> PositionFeedback.REACHED_WITH_OBJ;
-            case 2 -> PositionFeedback.REACHED_WITHOUT_OBJ;
-            case 3 -> PositionFeedback.FALL;
-            default -> PositionFeedback.MOVING;
-        };
     }
 
     /**
@@ -309,50 +313,62 @@ public class RGI100_22 {
      *
      * @return the grip position
      */
-    public int getGripPosition() {
-        int response = readRegister(FEEDBACK_GRIP_POSITION);
-        if (response == -1) {
-            return -1;
+    public int getGripPosition() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(FEEDBACK_GRIP_POSITION);
+            if (response == -1) {
+                return -1;
+            }
+            return response;
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
-        return response;
     }
 
     /**
      * Waits for the grip to reach the end position. This method is thread blocking and should be used after an interpolation.
      */
-    public synchronized void waitEndPosition() {
-        is_moving.set(true);
-        while (true) {
-            PositionFeedback feedback = isRotationMoving();
-            if (feedback == PositionFeedback.REACHED || feedback == PositionFeedback.BLOCKED) {
-                break;
+    public synchronized void waitEndPosition() throws DeviceCommunicationException {
+        try {
+            is_moving.set(true);
+            while (true) {
+                PositionFeedback feedback = isRotationMoving();
+                if (feedback == PositionFeedback.REACHED || feedback == PositionFeedback.BLOCKED) {
+                    break;
+                }
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            is_moving.set(false);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
-        is_moving.set(false);
     }
 
     /**
      * Waits for the grip to reach the end position. This method is thread blocking and should be used after an interpolation.
      */
-    public synchronized void waitEndGrip() {
-        is_moving.set(true);
-        while (true) {
-            PositionFeedback feedback = isGripMoving();
-            if (feedback == PositionFeedback.REACHED_WITH_OBJ || feedback == PositionFeedback.REACHED_WITHOUT_OBJ) {
-                break;
+    public synchronized void waitEndGrip() throws DeviceCommunicationException {
+        try {
+            is_moving.set(true);
+            while (true) {
+                PositionFeedback feedback = isGripMoving();
+                if (feedback == PositionFeedback.REACHED_WITH_OBJ || feedback == PositionFeedback.REACHED_WITHOUT_OBJ) {
+                    break;
+                }
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            is_moving.set(false);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
-        is_moving.set(false);
     }
 
     /**
@@ -363,16 +379,20 @@ public class RGI100_22 {
      */
     public Future<Boolean> moveToRelativeAngleAndWait(int angle) {
         return executorService.submit(() -> {
-            int newAngle = angle + current_position.get();
-            target_angle.set(newAngle);
-            is_moving.set(true);
-            stateFunction.notifyStateChange();
-            moveToRelativeAngle(angle);
-            waitEndPosition();
-            current_angle.set(newAngle);
-            is_moving.set(false);
-            stateFunction.notifyStateChange();
-            return true;
+            try {
+                int newAngle = angle + current_position.get();
+                target_angle.set(newAngle);
+                is_moving.set(true);
+                stateFunction.notifyStateChange();
+                moveToRelativeAngle(angle);
+                waitEndPosition();
+                current_angle.set(newAngle);
+                is_moving.set(false);
+                stateFunction.notifyStateChange();
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         });
     }
 
@@ -384,15 +404,19 @@ public class RGI100_22 {
      */
     public Future<Boolean> moveToAbsoluteAngleAndWait(int angle) {
         return executorService.submit(() -> {
-            target_angle.set(angle);
-            is_moving.set(true);
-            stateFunction.notifyStateChange();
-            moveToAbsoluteAngle(angle);
-            waitEndPosition();
-            current_angle.set(angle);
-            is_moving.set(false);
-            stateFunction.notifyStateChange();
-            return true;
+            try {
+                target_angle.set(angle);
+                is_moving.set(true);
+                stateFunction.notifyStateChange();
+                moveToAbsoluteAngle(angle);
+                waitEndPosition();
+                current_angle.set(angle);
+                is_moving.set(false);
+                stateFunction.notifyStateChange();
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         });
     }
 
@@ -401,10 +425,14 @@ public class RGI100_22 {
      *
      * @param position the position to set
      */
-    public void setGripPosition(int position) {
-        position = Math.max(0, position);
-        position = Math.min(1000, position);
-        writeRegister(TARGET_POSITION, position);
+    public void setGripPosition(int position) throws DeviceCommunicationException {
+        try {
+            position = Math.max(0, position);
+            position = Math.min(1000, position);
+            writeRegister(TARGET_POSITION, position);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
     /**
@@ -415,15 +443,19 @@ public class RGI100_22 {
      */
     public Future<Boolean> setGripPositionAndWait(int position) {
         return executorService.submit(() -> {
-            target_position.set(position);
-            is_moving.set(true);
-            stateFunction.notifyStateChange();
-            setGripPosition(position);
-            waitEndGrip();
-            current_position.set(position);
-            is_moving.set(false);
-            stateFunction.notifyStateChange();
-            return true;
+            try {
+                target_position.set(position);
+                is_moving.set(true);
+                stateFunction.notifyStateChange();
+                setGripPosition(position);
+                waitEndGrip();
+                current_position.set(position);
+                is_moving.set(false);
+                stateFunction.notifyStateChange();
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
         });
     }
 
@@ -432,9 +464,13 @@ public class RGI100_22 {
      *
      * @return the grip force value between 0 and 100
      */
-    public int getGripForce() {
-        int response = readRegister(FORCE);
-        return response;
+    public int getGripForce() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(FORCE);
+            return response;
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
     /**
@@ -442,10 +478,14 @@ public class RGI100_22 {
      *
      * @param force the force value between 0 and 100
      */
-    public void setGripForce(int force) {
-        force = Math.max(0, force);
-        force = Math.min(100, force);
-        writeRegister(FORCE, force);
+    public void setGripForce(int force) throws DeviceCommunicationException {
+        try {
+            force = Math.max(0, force);
+            force = Math.min(100, force);
+            writeRegister(FORCE, force);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
     /**
@@ -453,12 +493,16 @@ public class RGI100_22 {
      *
      * @return the grip speed value between 0 and 100
      */
-    public int getGripSpeed() {
-        int response = readRegister(SPEED);
-        if (response == -1) {
-            return -1;
+    public int getGripSpeed() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(SPEED);
+            if (response == -1) {
+                return -1;
+            }
+            return response;
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
-        return response;
     }
 
     /**
@@ -467,10 +511,14 @@ public class RGI100_22 {
      * @param id the new address id
      * @return true if the address is changed, false otherwise
      */
-    public boolean changeAddress(int id) {
-        boolean ok = writeRegister(SLAVE_ADDRESS, id);
-        //if (ok) setId((byte) id);
-        return ok;
+    public boolean changeAddress(int id) throws DeviceCommunicationException {
+        try {
+            boolean ok = writeRegister(SLAVE_ADDRESS, id);
+            //if (ok) setId((byte) id);
+            return ok;
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
     /**
@@ -478,7 +526,7 @@ public class RGI100_22 {
      *
      * @return true if the configuration is saved, false otherwise
      */
-    public boolean saveConfig() {
+    public boolean saveConfig() throws DeviceCommunicationException {
         return saveConfig(false);
     }
 
@@ -487,10 +535,14 @@ public class RGI100_22 {
      *
      * @param speed the speed value between 0 and 100
      */
-    public void setGripSpeed(int speed) {
-        speed = Math.max(0, speed);
-        speed = Math.min(100, speed);
-        writeRegister(SPEED, speed);
+    public void setGripSpeed(int speed) throws DeviceCommunicationException {
+        try {
+            speed = Math.max(0, speed);
+            speed = Math.min(100, speed);
+            writeRegister(SPEED, speed);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
     /**
@@ -498,12 +550,16 @@ public class RGI100_22 {
      *
      * @return the rotation speed value between 0 and 100
      */
-    public int getRotationSpeed() {
-        int response = readRegister(ROTATION_SPEED);
-        if (response == -1) {
-            return -1;
+    public int getRotationSpeed() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(ROTATION_SPEED);
+            if (response == -1) {
+                return -1;
+            }
+            return response;
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
-        return response;
     }
 
     /**
@@ -511,10 +567,14 @@ public class RGI100_22 {
      *
      * @param speed the speed value between 0 and 100
      */
-    public void setRotationSpeed(int speed) {
-        speed = Math.max(0, speed);
-        speed = Math.min(100, speed);
-        writeRegister(ROTATION_SPEED, speed);
+    public void setRotationSpeed(int speed) throws DeviceCommunicationException {
+        try {
+            speed = Math.max(0, speed);
+            speed = Math.min(100, speed);
+            writeRegister(ROTATION_SPEED, speed);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
     /**
@@ -522,12 +582,16 @@ public class RGI100_22 {
      *
      * @return the rotation force value between 0 and 100
      */
-    public int getRotationForce() {
-        int response = readRegister(ROTATION_FORCE);
-        if (response == -1) {
-            return -1;
+    public int getRotationForce() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(ROTATION_FORCE);
+            if (response == -1) {
+                return -1;
+            }
+            return response;
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
         }
-        return response;
     }
 
     /**
@@ -535,10 +599,14 @@ public class RGI100_22 {
      *
      * @param force the force value between 0 and 100
      */
-    public void setRotationForce(int force) {
-        force = Math.max(0, force);
-        force = Math.min(100, force);
-        writeRegister(ROTATION_FORCE, force);
+    public void setRotationForce(int force) throws DeviceCommunicationException {
+        try {
+            force = Math.max(0, force);
+            force = Math.min(100, force);
+            writeRegister(ROTATION_FORCE, force);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
     /**
@@ -547,7 +615,11 @@ public class RGI100_22 {
      * @param defaults if true, the default configuration is restored
      * @return
      */
-    public boolean saveConfig(boolean defaults) {
-        return writeRegister(SAVE_CONFIG, defaults ? 0 : 1);
+    public boolean saveConfig(boolean defaults) throws DeviceCommunicationException {
+        try {
+            return writeRegister(SAVE_CONFIG, defaults ? 0 : 1);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 }
