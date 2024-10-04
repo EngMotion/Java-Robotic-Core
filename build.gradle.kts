@@ -4,7 +4,7 @@ plugins {
     id("maven-publish")
 }
 
-group = "com.github.LucaFontanot"
+group = "com.github.EngMotion"
 version = "1.3"
 
 repositories {
@@ -38,5 +38,11 @@ publishing() {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
         }
+    }
+}
+
+tasks {
+    shadowJar {
+        archiveBaseName.set("Robotic-Core.jar")
     }
 }
