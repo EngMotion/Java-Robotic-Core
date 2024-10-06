@@ -22,6 +22,10 @@ public class TMCM_1140 {
 
     byte address = 0x01;
     byte motor = 0x00;
+
+    /**
+     * The executor service that manages the feedback position
+     */
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     /**
      * If enabled, the code will make sure to have the position set even if external events occur
@@ -70,6 +74,7 @@ public class TMCM_1140 {
      * Method that initializes the module with given parameters
      *
      * @param params the parameters as a map of strings and integers representing the parameter name and value
+     * @throws ConfigurationException if there is an error setting the parameters
      */
     public void setParameters(Map<String, Integer> params) throws ConfigurationException {
         try {
@@ -86,7 +91,13 @@ public class TMCM_1140 {
 
     }
 
-
+    /**
+     * Method that sets a parameter
+     *
+     * @param parameter the parameter to set
+     * @param value     the value of the parameter
+     * @throws DeviceCommunicationException if there is an error setting the parameter
+     */
     private void setParameter(byte parameter, int value) throws DeviceCommunicationException {
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(SAP);
@@ -98,6 +109,12 @@ public class TMCM_1140 {
         }
     }
 
+    /**
+     * Method that rotates the motor to the right
+     *
+     * @param velocity the velocity of the rotation
+     * @throws DeviceCommunicationException if there is an error rotating the motor
+     */
     private void rotateRight(int velocity) throws DeviceCommunicationException {
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(ROR);
@@ -105,6 +122,12 @@ public class TMCM_1140 {
         usb.write(command);
     }
 
+    /**
+     * Method that rotates the motor to the right
+     *
+     * @param velocity the velocity of the rotation
+     * @throws DeviceCommunicationException if there is an error rotating the motor
+     */
     private void rotateLeft(int velocity) throws DeviceCommunicationException {
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(ROL);
@@ -112,12 +135,23 @@ public class TMCM_1140 {
         usb.write(command);
     }
 
+    /**
+     * Method that stops the motor
+     *
+     * @throws DeviceCommunicationException if there is an error stopping the motor
+     */
     private void stopMotor() throws DeviceCommunicationException {
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(MST);
         usb.write(command);
     }
 
+    /**
+     * Method that starts the reference search
+     *
+     * @param mode the mode of the reference search
+     * @throws DeviceCommunicationException if there is an error starting the reference search
+     */
     private void startReferenceSearch(byte mode) throws DeviceCommunicationException {
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(RFS);
@@ -126,6 +160,13 @@ public class TMCM_1140 {
         position = 0;
     }
 
+    /**
+     * Method that moves the motor to the given position
+     *
+     * @param mode     the mode of the movement
+     * @param position the position to move to
+     * @throws DeviceCommunicationException if there is an error moving the motor
+     */
     private void moveToPosition(byte mode, int position) throws DeviceCommunicationException {
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(MVP);
@@ -134,6 +175,13 @@ public class TMCM_1140 {
         usb.write(command);
     }
 
+    /**
+     * Method that gets the value of a parameter
+     *
+     * @param parameter the parameter to get
+     * @return the value of the parameter
+     * @throws DeviceCommunicationException if there is an error getting the parameter
+     */
     private int getParameter(byte parameter) throws DeviceCommunicationException {
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(GAP);
@@ -187,6 +235,9 @@ public class TMCM_1140 {
 
     /**
      * Method that checks if the position is correct and fixes it if it is not. The position is retrieved from the external encoder.
+     * If the difference between the actual position and the desired position is greater than 100, the motor is moved to the desired position
+     *
+     * @throws DeviceCommunicationException if there is an error getting the parameter
      */
     private void checkAndFixPosition() throws DeviceCommunicationException {
         if (ENABLE_FEEDBACK_POSITION) {
@@ -208,6 +259,7 @@ public class TMCM_1140 {
      * Method that moves the motor to the given position and waits for the movement to end
      *
      * @param position the position to move to
+     * @throws DeviceCommunicationException if there is an error moving the motor
      */
     public void moveToRelativePositionAndWait(int position) throws DeviceCommunicationException {
         waitStatusUnlock();
@@ -220,6 +272,7 @@ public class TMCM_1140 {
      * Method that moves the motor to the given position and waits for the movement to end
      *
      * @param position the position to move to
+     * @throws DeviceCommunicationException if there is an error moving the motor
      */
     public void moveToAbsolutePositionAndWait(int position) throws DeviceCommunicationException {
         waitStatusUnlock();
@@ -232,6 +285,7 @@ public class TMCM_1140 {
      * Method to enable or disable the feedback position
      *
      * @param enable true to enable, false to disable
+     * @throws DeviceCommunicationException if there is an error getting the parameter
      */
     public void setFeedbackPosition(boolean enable) {
         if (enable && !ENABLE_FEEDBACK_POSITION) {
@@ -250,7 +304,6 @@ public class TMCM_1140 {
             executorService.shutdown();
         }
         ENABLE_FEEDBACK_POSITION = enable;
-
     }
 
 }
