@@ -58,6 +58,9 @@ public class Constants {
     public static final byte PARAM_ENCODER_MAX_DEVIATION = (byte) 212;
     public static final byte PARAM_VELOCITY_MAX_DEVIATION = (byte) 213;
     public static final byte PARAM_REVERSE_SHAFT = (byte) 251;
+
+    public static final byte GLOBAL_SERIAL_ADDRESS = (byte) 66;
+
     public static final byte MVP_ABS = 1;
     public static final byte MVP_REL = 2;
     public static final byte MVP_COORD = 3;

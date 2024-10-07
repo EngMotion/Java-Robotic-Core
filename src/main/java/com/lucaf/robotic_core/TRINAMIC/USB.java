@@ -7,19 +7,15 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class USB implements SerialPortEventListener {
 
-    private final String com;
-
     private final SerialPort serialPort;
 
     public USB(String com) throws SerialPortException {
-        this.com = com;
         serialPort = new SerialPort(com);
         serialPort.openPort();
         serialPort.setParams(
@@ -48,6 +44,12 @@ public class USB implements SerialPortEventListener {
             lastResponse = null;
             serialPort.writeBytes(command.getFrame());
             latch.await(1000, TimeUnit.MILLISECONDS);
+            if (lastResponse == null) {
+                throw new DeviceCommunicationException("No response");
+            }
+            if (!lastResponse.isOk()) {
+                throw new DeviceCommunicationException("Error setting parameter: " + lastResponse.toString());
+            }
             return lastResponse;
         } catch (SerialPortException | InterruptedException e) {
             throw new DeviceCommunicationException(e.getMessage());
@@ -59,7 +61,10 @@ public class USB implements SerialPortEventListener {
         if (serialPortEvent.isRXCHAR()) {
             if (serialPortEvent.getEventValue() > 0) {
                 try {
-                    lastResponse = new TMCLCommand(serialPort.readBytes(serialPortEvent.getEventValue()));
+                    byte[] frames = serialPort.readBytes(serialPortEvent.getEventValue());
+                    byte[] data = new byte[9];
+                    System.arraycopy(frames, frames.length-9, data, 0, 9);
+                    lastResponse = new TMCLCommand();
                     latch.countDown();
                 } catch (SerialPortException e) {
                     e.printStackTrace();
