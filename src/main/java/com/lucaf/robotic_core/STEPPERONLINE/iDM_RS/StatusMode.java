@@ -54,4 +54,12 @@ public class StatusMode {
         return STATUS_CODE == 0x020;
     }
 
+    @Override
+    public String toString() {
+        return "StatusMode{" +
+                "PATH_MODE=" + PATH_MODE +
+                ", STATUS_CODE=" + STATUS_CODE +
+                '}';
+    }
+
 }

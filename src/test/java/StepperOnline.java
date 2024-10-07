@@ -35,7 +35,8 @@ public class StepperOnline {
             iDM_rs.setDeceleration(100);
             iDM_rs.setAcceleration(100);
             iDM_rs.setSpeed(100);
-            iDM_rs.setPosition(100000);
+            iDM_rs.moveToPostionAndWait(100000).get();
+            System.out.println("Routine done");
 
         }catch (Exception e){
             System.out.println(e);

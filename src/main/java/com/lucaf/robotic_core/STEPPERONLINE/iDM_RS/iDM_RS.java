@@ -6,6 +6,7 @@ import com.ghgande.j2mod.modbus.procimg.Register;
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
+import lombok.SneakyThrows;
 
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
@@ -136,15 +137,29 @@ public class iDM_RS {
         writeControlMode();
     }
 
+    public StatusMode getStatusMode() throws DeviceCommunicationException {
+        return new StatusMode(readRegister(STATUS_MODE));
+    }
+
     public void setRelativePositioning(boolean relative) throws DeviceCommunicationException {
         controlMode.setRELATIVE_POSITIONING(relative);
         writeControlMode();
+    }
+
+    @SneakyThrows
+    public void waitReachedPosition() throws DeviceCommunicationException {
+        while (true){
+            StatusMode mode = getStatusMode();
+            if (!mode.isRunning()) break;
+            Thread.sleep(50);
+        }
     }
 
     public Future<Boolean> moveToPostionAndWait(int position){
         return executorService.submit(() -> {
             try {
                 setPosition(position);
+                waitReachedPosition();
                 return true;
             }catch (Exception e){
                 return false;
