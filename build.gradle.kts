@@ -45,7 +45,7 @@ tasks {
         archiveBaseName.set("Robotic-Core.jar")
     }
     javadoc {
-        destinationDir = file("javadoc")
+        destinationDir = file("build/docs/javadoc")
     }
 
 }
