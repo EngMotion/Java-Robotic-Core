@@ -73,6 +73,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Constants</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">Constants class containing the addresses of the registers of the iDM_RS controller.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -87,85 +88,288 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
 <div class="col-second even-row-color"><code><a href="#ACCELERATION" class="member-name-link">ACCELERATION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Acceleration: 0x6204
+ Value: ms/1000rpm
+ Type: Read/Write</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#ALARM" class="member-name-link">ALARM</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Alarm: 0x2203
+ Value:
+ 0x01 Over- current
+ 0x02 Over- voltage
+ 0x40 Current sampling fault
+ 0x80 Failed to lock shaft
+ 0x200 EEPROM fault
+ 0x100 Auto-tuning fault
+ Type: Read</div>
+</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#AUTO_TUNE" class="member-name-link">AUTO_TUNE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-second even-row-color"><code><a href="#CONTROL_MODE" class="member-name-link">CONTROL_MODE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Control Mode: 0x6200
+ Value: Managed by the ControlMode class
+ Type: Read/Write</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#CONTROL_MODE" class="member-name-link">CONTROL_MODE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#CONTROL_WORD" class="member-name-link">CONTROL_WORD</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#CURRENT" class="member-name-link">CURRENT</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#CONTROL_WORD" class="member-name-link">CONTROL_WORD</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
 <div class="col-second even-row-color"><code><a href="#DECELERATION" class="member-name-link">DECELERATION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Deceleration: 0x6205
+ Value: ms/1000rpm
+ Type: Read/Write</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#DI_1" class="member-name-link">DI_1</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Digital Input 1: 0x0145
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
+</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
 <div class="col-second even-row-color"><code><a href="#DI_2" class="member-name-link">DI_2</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Digital Input 2: 0x0146
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#DI_3" class="member-name-link">DI_3</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Digital Input 3: 0x0149
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
+</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
 <div class="col-second even-row-color"><code><a href="#DI_4" class="member-name-link">DI_4</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Digital Input 4: 0x014B
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#DI_5" class="member-name-link">DI_5</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Digital Input 5: 0x014D
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
+</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
 <div class="col-second even-row-color"><code><a href="#DI_6" class="member-name-link">DI_6</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Digital Input 6: 0x014F
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#DI_7" class="member-name-link">DI_7</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Digital Input 7: 0x0151
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
+</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
 <div class="col-second even-row-color"><code><a href="#DO_1" class="member-name-link">DO_1</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Digital Output 1: 0x0157
+ Value:
+ 0: invalid;
+ 0x20: command completed;
+ 0x21: path completed;
+ 0x22: homing completed;
+ 0x23: in-position completed;
+ 0x24: brake output;
+ 0x25: alarm output;
+ Type: Read/Write</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#DO_2" class="member-name-link">DO_2</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Digital Output 2: 0x0159
+ Value:
+ 0: invalid;
+ 0x20: command completed;
+ 0x21: path completed;
+ 0x22: homing completed;
+ 0x23: in-position completed;
+ 0x24: brake output;
+ 0x25: alarm output;
+ Type: Read/Write</div>
+</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
 <div class="col-second even-row-color"><code><a href="#MOTOR_DIRECTION" class="member-name-link">MOTOR_DIRECTION</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Motor direction: 0x0007
+ Value:
+ 0x00: Clockwise
+ 0x01: Counter-clockwise
+ Type: Read/Write</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#MOTOR_STATE" class="member-name-link">MOTOR_STATE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-second odd-row-color"><code><a href="#MOTOR_STATUS" class="member-name-link">MOTOR_STATUS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Motor Status: 0x1003
+ Value: Bit 0: Fault; Bit 1: Enabled; Bit 2: Running; Bit 4: Completed; Bit 5: Path completed; Bit 6: Homing completed
+ Managed by the MotorStatus class
+ Type: Read</div>
+</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#MOTOR_STATUS" class="member-name-link">MOTOR_STATUS</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-second even-row-color"><code><a href="#PAUSE_TIME" class="member-name-link">PAUSE_TIME</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Pause Time: 0x6206
+ Value: ms
+ Type: Read/Write</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#PAUSE_TIME" class="member-name-link">PAUSE_TIME</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-second odd-row-color"><code><a href="#PEAK_CURRENT" class="member-name-link">PEAK_CURRENT</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Peak Current: 0x0191
+ Value: Approximately equal to motor phase current value multiplied by 1.4
+ Type: Read/Write</div>
+</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#PEAK_CURRENT" class="member-name-link">PEAK_CURRENT</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-second even-row-color"><code><a href="#STATUS_MODE" class="member-name-link">STATUS_MODE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Status Mode: 0x6002
+ Value: Managed by the StatusMode class</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#RS485_ID" class="member-name-link">RS485_ID</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-second odd-row-color"><code><a href="#TARGET_POSITION_HIGH" class="member-name-link">TARGET_POSITION_HIGH</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Target Position High: 0x6201
+ Value: High 16 bits of the target position
+ Type: Read/Write</div>
+</div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#SAVE" class="member-name-link">SAVE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-second even-row-color"><code><a href="#TARGET_POSITION_LOW" class="member-name-link">TARGET_POSITION_LOW</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Target Position Low: 0x6202
+ Value: High 16 bits of the target position
+ Type: Read/Write</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#STATUS_MODE" class="member-name-link">STATUS_MODE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#TARGET_POSITION_HIGH" class="member-name-link">TARGET_POSITION_HIGH</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#TARGET_POSITION_LOW" class="member-name-link">TARGET_POSITION_LOW</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#VELOCITY" class="member-name-link">VELOCITY</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-second odd-row-color"><code><a href="#VELOCITY" class="member-name-link">VELOCITY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Velocity: 0x6203
+ Value: rpm
+ Type: Read/Write</div>
+</div>
 </div>
 </section>
 </li>
@@ -204,84 +408,237 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="MOTOR_DIRECTION">
 <h3>MOTOR_DIRECTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">MOTOR_DIRECTION</span></div>
+<div class="block">Motor direction: 0x0007
+ Value:
+ 0x00: Clockwise
+ 0x01: Counter-clockwise
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DI_1">
 <h3>DI_1</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">DI_1</span></div>
+<div class="block">Digital Input 1: 0x0145
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DI_2">
 <h3>DI_2</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">DI_2</span></div>
+<div class="block">Digital Input 2: 0x0146
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DI_3">
 <h3>DI_3</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">DI_3</span></div>
+<div class="block">Digital Input 3: 0x0149
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DI_4">
 <h3>DI_4</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">DI_4</span></div>
+<div class="block">Digital Input 4: 0x014B
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DI_5">
 <h3>DI_5</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">DI_5</span></div>
+<div class="block">Digital Input 5: 0x014D
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DI_6">
 <h3>DI_6</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">DI_6</span></div>
+<div class="block">Digital Input 6: 0x014F
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DI_7">
 <h3>DI_7</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">DI_7</span></div>
+<div class="block">Digital Input 7: 0x0151
+ Value:
+ 0: invalid;
+ 7: alarm clearing;
+ 8: enable (also can be set by 0x00F);
+ 0x20: Trigger command (CTRG);
+ 0x21: Trigger homing;
+ 0x22: EMG (quick stop);
+ 0x23: JOG+;
+ 0x24: JOG-;
+ 0x25: POT (positive limit);
+ 0x26: NOT (negative limit);
+ 0x27: ORG (home switch);
+ 0x28: ADD0 (path address 0);
+ 0x29: ADD1 (path address 1);
+ 0x2A: ADD2 (path address 2);
+ 0x2B: ADD3 (path address 3);
+ 0x2C: JOG velocity 2
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DO_1">
 <h3>DO_1</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">DO_1</span></div>
+<div class="block">Digital Output 1: 0x0157
+ Value:
+ 0: invalid;
+ 0x20: command completed;
+ 0x21: path completed;
+ 0x22: homing completed;
+ 0x23: in-position completed;
+ 0x24: brake output;
+ 0x25: alarm output;
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DO_2">
 <h3>DO_2</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">DO_2</span></div>
+<div class="block">Digital Output 2: 0x0159
+ Value:
+ 0: invalid;
+ 0x20: command completed;
+ 0x21: path completed;
+ 0x22: homing completed;
+ 0x23: in-position completed;
+ 0x24: brake output;
+ 0x25: alarm output;
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PEAK_CURRENT">
 <h3>PEAK_CURRENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">PEAK_CURRENT</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="AUTO_TUNE">
-<h3>AUTO_TUNE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">AUTO_TUNE</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="RS485_ID">
-<h3>RS485_ID</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">RS485_ID</span></div>
+<div class="block">Peak Current: 0x0191
+ Value: Approximately equal to motor phase current value multiplied by 1.4
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="MOTOR_STATUS">
 <h3>MOTOR_STATUS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">MOTOR_STATUS</span></div>
+<div class="block">Motor Status: 0x1003
+ Value: Bit 0: Fault; Bit 1: Enabled; Bit 2: Running; Bit 4: Completed; Bit 5: Path completed; Bit 6: Homing completed
+ Managed by the MotorStatus class
+ Type: Read</div>
 </section>
 </li>
 <li>
@@ -291,75 +648,89 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="SAVE">
-<h3>SAVE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">SAVE</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="ALARM">
 <h3>ALARM</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">ALARM</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="MOTOR_STATE">
-<h3>MOTOR_STATE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">MOTOR_STATE</span></div>
+<div class="block">Alarm: 0x2203
+ Value:
+ 0x01 Over- current
+ 0x02 Over- voltage
+ 0x40 Current sampling fault
+ 0x80 Failed to lock shaft
+ 0x200 EEPROM fault
+ 0x100 Auto-tuning fault
+ Type: Read</div>
 </section>
 </li>
 <li>
 <section class="detail" id="CONTROL_MODE">
 <h3>CONTROL_MODE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">CONTROL_MODE</span></div>
+<div class="block">Control Mode: 0x6200
+ Value: Managed by the ControlMode class
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="STATUS_MODE">
 <h3>STATUS_MODE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">STATUS_MODE</span></div>
+<div class="block">Status Mode: 0x6002
+ Value: Managed by the StatusMode class</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TARGET_POSITION_HIGH">
 <h3>TARGET_POSITION_HIGH</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">TARGET_POSITION_HIGH</span></div>
+<div class="block">Target Position High: 0x6201
+ Value: High 16 bits of the target position
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="TARGET_POSITION_LOW">
 <h3>TARGET_POSITION_LOW</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">TARGET_POSITION_LOW</span></div>
+<div class="block">Target Position Low: 0x6202
+ Value: High 16 bits of the target position
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="VELOCITY">
 <h3>VELOCITY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">VELOCITY</span></div>
+<div class="block">Velocity: 0x6203
+ Value: rpm
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="ACCELERATION">
 <h3>ACCELERATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">ACCELERATION</span></div>
+<div class="block">Acceleration: 0x6204
+ Value: ms/1000rpm
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="DECELERATION">
 <h3>DECELERATION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">DECELERATION</span></div>
+<div class="block">Deceleration: 0x6205
+ Value: ms/1000rpm
+ Type: Read/Write</div>
 </section>
 </li>
 <li>
 <section class="detail" id="PAUSE_TIME">
 <h3>PAUSE_TIME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">PAUSE_TIME</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="CURRENT">
-<h3>CURRENT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">CURRENT</span></div>
+<div class="block">Pause Time: 0x6206
+ Value: ms
+ Type: Read/Write</div>
 </section>
 </li>
 </ul>
