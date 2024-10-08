@@ -18,6 +18,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.lucaf.robotic_core.TRINAMIC.TMCM_3351.Constants.*;
 
+/**
+ * Class that represents the TMCM_3351 motor
+ */
 public class TMCM_3351_MOTOR {
 
     /**
@@ -102,6 +105,12 @@ public class TMCM_3351_MOTOR {
         }
     }
 
+    /**
+     * Method that sets a parameter
+     * @param value the value of the parameter
+     * @param parameter the parameter to set as a string
+     * @throws ConfigurationException if there is an error setting the parameter
+     */
     public void setParameter(String value, int parameter) throws ConfigurationException {
         try {
             Field field = constantsClass.getField(value);

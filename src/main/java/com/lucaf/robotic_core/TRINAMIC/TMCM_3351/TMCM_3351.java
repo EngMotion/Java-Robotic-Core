@@ -13,6 +13,9 @@ import java.util.Map;
 
 import static com.lucaf.robotic_core.TRINAMIC.TMCM_3351.Constants.*;
 
+/**
+ * Class that represents the TMCM_3351 module
+ */
 @Getter
 public class TMCM_3351 {
     /**

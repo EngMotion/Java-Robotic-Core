@@ -11,10 +11,21 @@ import jssc.SerialPortException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Class that represents the USB communication class for the Trinamic Drivers
+ */
 public class USB implements SerialPortEventListener {
 
+    /**
+     * The serial port of the USB
+     */
     private final SerialPort serialPort;
 
+    /**
+     * Constructor of the class
+     * @param com the COM port of the USB. Will initialize the port
+     * @throws SerialPortException if the port is not found
+     */
     public USB(String com) throws SerialPortException {
         serialPort = new SerialPort(com);
         serialPort.openPort();
@@ -29,12 +40,27 @@ public class USB implements SerialPortEventListener {
         serialPort.addEventListener(this);
     }
 
+    /**
+     * The latch for the communication
+     */
     CountDownLatch latch = new CountDownLatch(1);
 
+    /**
+     * The expected response
+     */
     byte[] expected = new byte[0];
 
+    /**
+     * The last response
+     */
     TMCLCommand lastResponse = null;
 
+    /**
+     * Method that writes a command to the USB
+     * @param command the command to write
+     * @return the response of the command
+     * @throws DeviceCommunicationException if there is an error writing the command
+     */
     public synchronized TMCLCommand write(TMCLCommand command) throws DeviceCommunicationException {
         latch = new CountDownLatch(1);
         try {
@@ -56,6 +82,10 @@ public class USB implements SerialPortEventListener {
         }
     }
 
+    /**
+     * Method that hanles a serial frame event
+     * @param serialPortEvent the event of the frame
+     */
     @Override
     public void serialEvent(SerialPortEvent serialPortEvent) {
         if (serialPortEvent.isRXCHAR()) {

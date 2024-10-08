@@ -20,13 +20,21 @@ import static com.lucaf.robotic_core.TRINAMIC.TMCM_1140.Constants.*;
  */
 public class TMCM_1140 {
 
+    /**
+     * The address of the module
+     */
     byte address = 0x01;
+
+    /**
+     * The motor number
+     */
     byte motor = 0x00;
 
     /**
      * The executor service that manages the feedback position
      */
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+
     /**
      * If enabled, the code will make sure to have the position set even if external events occur
      */
