@@ -1,5 +1,6 @@
 package com.lucaf.robotic_core.TRINAMIC.TMCM_3351;
 
+import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.TRINAMIC.USB;
 import com.lucaf.robotic_core.TRINAMIC.utils.TMCLCommand;
 import com.lucaf.robotic_core.exception.ConfigurationException;
@@ -7,26 +8,87 @@ import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.lucaf.robotic_core.TRINAMIC.TMCM_3351.Constants.*;
 
 public class TMCM_3351_MOTOR {
+
+    /**
+     * The USB communication class
+     */
     private final USB usb;
+
+    /**
+     * The motor number 0-2
+     */
     private final byte motor;
+
+    /**
+     * The address of the device. Should be 0x01 as the global module
+     */
     private final byte address;
 
+    /**
+     * The state of the motor
+     */
     AtomicBoolean isMoving = new AtomicBoolean(false);
+
+    /**
+     * The position of the motor. Not used in velocity mode
+     */
     AtomicInteger position = new AtomicInteger(0);
 
-    public TMCM_3351_MOTOR(TMCM_3351 tmcm_3351, byte motorNumber) {
+    /**
+     * The state of the device
+     */
+    private final HashMap<String, Object> state;
+
+    /**
+     * The state class
+     */
+    private final State stateFunction;
+
+    /**
+     * The class of the constants. Used to get the parameters
+     */
+    private final Class<?> constantsClass;
+
+    /**
+     * The executor service for async operations
+     */
+    final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    /**
+     * Constructor of the class
+     *
+     * @param tmcm_3351     the TMCM_3351 class
+     * @param motorNumber   the motor number
+     * @param state         the state of the motor
+     * @param stateFunction the state interface with the onStateChange method
+     */
+    public TMCM_3351_MOTOR(TMCM_3351 tmcm_3351, byte motorNumber, HashMap<String, Object> state, State stateFunction) {
         this.usb = tmcm_3351.getUsb();
         this.address = tmcm_3351.getAddress();
         this.motor = motorNumber;
+        this.state = state;
+        this.stateFunction = stateFunction;
+        constantsClass = tmcm_3351.getConstantsClass();
+        initState();
     }
 
+    /**
+     * Method that initializes the state of the specific motor
+     */
+    void initState() {
+        state.put("parameters", new HashMap<String, Integer>());
+    }
 
     /**
      * Method that initializes the module with given parameters
@@ -35,18 +97,21 @@ public class TMCM_3351_MOTOR {
      * @throws ConfigurationException if there is an error setting the parameters
      */
     public void setParameters(Map<String, Integer> params) throws ConfigurationException {
+        for (Map.Entry<String, Integer> entry : params.entrySet()) {
+            setParameter(entry.getKey(), entry.getValue());
+        }
+    }
+
+    public void setParameter(String value, int parameter) throws ConfigurationException {
         try {
-            Class<?> constantsClass = Class.forName("com.lucaf.robotic_core.TRINAMIC.TMCM_3351.Constants");
-            for (Map.Entry<String, Integer> entry : params.entrySet()) {
-                Field field = constantsClass.getField(entry.getKey());
-                setParameter((byte) field.get(null), entry.getValue());
-            }
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            Field field = constantsClass.getField(value);
+            setParameter((byte) field.get(null), parameter);
+            HashMap<String, Integer> globalParameters = (HashMap<String, Integer>) state.get("parameters");
+            globalParameters.put(value, parameter);
+            stateFunction.notifyStateChange();
         } catch (NoSuchFieldException | IllegalAccessException | DeviceCommunicationException e) {
             throw new ConfigurationException("Parameter not found:" + e.getMessage());
         }
-
     }
 
     /**
@@ -66,6 +131,7 @@ public class TMCM_3351_MOTOR {
             throw new DeviceCommunicationException("Error setting parameter");
         }
     }
+
     /**
      * Method that rotates the motor to the right
      *
@@ -195,12 +261,20 @@ public class TMCM_3351_MOTOR {
      * @param position the position to move to
      * @throws DeviceCommunicationException if there is an error moving the motor
      */
-    public void moveToRelativePositionAndWait(int position) throws DeviceCommunicationException {
-        waitStatusUnlock();
-        isMoving.set(true);
-        this.position.set(this.position.get() + position);
-        MVP_till_end(MVP_REL, position);
-        isMoving.set(false);
+    public Future<Boolean> moveToRelativePositionAndWait(int position) {
+        return executorService.submit(() -> {
+            try {
+                waitStatusUnlock();
+                isMoving.set(true);
+                this.position.set(this.position.get() + position);
+                MVP_till_end(MVP_REL, position);
+                isMoving.set(false);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        });
+
     }
 
     /**
@@ -209,11 +283,19 @@ public class TMCM_3351_MOTOR {
      * @param position the position to move to
      * @throws DeviceCommunicationException if there is an error moving the motor
      */
-    public void moveToAbsolutePositionAndWait(int position) throws DeviceCommunicationException {
-        waitStatusUnlock();
-        isMoving.set(true);
-        this.position.set(position);
-        MVP_till_end(MVP_ABS, position);
-        isMoving.set(false);
+    public Future<Boolean> moveToAbsolutePositionAndWait(int position) {
+        return executorService.submit(() -> {
+            try {
+                waitStatusUnlock();
+                isMoving.set(true);
+                this.position.set(position);
+                MVP_till_end(MVP_ABS, position);
+                isMoving.set(false);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        });
+
     }
 }

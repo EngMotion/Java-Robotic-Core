@@ -14,12 +14,21 @@ public class StatusMode {
         return (path & 0x0F) + 0x10;
     }
 
+    /**
+     * Homing mode constant
+     */
     @Getter
     static final int HOMING = 0x20;
 
+    /**
+     * Set current position as zero constant
+     */
     @Getter
     static final int SET_CURRENT_POSITION_AS_ZERO = 0x21;
 
+    /**
+     * Emergency stop constant
+     */
     @Getter
     static final int EMERGENCY_STOP = 0x40;
 
@@ -33,10 +42,15 @@ public class StatusMode {
     int STATUS_CODE = 0x00;
 
 
+    /**
+     * Constructor of the class
+     * @param mode the mode
+     */
     public StatusMode(int mode){
         PATH_MODE = (byte) (mode & 0x000F);
         STATUS_CODE = (mode & 0xFFF0) >> 4;
     }
+
 
     public boolean isComplete(){
         return STATUS_CODE == 0x000;
