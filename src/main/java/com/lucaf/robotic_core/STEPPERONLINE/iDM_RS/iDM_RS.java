@@ -15,6 +15,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import static com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.Constants.*;
+
+/**
+ * Class that represents the iDM_RS StepperOnline device
+ */
 public class iDM_RS {
 
     /**
@@ -67,12 +71,19 @@ public class iDM_RS {
         initState();
     }
 
+    /**
+     * Method to set the ramp mode. Refer to the datasheet for more information
+     * @param rampMode the ramp mode number
+     */
     public void setRampMode(byte rampMode) {
         this.rampMode = rampMode;
         state.put("ramp_mode", rampMode);
         stateFunction.notifyStateChange();
     }
 
+    /**
+     * Method that initializes the device state
+     */
     private void initState(){
         state.put("speed", 0);
         state.put("acceleration", 0);
@@ -126,8 +137,10 @@ public class iDM_RS {
      */
     public void setSpeed(int speed) throws DeviceCommunicationException {
         if (speed < 0) speed = 0;
-        if (speed==0) state.put("is_moving", false);
-        else state.put("is_moving", true);
+        if (controlMode.getCONTROL_MODE()==2){
+            if (speed==0) state.put("is_moving", false);
+            else state.put("is_moving", true);
+        }
         stateFunction.notifyStateChange();
         writeRegister(VELOCITY, speed);
         state.put("speed", speed);

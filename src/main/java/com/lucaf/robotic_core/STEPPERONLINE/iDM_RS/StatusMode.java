@@ -2,7 +2,9 @@ package com.lucaf.robotic_core.STEPPERONLINE.iDM_RS;
 
 import lombok.Getter;
 
-import java.util.Map;
+/**
+ * Class that represents the status of a motor.
+ */
 @Getter
 public class StatusMode {
     /**
@@ -51,23 +53,34 @@ public class StatusMode {
         STATUS_CODE = (mode & 0xFFF0) >> 4;
     }
 
-
+    /**
+     * Returns if the motor is ready
+     * @return if the motor is ready
+     */
     public boolean isComplete(){
         return STATUS_CODE == 0x000;
     }
 
+    /**
+     * Returns if the motor is not responding
+     * @return if the motor is not responding
+     */
     public boolean isNotResponding(){
         return STATUS_CODE == 0x001 || STATUS_CODE == 0x002 || STATUS_CODE == 0x003;
     }
 
+    /**
+     * Returns if the motor is running
+     * @return if the motor is running
+     */
     public boolean isRunning(){
         return STATUS_CODE == 0x010;
     }
 
-    public boolean isCompleated(){
-        return STATUS_CODE == 0x020;
-    }
-
+    /**
+     * Return the status of the motor in a human readable format
+     * @return the status of the motor in a human readable format
+     */
     @Override
     public String toString() {
         return "StatusMode{" +

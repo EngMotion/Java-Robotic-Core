@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.util.Arrays;
 
+/**
+ * Class that represents the control mode of a motor.
+ */
 @Getter
 @Setter
 public class ControlMode {
