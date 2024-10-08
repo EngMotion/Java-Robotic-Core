@@ -259,7 +259,6 @@ public class TMCM_3351_MOTOR {
      * Method that moves the motor to the given position and waits for the movement to end
      *
      * @param position the position to move to
-     * @throws DeviceCommunicationException if there is an error moving the motor
      */
     public Future<Boolean> moveToRelativePositionAndWait(int position) {
         return executorService.submit(() -> {
@@ -281,7 +280,6 @@ public class TMCM_3351_MOTOR {
      * Method that moves the motor to the given position and waits for the movement to end
      *
      * @param position the position to move to
-     * @throws DeviceCommunicationException if there is an error moving the motor
      */
     public Future<Boolean> moveToAbsolutePositionAndWait(int position) {
         return executorService.submit(() -> {

@@ -285,7 +285,6 @@ public class TMCM_1140 {
      * Method to enable or disable the feedback position
      *
      * @param enable true to enable, false to disable
-     * @throws DeviceCommunicationException if there is an error getting the parameter
      */
     public void setFeedbackPosition(boolean enable) {
         if (enable && !ENABLE_FEEDBACK_POSITION) {

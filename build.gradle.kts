@@ -1,3 +1,4 @@
+
 plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
@@ -43,4 +44,8 @@ tasks {
     shadowJar {
         archiveBaseName.set("Robotic-Core.jar")
     }
+    javadoc {
+        destinationDir = file("javadoc")
+    }
+
 }

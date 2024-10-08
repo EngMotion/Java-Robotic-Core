@@ -202,7 +202,7 @@ public class RGI100_22 {
     /**
      * Initializes the grip and the rotation
      *
-     * @throws InterruptedException if the thread is interrupted
+     * @throws DeviceCommunicationException if the thread is interrupted
      */
     public void initialize() throws DeviceCommunicationException {
         try {
