@@ -276,7 +276,7 @@ public class Constants {
     public static final byte PARAM_ENCODER_RESOLUTION = (byte) 210;
 
     /**
-     * Encoder Direction: 211
+     * Encoder Deviation: 211
      */
     public static final byte PARAM_ENCODER_MAX_DEVIATION = (byte) 212;
 

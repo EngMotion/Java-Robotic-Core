@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.github.EngMotion"
-version = "1.3.2"
+version = "1.3.3"
 
 repositories {
     mavenCentral()
@@ -41,9 +41,6 @@ publishing() {
 }
 
 tasks {
-    shadowJar {
-        archiveBaseName.set("Robotic-Core.jar")
-    }
     javadoc {
         destinationDir = file("build/docs/javadoc")
     }
