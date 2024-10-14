@@ -1,2 +1,2 @@
-rootProject.name = "Java Robotic Core"
+rootProject.name = "java_robotic_core"
 
