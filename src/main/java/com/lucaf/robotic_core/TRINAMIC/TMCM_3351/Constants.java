@@ -286,6 +286,11 @@ public class Constants {
     public static final byte PARAM_VELOCITY_MAX_DEVIATION = (byte) 213;
 
     /**
+     * Power Down Delay: 214
+     */
+    public static final byte PARAM_POWER_DOWN_DELAY  = (byte) 214;
+
+    /**
      * Reverse Shaft: 251
      */
     public static final byte PARAM_REVERSE_SHAFT = (byte) 251;
