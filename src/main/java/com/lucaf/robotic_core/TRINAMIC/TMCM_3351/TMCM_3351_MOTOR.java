@@ -119,7 +119,7 @@ public class TMCM_3351_MOTOR {
             globalParameters.put(value, parameter);
             stateFunction.notifyStateChange();
         } catch (NoSuchFieldException | IllegalAccessException | DeviceCommunicationException e) {
-            throw new ConfigurationException("Parameter not found:" + e.getMessage());
+            throw new ConfigurationException("Parameter not found: " + e.getMessage());
         }
     }
 
@@ -214,7 +214,7 @@ public class TMCM_3351_MOTOR {
      * @return the value of the parameter
      * @throws DeviceCommunicationException if there is an error getting the parameter
      */
-    private int getParameter(byte parameter) throws DeviceCommunicationException {
+    public int getParameter(byte parameter) throws DeviceCommunicationException {
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(GAP);
         command.setType(parameter);

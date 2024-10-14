@@ -71,10 +71,11 @@ public class USB implements SerialPortEventListener {
             serialPort.writeBytes(command.getFrame());
             latch.await(1000, TimeUnit.MILLISECONDS);
             if (lastResponse == null) {
-                throw new DeviceCommunicationException("No response");
+                //throw new DeviceCommunicationException("No response");
+                return null;
             }
             if (!lastResponse.isOk()) {
-                throw new DeviceCommunicationException("Error setting parameter: " + lastResponse.toString());
+                throw new DeviceCommunicationException("Response is not OK: " + lastResponse.toString());
             }
             return lastResponse;
         } catch (SerialPortException | InterruptedException e) {
@@ -92,9 +93,7 @@ public class USB implements SerialPortEventListener {
             if (serialPortEvent.getEventValue() > 0) {
                 try {
                     byte[] frames = serialPort.readBytes(serialPortEvent.getEventValue());
-                    byte[] data = new byte[9];
-                    System.arraycopy(frames, frames.length-9, data, 0, 9);
-                    lastResponse = new TMCLCommand();
+                    lastResponse = new TMCLCommand(frames);
                     latch.countDown();
                 } catch (SerialPortException e) {
                     e.printStackTrace();

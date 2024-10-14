@@ -64,6 +64,7 @@ public class TMCLCommand {
             Map.entry(5, "Configuration EEPROM locked"),
             Map.entry(6, "Command not available"),
             Map.entry(100, "No error"),
+            Map.entry(0, "Boh"),
             Map.entry(101, "Command loaded")
     );
 
@@ -112,7 +113,7 @@ public class TMCLCommand {
      * @return true if the response is ok
      */
     public boolean isOk() {
-        return STATUS == 100;
+        return STATUS == 100 || STATUS == 0;
     }
 
     /**
