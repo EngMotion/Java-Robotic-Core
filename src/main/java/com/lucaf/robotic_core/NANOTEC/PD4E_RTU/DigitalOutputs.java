@@ -1,10 +1,17 @@
 package com.lucaf.robotic_core.NANOTEC.PD4E_RTU;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Class that represents the control word of the PD4-E-RTU
+ */
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class DigitalOutputs {
 
     /**
@@ -32,6 +39,10 @@ public class DigitalOutputs {
      */
     private boolean output4 = false;
 
+    /**
+     * Constructor of the class
+     * @param n the integer that represents the digital outputs
+     */
     public DigitalOutputs(int n){
         brake = (n & 1) == 1;
         output1 = (n & (1 << 16)) == (1 << 16);
@@ -40,9 +51,10 @@ public class DigitalOutputs {
         output4 = (n & (1 << 19)) == (1 << 19);
     }
 
-    public DigitalOutputs(){
-    }
-
+    /**
+     * Method that returns the integer that represents the digital outputs
+     * @return
+     */
     public int toInt(){
         int n = 0;
         if(brake) n |= 1;
@@ -53,6 +65,10 @@ public class DigitalOutputs {
         return n;
     }
 
+    /**
+     * Method that returns the string representation of the digital outputs
+     * @return the string representation of the digital outputs
+     */
     @Override
     public String toString(){
         return "Brake: " + brake + ", Output1: " + output1 + ", Output2: " + output2 + ", Output3: " + output3 + ", Output4: " + output4;

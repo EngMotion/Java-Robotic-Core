@@ -1,5 +1,15 @@
 package com.lucaf.robotic_core.NANOTEC.PD4E_RTU;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+/**
+ * Class that represents the status word of the PD4-E-RTU
+ */
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class StatusWord {
     /**
      * Bit 0: Ready to switch on
@@ -79,6 +89,9 @@ public class StatusWord {
      */
     boolean closedLoopEnabled = false;
 
+    /**
+     * States of the drive
+     */
     public static class States {
         public static final int NOT_READY_TO_SWITCH_ON = 0;
         public static final int SWITCH_ON_DISABLED = 1;
@@ -91,6 +104,29 @@ public class StatusWord {
         public static final int OTHER = -1;
     }
 
+    /**
+     * Constructor of the class
+     * @param statusWord the integer that represents the status word
+     */
+    public StatusWord(int statusWord) {
+        readyToSwitchOn = (statusWord & 1) == 1;
+        switchedOn = (statusWord & 1 << 1) == 1 << 1;
+        operationEnabled = (statusWord & 1 << 2) == 1 << 2;
+        fault = (statusWord & 1 << 3) == 1 << 3;
+        voltageEnabled = (statusWord & 1 << 4) == 1 << 4;
+        quickStop = (statusWord & 1 << 5) == 1 << 5;
+        switchOnDisabled = (statusWord & 1 << 6) == 1 << 6;
+        warning = (statusWord & 1 << 7) == 1 << 7;
+        sync = (statusWord & 1 << 8) == 1 << 8;
+        targetReached = (statusWord & 1 << 10) == 1 << 10;
+        internalLimitActive = (statusWord & 1 << 11) == 1 << 11;
+        closedLoopEnabled = (statusWord & 1 << 13) == 1 << 13;
+    }
+
+    /**
+     * Method that returns the integer that represents the status word
+     * @return the integer that represents the status word
+     */
     public int toInt(){
         int statusWord = 0;
         statusWord |= readyToSwitchOn ? 1 : 0;
@@ -108,6 +144,10 @@ public class StatusWord {
         return statusWord;
     }
 
+    /**
+     * Method that returns the state code of the drive
+     * @return the state code of the drive
+     */
     public int getStateCode(){
         if (!readyToSwitchOn && !switchedOn && !operationEnabled && !fault && !switchOnDisabled) return States.NOT_READY_TO_SWITCH_ON;
         if (!readyToSwitchOn && !switchedOn && !operationEnabled && !fault && switchOnDisabled) return States.SWITCH_ON_DISABLED;
@@ -120,6 +160,10 @@ public class StatusWord {
         return States.OTHER;
     }
 
+    /**
+     * Method that returns the string representation of the class
+     * @return the string representation of the class
+     */
     @Override
     public String toString(){
         return "StatusWord{" +
@@ -138,37 +182,6 @@ public class StatusWord {
                 "}";
     }
 
-    public StatusWord(int statusWord) {
-        readyToSwitchOn = (statusWord & 1) == 1;
-        switchedOn = (statusWord & 1 << 1) == 1 << 1;
-        operationEnabled = (statusWord & 1 << 2) == 1 << 2;
-        fault = (statusWord & 1 << 3) == 1 << 3;
-        voltageEnabled = (statusWord & 1 << 4) == 1 << 4;
-        quickStop = (statusWord & 1 << 5) == 1 << 5;
-        switchOnDisabled = (statusWord & 1 << 6) == 1 << 6;
-        warning = (statusWord & 1 << 7) == 1 << 7;
-        sync = (statusWord & 1 << 8) == 1 << 8;
-        targetReached = (statusWord & 1 << 10) == 1 << 10;
-        internalLimitActive = (statusWord & 1 << 11) == 1 << 11;
-        closedLoopEnabled = (statusWord & 1 << 13) == 1 << 13;
-    }
 
-    public StatusWord(boolean readyToSwitchOn, boolean switchedOn, boolean operationEnabled, boolean fault, boolean voltageEnabled, boolean quickStop, boolean switchOnDisabled, boolean warning, boolean sync, boolean targetReached, boolean internalLimitActive, boolean closedLoopEnabled) {
-        this.readyToSwitchOn = readyToSwitchOn;
-        this.switchedOn = switchedOn;
-        this.operationEnabled = operationEnabled;
-        this.fault = fault;
-        this.voltageEnabled = voltageEnabled;
-        this.quickStop = quickStop;
-        this.switchOnDisabled = switchOnDisabled;
-        this.warning = warning;
-        this.sync = sync;
-        this.targetReached = targetReached;
-        this.internalLimitActive = internalLimitActive;
-        this.closedLoopEnabled = closedLoopEnabled;
-    }
-
-    public StatusWord() {
-    }
 
 }

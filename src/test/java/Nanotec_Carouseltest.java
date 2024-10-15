@@ -1,7 +1,10 @@
 import com.lucaf.robotic_core.NANOTEC.PD4E_RTU.Constants;
 import com.lucaf.robotic_core.NANOTEC.PD4E_RTU.PD4E;
+import com.lucaf.robotic_core.State;
 import com.nanotec.nanolib.*;
 import com.nanotec.nanolib.helper.NanolibHelper;
+
+import java.util.HashMap;
 
 public class Nanotec_Carouseltest {
     public static void main(String[] args) {
@@ -34,9 +37,14 @@ public class Nanotec_Carouseltest {
             DeviceId deviceId = new DeviceId(busHwId, 1, "Carosello");
             DeviceHandle deviceHandle = nanolibHelper.createDevice(deviceId);
             nanolibHelper.connectDevice(deviceHandle);
-            PD4E pd4e = new PD4E(nanolibHelper, deviceHandle);
+            PD4E pd4e = new PD4E(nanolibHelper, deviceHandle, new HashMap<>(), new State() {
+                @Override
+                public void notifyStateChange() {
+
+                }
+            });
             pd4e.setBrakeAddress(1);
-            pd4e.start(Constants.OperationMode.PROFILE_POSITION,0/*21*/);
+            pd4e.start(Constants.OperationMode.PROFILE_POSITION,21);
 
 
             /*for (int i = 0; i < 10; i++) {

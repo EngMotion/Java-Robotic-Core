@@ -117,4 +117,7 @@ public class Constants {
         public static final int INDEX_SWITCH_COUNTER_CLOCKWISE = 20;
     }
     public static final Pair<OdIndex, Integer> HOME_METHOD = new Pair<>(new OdIndex(0x6098, (short) 0x00),8);
+    public static final Pair<OdIndex, Integer> HOMING_SPEED = new Pair<>(new OdIndex(0x6099, (short) 0x01),32);
+    public static final Pair<OdIndex, Integer> HOMING_ACCELERATION = new Pair<>(new OdIndex(0x609A, (short) 0x00),32);
+
 }
