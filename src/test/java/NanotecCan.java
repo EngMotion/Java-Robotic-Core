@@ -1,6 +1,9 @@
 import com.lucaf.robotic_core.NANOTEC.PD4E_RTU.PD4E;
+import com.lucaf.robotic_core.State;
 import com.nanotec.nanolib.*;
 import com.nanotec.nanolib.helper.NanolibHelper;
+
+import java.util.HashMap;
 
 public class NanotecCan {
     public static void main(String[] args){
@@ -35,7 +38,12 @@ public class NanotecCan {
             DeviceHandle deviceHandle = nanolibHelper.createDevice(deviceId);
             System.out.println(deviceHandle.toString());
             nanolibHelper.connectDevice(deviceHandle);
-            PD4E pd4e = new PD4E(nanolibHelper, deviceHandle);
+            PD4E pd4e = new PD4E(nanolibHelper, deviceHandle, new HashMap<>(), new State() {
+                @Override
+                public void notifyStateChange() {
+
+                }
+            });
         }catch (Exception e){
             e.printStackTrace();
         }
