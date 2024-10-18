@@ -65,10 +65,10 @@ public class USB implements SerialPortEventListener {
         latch = new CountDownLatch(1);
         try {
             serialPort.purgePort(SerialPort.PURGE_RXCLEAR);
+            serialPort.purgePort(SerialPort.PURGE_TXCLEAR);
             expected = command.getFrame();
-            serialPort.writeBytes(expected);
             lastResponse = null;
-            serialPort.writeBytes(command.getFrame());
+            serialPort.writeBytes(expected);
             latch.await(1000, TimeUnit.MILLISECONDS);
             if (lastResponse == null) {
                 //throw new DeviceCommunicationException("No response");

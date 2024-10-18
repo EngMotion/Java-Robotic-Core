@@ -303,17 +303,17 @@ public class Constants {
     /**
      * Movement absolute: 1
      */
-    public static final byte MVP_ABS = 1;
+    public static final byte MVP_ABS = 0;
 
     /**
      * Movement relative: 2
      */
-    public static final byte MVP_REL = 2;
+    public static final byte MVP_REL = 1;
 
     /**
      * Movement coordinate: 3
      */
-    public static final byte MVP_COORD = 3;
+    public static final byte MVP_COORD = 2;
 
     /**
      * Rotate right: 1
