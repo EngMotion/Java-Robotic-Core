@@ -4,10 +4,11 @@ import com.ghgande.j2mod.modbus.util.SerialParameters;
 import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.StatusMode;
 import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.iDM_RS;
 import com.lucaf.robotic_core.State;
+import com.kern.scale.SerialCommunication;
 
 import java.util.HashMap;
 
-public class StepperOnline {
+public class TestBilancia {
     public static void main(String[] args) {
 
         try {

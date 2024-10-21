@@ -8,11 +8,13 @@ import jssc.SerialPortException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
 import static com.lucaf.robotic_core.TRINAMIC.TMCM_3351.Constants.*;
 public class Trinamic3351 {
     public static void main(String[] args) {
         try {
-            USB usb = new USB("COM4");
+            USB usb = new USB("COM7");
             State state = new State() {
                 @Override
                 public void notifyStateChange() {
@@ -30,14 +32,12 @@ public class Trinamic3351 {
                             Map.entry("PARAM_REFERENCE_SWITCH_SPEED", 3000),
                             Map.entry("PARAM_REFERENCE_SEARCH_SPEED", 36000),
                             Map.entry("PARAM_POWER_DOWN_DELAY", 5),
-                            Map.entry("PARAM_REVERSE_SHAFT", 0),
-                            Map.entry("PARAM_STALLGUARD_FILTER_ENABLE", 0),
-                            Map.entry("PARAM_STALLGUARD_THRESHOLD", 5),
                             Map.entry("PARAM_STOP_ON_STALL", 0),
-                            Map.entry("PARAM_ENCODER_POSITION", 0),
                             Map.entry("PARAM_ENCODER_RESOLUTION", 40000),
                             Map.entry("PARAM_ENCODER_MAX_DEVIATION", 0),
-                            Map.entry("PARAM_ACTUAL_POSITION", 0)
+                            Map.entry("PARAM_ACTUAL_POSITION", 0),
+                            Map.entry("PARAM_CL_MODE",1),
+                            Map.entry("PARAM_RELATIVE_POSITIONING_OPTION",2)
                     ));
 
             TMCM_3351_MOTOR motor1 = tmcm_3351.getMotor((byte) 0x01, new HashMap<>());
@@ -55,6 +55,7 @@ public class Trinamic3351 {
             motor0.rotateRight(0);
             motor1.rotateRight(0);
             motor2.rotateRight(0);
+            motor0.moveToRelativePositionAndWait(2).get();
             System.out.println(motor0.getParameter(PARAM_ENCODER_POSITION));
         } catch (SerialPortException e) {
             throw new RuntimeException(e);
@@ -63,6 +64,8 @@ public class Trinamic3351 {
         } catch (DeviceCommunicationException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
     }

@@ -227,8 +227,8 @@ public class iDM_RS {
             state.put("position", position);
         }
         stateFunction.notifyStateChange();
-        int position_high = (int) (position >> 32);
-        int position_low = (int) (position & 0xFFFFFFFF);
+        int position_high = (int) (position >> 16);
+        int position_low = (int) (position & 0xFFFF);
         writeRegister(TARGET_POSITION_HIGH, position_high);
         writeRegister(TARGET_POSITION_LOW, position_low);
         writeRegister(STATUS_MODE, StatusMode.getSegmentPositioning((byte) 0x00));
@@ -297,7 +297,7 @@ public class iDM_RS {
      * @param position the position to move to
      * @return a future with the result of the operation
      */
-    public Future<Boolean> moveToPostionAndWait(int position){
+    public Future<Boolean> moveToPositionAndWait(int position){
         return executorService.submit(() -> {
             try {
                 state.put("is_moving", true);

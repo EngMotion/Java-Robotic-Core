@@ -211,6 +211,13 @@ public class Constants {
     public static final byte[] PEAK_CURRENT = new byte[]{0x01, (byte) 0x91};
 
     /**
+     * Standby Current: 0x01D1
+     * Value:
+     * Type: Read/Write
+     */
+    public static final byte[] STANDBY_CURRENT = new byte[]{0x01, (byte) 0xD1};
+
+    /**
      * Motor Status: 0x1003
      * Value: Bit 0: Fault; Bit 1: Enabled; Bit 2: Running; Bit 4: Completed; Bit 5: Path completed; Bit 6: Homing completed
      * Managed by the MotorStatus class
