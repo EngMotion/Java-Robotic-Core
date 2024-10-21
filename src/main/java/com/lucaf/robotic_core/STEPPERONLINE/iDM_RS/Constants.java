@@ -4,8 +4,7 @@ package com.lucaf.robotic_core.STEPPERONLINE.iDM_RS;
  * Constants class containing the addresses of the registers of the iDM_RS controller.
  */
 public class Constants {
-
-    /**
+     /**
      * Motor Status: 0x1003
      * Value: Bit 0: Fault; Bit 1: Enabled; Bit 2: Running; Bit 4: Completed; Bit 5: Path completed; Bit 6: Homing completed
      * Managed by the MotorStatus class

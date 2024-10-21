@@ -101,6 +101,7 @@ public class TMCM_3351_MOTOR {
      */
     public void setParameters(Map<String, Integer> params) throws ConfigurationException {
         for (Map.Entry<String, Integer> entry : params.entrySet()) {
+            System.out.println(entry.getKey());
             setParameter(entry.getKey(), entry.getValue());
         }
     }
@@ -131,6 +132,7 @@ public class TMCM_3351_MOTOR {
      * @throws DeviceCommunicationException if there is an error setting the parameter
      */
     private void setParameter(byte parameter, int value) throws DeviceCommunicationException {
+        System.out.println(parameter + " = " + value);
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(SAP);
         command.setValue(value);

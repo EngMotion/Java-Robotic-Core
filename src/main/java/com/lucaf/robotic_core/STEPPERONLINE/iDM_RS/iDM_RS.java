@@ -297,7 +297,7 @@ public class iDM_RS {
      * @param position the position to move to
      * @return a future with the result of the operation
      */
-    public Future<Boolean> moveToPostionAndWait(int position){
+    public Future<Boolean> moveToPositionAndWait(int position){
         return executorService.submit(() -> {
             try {
                 state.put("is_moving", true);

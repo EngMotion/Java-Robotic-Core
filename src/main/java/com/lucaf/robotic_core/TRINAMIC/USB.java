@@ -65,6 +65,7 @@ public class USB implements SerialPortEventListener {
         latch = new CountDownLatch(1);
         try {
             serialPort.purgePort(SerialPort.PURGE_RXCLEAR);
+            serialPort.purgePort(SerialPort.PURGE_TXCLEAR);
             expected = command.getFrame();
             lastResponse = null;
             serialPort.writeBytes(expected);
@@ -93,7 +94,9 @@ public class USB implements SerialPortEventListener {
                 try {
                     byte[] frames = serialPort.readBytes(serialPortEvent.getEventValue());
                     lastResponse = new TMCLCommand(frames);
+                    System.out.println(lastResponse.toString());
                     latch.countDown();
+
                 } catch (SerialPortException e) {
                     e.printStackTrace();
                 }
