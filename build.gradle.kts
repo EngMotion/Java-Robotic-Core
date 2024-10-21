@@ -1,4 +1,3 @@
-
 plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
@@ -44,6 +43,9 @@ publishing() {
 tasks {
     javadoc {
         destinationDir = file("build/docs/javadoc")
+        options {
+            (this as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
+            (this as CoreJavadocOptions).addStringOption("tag", "noinspection:a:\"\"")
+        }
     }
-
 }
