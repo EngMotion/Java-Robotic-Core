@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.github.EngMotion"
-version = "1.3.6"
+version = "1.3.7"
 
 repositories {
     mavenCentral()
@@ -20,7 +20,8 @@ dependencies {
     implementation("com.ghgande:j2mod:3.2.1")
     compileOnly("org.projectlombok:lombok:1.18.34")
     annotationProcessor("org.projectlombok:lombok:1.18.34")
-
+    implementation("com.intellij:forms_rt:7.0.3")
+    implementation("com.jgoodies:forms:1.1-preview")
 }
 
 tasks.test {

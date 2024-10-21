@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.lucaf.robotic_core.TRINAMIC.TMCM_3351.Constants.*;
 
@@ -44,11 +45,6 @@ public class TMCM_3351_MOTOR {
     AtomicBoolean isMoving = new AtomicBoolean(false);
 
     /**
-     * The position of the motor. Not used in velocity mode
-     */
-    AtomicInteger position = new AtomicInteger(0);
-
-    /**
      * The state of the device
      */
     private final HashMap<String, Object> state;
@@ -67,6 +63,21 @@ public class TMCM_3351_MOTOR {
      * The executor service for async operations
      */
     final ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    /**
+     * Last verified position
+     */
+    AtomicInteger currentPos = new AtomicInteger(0);
+
+    /**
+     * Target position sent to the device
+     */
+    AtomicInteger targetPos = new AtomicInteger(0);
+
+    /**
+     * The device is initialized
+     */
+    AtomicBoolean initialized = new AtomicBoolean(false);
 
     /**
      * Constructor of the class
@@ -90,7 +101,11 @@ public class TMCM_3351_MOTOR {
      * Method that initializes the state of the specific motor
      */
     void initState() {
-        state.put("parameters", new HashMap<String, Integer>());
+        state.put("current_position", currentPos);
+        state.put("target_position", targetPos);
+        state.put("is_moving", isMoving);
+        state.put("initialized", initialized);
+        stateFunction.notifyStateChange();
     }
 
     /**
@@ -101,14 +116,14 @@ public class TMCM_3351_MOTOR {
      */
     public void setParameters(Map<String, Integer> params) throws ConfigurationException {
         for (Map.Entry<String, Integer> entry : params.entrySet()) {
-            System.out.println(entry.getKey());
             setParameter(entry.getKey(), entry.getValue());
         }
     }
 
     /**
      * Method that sets a parameter
-     * @param value the value of the parameter
+     *
+     * @param value     the value of the parameter
      * @param parameter the parameter to set as a string
      * @throws ConfigurationException if there is an error setting the parameter
      */
@@ -116,9 +131,6 @@ public class TMCM_3351_MOTOR {
         try {
             Field field = constantsClass.getField(value);
             setParameter((byte) field.get(null), parameter);
-            HashMap<String, Integer> globalParameters = (HashMap<String, Integer>) state.get("parameters");
-            globalParameters.put(value, parameter);
-            stateFunction.notifyStateChange();
         } catch (NoSuchFieldException | IllegalAccessException | DeviceCommunicationException e) {
             throw new ConfigurationException("Parameter not found: " + e.getMessage());
         }
@@ -132,7 +144,6 @@ public class TMCM_3351_MOTOR {
      * @throws DeviceCommunicationException if there is an error setting the parameter
      */
     private void setParameter(byte parameter, int value) throws DeviceCommunicationException {
-        System.out.println(parameter + " = " + value);
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(SAP);
         command.setValue(value);
@@ -150,6 +161,12 @@ public class TMCM_3351_MOTOR {
      * @throws DeviceCommunicationException if there is an error rotating the motor
      */
     public void rotateRight(int velocity) throws DeviceCommunicationException {
+        if (velocity < 0){
+            rotateLeft(-velocity);
+            return;
+        }
+        isMoving.set(velocity != 0);
+        stateFunction.notifyStateChange();
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(ROR);
         command.setValue(velocity);
@@ -163,6 +180,12 @@ public class TMCM_3351_MOTOR {
      * @throws DeviceCommunicationException if there is an error rotating the motor
      */
     public void rotateLeft(int velocity) throws DeviceCommunicationException {
+        if (velocity < 0){
+            rotateRight(-velocity);
+            return;
+        }
+        isMoving.set(velocity != 0);
+        stateFunction.notifyStateChange();
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(ROL);
         command.setValue(velocity);
@@ -175,6 +198,8 @@ public class TMCM_3351_MOTOR {
      * @throws DeviceCommunicationException if there is an error stopping the motor
      */
     private void stopMotor() throws DeviceCommunicationException {
+        isMoving.set(false);
+        stateFunction.notifyStateChange();
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(MST);
         usb.write(command);
@@ -191,7 +216,8 @@ public class TMCM_3351_MOTOR {
         command.setCommand(RFS);
         command.setType(mode);
         usb.write(command);
-        position.set(0);
+        targetPos.set(0);
+        currentPos.set(0);
     }
 
     /**
@@ -276,9 +302,12 @@ public class TMCM_3351_MOTOR {
             try {
                 waitStatusUnlock();
                 isMoving.set(true);
-                this.position.set(this.position.get() + position);
+                targetPos.set(currentPos.get() + position);
+                stateFunction.notifyStateChange();
                 MVP_till_end(MVP_REL, position);
                 isMoving.set(false);
+                currentPos.set(targetPos.get());
+                stateFunction.notifyStateChange();
                 return true;
             } catch (Exception e) {
                 return false;
@@ -297,9 +326,12 @@ public class TMCM_3351_MOTOR {
             try {
                 waitStatusUnlock();
                 isMoving.set(true);
-                this.position.set(position);
+                targetPos.set(position);
+                stateFunction.notifyStateChange();
                 MVP_till_end(MVP_ABS, position);
                 isMoving.set(false);
+                currentPos.set(targetPos.get());
+                stateFunction.notifyStateChange();
                 return true;
             } catch (Exception e) {
                 return false;

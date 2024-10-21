@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.lucaf.robotic_core.NANOTEC.PD4E_RTU.Constants.*;
 
@@ -53,12 +55,7 @@ public class PD4E {
     /**
      * The control word of the device
      */
-    private ControlWord operationControl= new ControlWord();
-
-    /**
-     * If the device is enabled
-     */
-    private boolean enabled = false;
+    private ControlWord operationControl = new ControlWord();
 
     /**
      * The position of the device
@@ -71,10 +68,31 @@ public class PD4E {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
+     * Current verified position
+     */
+    AtomicInteger currentPos = new AtomicInteger(0);
+
+    /**
+     * Last target position command
+     */
+    AtomicInteger targetPos = new AtomicInteger(0);
+
+    /**
+     * IsMoving flag
+     */
+    AtomicBoolean isMoving = new AtomicBoolean(false);
+
+    /**
+     * Initialized flag
+     */
+    AtomicBoolean initialized = new AtomicBoolean(false);
+
+    /**
      * Constructor of the class
+     *
      * @param nanolibHelper Native methods helper
-     * @param deviceHandle The device handle
-     * @param state The state of the device
+     * @param deviceHandle  The device handle
+     * @param state         The state of the device
      * @param stateFunction The state class
      */
     public PD4E(NanolibHelper nanolibHelper, DeviceHandle deviceHandle, HashMap<String, Object> state, State stateFunction) {
@@ -82,12 +100,24 @@ public class PD4E {
         this.deviceHandle = deviceHandle;
         this.state = state;
         this.stateFunction = stateFunction;
+        initState();
+    }
+
+    /**
+     * Method that initializes the state of the device
+     */
+    private void initState() {
+        state.put("current_position", currentPos);
+        state.put("target_position", targetPos);
+        state.put("is_moving", isMoving);
+        state.put("initialized", initialized);
     }
 
     /**
      * Method that writes a register to the device
+     *
      * @param register The register to write
-     * @param value The value to write
+     * @param value    The value to write
      * @throws NanolibHelper.NanolibException if the register is not found or there is communication error
      */
     private void writeRegister(Pair<OdIndex, Integer> register, int value) throws NanolibHelper.NanolibException {
@@ -96,6 +126,7 @@ public class PD4E {
 
     /**
      * Method that reads a register from the device
+     *
      * @param register The register to read
      * @return The value of the register
      * @throws NanolibHelper.NanolibException if the register is not found or there is communication error
@@ -106,6 +137,7 @@ public class PD4E {
 
     /**
      * Method that reads the status word and cast it to the StatusWord helper class
+     *
      * @return The status word
      * @throws DeviceCommunicationException if there is an error reading the status word
      */
@@ -120,6 +152,7 @@ public class PD4E {
 
     /**
      * Method that sets the brake address
+     *
      * @param address The address of the brake. Between 1 and 4. Represents the DIO output to control the brake
      */
     public void setBrakeAddress(int address) {
@@ -129,6 +162,7 @@ public class PD4E {
 
     /**
      * Method that sets the brake status
+     *
      * @param active true to activate the brake, false to deactivate
      * @throws DeviceCommunicationException if there is an error setting the brake status
      */
@@ -139,8 +173,9 @@ public class PD4E {
 
     /**
      * Method that sets the value of a digital output
+     *
      * @param output The output to set. Between 1 and 4
-     * @param value The value of the output. True for high, false for low
+     * @param value  The value of the output. True for high, false for low
      * @throws DeviceCommunicationException if there is an error setting the digital output
      */
     public void setDigitalOutput(int output, boolean value) throws DeviceCommunicationException {
@@ -169,7 +204,8 @@ public class PD4E {
 
     /**
      * Method that sets the control word and waits for acknowledgment from device
-     * @param controlWord The control word to set
+     *
+     * @param controlWord     The control word to set
      * @param statusWordCheck The status word check interface that determines when the acknowledgment is received
      * @throws NanolibHelper.NanolibException if there is an error setting the control word
      */
@@ -185,6 +221,7 @@ public class PD4E {
 
     /**
      * Method that sets the homing speed of the device
+     *
      * @param speed The speed of the homing in user defined units
      * @throws DeviceCommunicationException if there is an error setting the homing speed
      */
@@ -198,6 +235,7 @@ public class PD4E {
 
     /**
      * Method that gets the homing speed of the device
+     *
      * @return The speed of the homing in user defined units
      * @throws DeviceCommunicationException if there is an error getting the homing speed
      */
@@ -211,6 +249,7 @@ public class PD4E {
 
     /**
      * Method that sets the homing acceleration of the device
+     *
      * @param acceleration The acceleration of the homing in user defined units
      * @throws DeviceCommunicationException if there is an error setting the homing acceleration
      */
@@ -224,6 +263,7 @@ public class PD4E {
 
     /**
      * Method that gets the homing acceleration of the device
+     *
      * @return The acceleration of the homing in user defined units
      * @throws DeviceCommunicationException if there is an error getting the homing acceleration
      */
@@ -237,6 +277,7 @@ public class PD4E {
 
     /**
      * Method that sets the homing method of the device
+     *
      * @param homeMethod The homing method. Please refer to manual for the values
      * @throws DeviceCommunicationException if there is an error setting the homing method
      */
@@ -261,6 +302,7 @@ public class PD4E {
 
     /**
      * Method that enables the device
+     *
      * @throws NanolibHelper.NanolibException if there is an error enabling the device
      */
     public void enable() throws NanolibHelper.NanolibException {
@@ -289,13 +331,13 @@ public class PD4E {
             }
         });
         this.operationControl = controlWord;
-        enabled = true;
     }
 
     /**
      * Method that starts the device
+     *
      * @param operationMode The operation mode of the device
-     * @param homeMethod The homing method of the device, 0 to skip homing
+     * @param homeMethod    The homing method of the device, 0 to skip homing
      * @throws DeviceCommunicationException if there is an error starting the device
      */
     public void start(int operationMode, int homeMethod) throws DeviceCommunicationException {
@@ -310,6 +352,8 @@ public class PD4E {
                 writeRegister(MODE_OF_OPERATION, operationMode);
             }
             setBrakeStatus(true);
+            initialized.set(true);
+            stateFunction.notifyStateChange();
         } catch (NanolibHelper.NanolibException | InterruptedException e) {
             throw new DeviceCommunicationException(e.getMessage());
         }
@@ -317,6 +361,7 @@ public class PD4E {
 
     /**
      * Method that starts the device
+     *
      * @param operationMode The operation mode of the device
      * @throws DeviceCommunicationException if there is an error starting the device
      */
@@ -326,13 +371,15 @@ public class PD4E {
 
     /**
      * Method that stops the device
+     *
      * @throws DeviceCommunicationException if there is an error stopping the device
      */
     public void stop() throws DeviceCommunicationException {
         try {
             ControlWord controlWord = new ControlWord(0);
             writeRegister(CONTROL_WORD, controlWord.toInt());
-            enabled = false;
+            initialized.set(false);
+            stateFunction.notifyStateChange();
         } catch (NanolibHelper.NanolibException e) {
             throw new DeviceCommunicationException(e.getMessage());
         }
@@ -340,6 +387,7 @@ public class PD4E {
 
     /**
      * Method that sets the velocity of the device
+     *
      * @param velocity The velocity of the device in user defined units
      * @throws DeviceCommunicationException if there is an error setting the velocity
      */
@@ -347,6 +395,8 @@ public class PD4E {
         if (operationMode != OperationMode.VELOCITY_MODE && operationMode != OperationMode.PROFILE_VELOCITY)
             throw new RuntimeException("Operation mode is not VELOCITY");
         try {
+            isMoving.set(velocity != 0);
+            stateFunction.notifyStateChange();
             setBrakeStatus(velocity == 0);
             writeRegister(TARGET_VELOCITY, velocity);
         } catch (NanolibHelper.NanolibException e) {
@@ -356,6 +406,7 @@ public class PD4E {
 
     /**
      * Method that gets the velocity of the device
+     *
      * @return The velocity of the device in user defined units
      * @throws DeviceCommunicationException if there is an error getting the velocity
      */
@@ -371,6 +422,7 @@ public class PD4E {
 
     /**
      * Method that sets the position of the device
+     *
      * @param position The position of the device in user defined units
      * @return A future that resolves to true if the operation is successful
      * @throws DeviceCommunicationException if there is an error setting the position
@@ -381,6 +433,9 @@ public class PD4E {
         position = Math.max(-8388608, Math.min(8388607, position));
         this.position = position;
         int finalPosition = position;
+        targetPos.set(position);
+        isMoving.set(true);
+        stateFunction.notifyStateChange();
         return executorService.submit(() -> {
             try {
                 setBrakeStatus(false);
@@ -402,6 +457,9 @@ public class PD4E {
                     }
                 });
                 setBrakeStatus(true);
+                currentPos.set(finalPosition);
+                isMoving.set(false);
+                stateFunction.notifyStateChange();
                 return true;
             } catch (Exception e) {
                 return false;
@@ -412,6 +470,7 @@ public class PD4E {
 
     /**
      * Method that sets the position of the device relative to the current position
+     *
      * @param position The position to add to the current position in user defined units
      * @return A future that resolves to true if the operation is successful
      * @throws DeviceCommunicationException if there is an error setting the position
@@ -422,6 +481,9 @@ public class PD4E {
         position = Math.max(-8388608, Math.min(8388607, position));
         this.position += position;
         int finalPosition = position;
+        targetPos.set(this.position);
+        isMoving.set(true);
+        stateFunction.notifyStateChange();
         return executorService.submit(() -> {
             try {
                 setBrakeStatus(false);
@@ -443,6 +505,9 @@ public class PD4E {
                     }
                 });
                 setBrakeStatus(true);
+                currentPos.set(this.position);
+                isMoving.set(false);
+                stateFunction.notifyStateChange();
                 return true;
             } catch (Exception e) {
                 return false;
@@ -452,6 +517,7 @@ public class PD4E {
 
     /**
      * Method that gets the position of the device
+     *
      * @return The position of the device in user defined units
      * @throws DeviceCommunicationException if there is an error getting the position
      */
@@ -466,6 +532,7 @@ public class PD4E {
 
     /**
      * Method that sets the torque of the device
+     *
      * @param torque The torque of the device in user defined units
      * @throws DeviceCommunicationException if there is an error setting the torque
      */
@@ -480,6 +547,7 @@ public class PD4E {
 
     /**
      * Method that gets the torque of the device
+     *
      * @return The torque of the device in user defined units
      * @throws DeviceCommunicationException if there is an error getting the torque
      */
@@ -494,6 +562,7 @@ public class PD4E {
 
     /**
      * Method that sets the maximum current of the device
+     *
      * @param current The maximum current of the device in user defined units
      * @throws DeviceCommunicationException if there is an error setting the maximum current
      */
@@ -507,6 +576,7 @@ public class PD4E {
 
     /**
      * Method that gets the maximum current of the device
+     *
      * @return The maximum current of the device in user defined units
      * @throws DeviceCommunicationException if there is an error getting the maximum current
      */
@@ -520,6 +590,7 @@ public class PD4E {
 
     /**
      * Method that sets the acceleration of the device
+     *
      * @param acceleration The acceleration of the device in user defined units
      * @throws DeviceCommunicationException if there is an error setting the acceleration
      */
@@ -533,6 +604,7 @@ public class PD4E {
 
     /**
      * Method that gets the acceleration of the device
+     *
      * @return The acceleration of the device in user defined units
      * @throws DeviceCommunicationException if there is an error getting the acceleration
      */
