@@ -39,6 +39,7 @@ public class Constants {
     public static final Pair<OdIndex, Integer> ERROR_CODE = new Pair<>(new OdIndex(0x603F, (short) 0x00),16);
     public static final Pair<OdIndex, Integer> CONTROL_WORD = new Pair<>(new OdIndex(0x6040, (short) 0x00),16);
     public static final Pair<OdIndex, Integer> STATUS_WORD = new Pair<>(new OdIndex(0x6041, (short) 0x00),16);
+    public static final Pair<OdIndex, Integer> MAX_MOTOR_SPEED = new Pair<>(new OdIndex(0x6080, (short) 0x00),32);
 
     public static final Pair<OdIndex, Integer> VELOCITY_MODE_SPEED = new Pair<>(new OdIndex(0x6042, (short) 0x00),16);
     public static final Pair<OdIndex, Integer> VELOCITY_MODE_ACCELERATION_DELTA_SPEED = new Pair<>(new OdIndex(0x6048, (short) 0x01),32);

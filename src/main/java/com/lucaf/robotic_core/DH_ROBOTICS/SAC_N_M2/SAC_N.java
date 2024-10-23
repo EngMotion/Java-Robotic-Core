@@ -357,4 +357,17 @@ public class SAC_N {
             }
         });
     }
+
+    /**
+     * Get motor errors
+     * @return ErrorFlag class
+     */
+    public ErrorFlags getErrors(){
+        try {
+            int response = readRegister(FEEDBACK_ERROR_CODE);
+            return new ErrorFlags(response);
+        } catch (Exception e) {
+            return new ErrorFlags(0);
+        }
+    }
 }

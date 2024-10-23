@@ -337,6 +337,25 @@ public class TMCM_3351_MOTOR {
                 return false;
             }
         });
+    }
 
+    /**
+     * Method to query the driver for alarms
+     * @return the error flags
+     * @throws DeviceCommunicationException if there is an error getting the error flags
+     */
+    public ErrorFlags getErrors() throws DeviceCommunicationException {
+        return new ErrorFlags(getParameter(PARAM_ERROR_FLAGS));
+    }
+
+    /**
+     * Method that clears the errors
+     * @throws DeviceCommunicationException if there is an error clearing the errors
+     */
+    public void clearErrors() throws DeviceCommunicationException {
+        TMCLCommand command = new TMCLCommand(address, motor);
+        command.setCommand(CLE);
+        command.setValue(0);
+        usb.write(command);
     }
 }

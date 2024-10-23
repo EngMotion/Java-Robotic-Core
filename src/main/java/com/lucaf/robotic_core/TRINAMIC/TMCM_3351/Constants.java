@@ -288,7 +288,7 @@ public class Constants {
     /**
      * Power Down Delay: 214
      */
-    public static final byte PARAM_POWER_DOWN_DELAY  = (byte) 214;
+    public static final byte PARAM_POWER_DOWN_DELAY = (byte) 214;
 
     /**
      * Reverse Shaft: 251
@@ -318,65 +318,70 @@ public class Constants {
     /**
      * Rotate right: 1
      */
-    public static final byte ROR= 1;
+    public static final byte ROR = 1;
 
     /**
      * Rotate left: 2
      */
-    public static final byte ROL= 2;
+    public static final byte ROL = 2;
 
     /**
      * Stop Motor: 3
      */
-    public static final byte MST= 3;
+    public static final byte MST = 3;
 
     /**
      * Move to position: 4
      */
-    public static final byte MVP= 4;
+    public static final byte MVP = 4;
 
     /**
      * Set axis parameter: 5
      */
-    public static final byte SAP= 5;
+    public static final byte SAP = 5;
 
     /**
      * Get axis parameter: 6
      */
-    public static final byte GAP= 6;
+    public static final byte GAP = 6;
 
     /**
      * Set global parameter: 7
      */
-    public static final byte SGP= 7;
+    public static final byte SGP = 7;
 
     /**
      * Get global parameter: 8
      */
-    public static final byte GGP= 8;
+    public static final byte GGP = 8;
 
     /**
      * Store global parameter: 9
      */
-    public static final byte STGP= 9;
+    public static final byte STGP = 9;
 
     /**
      * Restore global parameter: 10
      */
-    public static final byte RSGP= 10;
+    public static final byte RSGP = 10;
 
     /**
      * Reference search: 11
      */
-    public static final byte RFS= 11;
+    public static final byte RFS = 11;
 
     /**
      * Set digital output: 12
      */
-    public static final byte SIO= 12;
+    public static final byte SIO = 12;
 
     /**
      * Get digital input: 13
      */
-    public static final byte GIO= 13;
+    public static final byte GIO = 13;
+
+    /**
+     * Clear error flags: 36
+     */
+    public static final byte CLE = 36;
 }

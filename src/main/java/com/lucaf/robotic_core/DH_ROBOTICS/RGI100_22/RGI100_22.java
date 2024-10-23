@@ -622,4 +622,30 @@ public class RGI100_22 {
             throw new DeviceCommunicationException(e.getMessage());
         }
     }
+
+    /**
+     * Gets the error flags of the device
+     * @return the error flags
+     * @throws DeviceCommunicationException if the thread is interrupted
+     */
+    public ErrorFlags getErrorFlags() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(FEEDBACK_GRIP_ERROR_CODE);
+            return new ErrorFlags(response);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Clears the error flags of the device
+     * @throws DeviceCommunicationException if the thread is interrupted
+     */
+    public void clearError() throws DeviceCommunicationException {
+        try {
+            //Todo, cant find register
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
 }

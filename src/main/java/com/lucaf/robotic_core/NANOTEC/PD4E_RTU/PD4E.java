@@ -603,6 +603,33 @@ public class PD4E {
     }
 
     /**
+     * Method that sets the maximum speed of the device
+     * @param speed The maximum speed of the device in user defined units
+     * @throws DeviceCommunicationException if there is an error setting the maximum speed
+     */
+    public void setMaxSpeed(int speed) throws DeviceCommunicationException {
+        try {
+            writeRegister(MAX_MOTOR_SPEED, speed);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the maximum speed of the device
+     * @return The maximum speed of the device in user defined units
+     * @throws DeviceCommunicationException if there is an error getting the maximum speed
+     */
+    public int getMaxSpeed() throws DeviceCommunicationException {
+        try {
+            return readRegister(MAX_MOTOR_SPEED);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+
+    /**
      * Method that gets the acceleration of the device
      *
      * @return The acceleration of the device in user defined units
@@ -616,5 +643,37 @@ public class PD4E {
         }
     }
 
+    /**
+     * Method thar read the error register
+     * @return The error flags
+     * @throws DeviceCommunicationException if there is an error reading the error register
+     */
+    public ErrorFlags getErrors() throws DeviceCommunicationException {
+        try {
+            return new ErrorFlags(readRegister(ERROR_CODE));
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that clears the errors of the device
+     * @throws DeviceCommunicationException if there is an error clearing the errors
+     */
+    public void clearErrors() throws DeviceCommunicationException {
+        try {
+            operationControl.setFaultReset(true);
+            setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
+                @Override
+                public boolean checkStatusWord(StatusWord statusWord) {
+                    return true;
+                }
+            });
+            operationControl.setFaultReset(false);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+
+    }
 
 }
