@@ -138,6 +138,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Changes the address of the device</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearError()" class="member-name-link">clearError</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Clears the error flags of the device</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ErrorFlags.html" title="class in com.lucaf.robotic_core.DH_ROBOTICS.RGI100_22">ErrorFlags</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getErrorFlags()" class="member-name-link">getErrorFlags</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Gets the error flags of the device</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGripForce()" class="member-name-link">getGripForce</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -652,6 +662,32 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dt>Throws:</dt>
 <dd><code><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getErrorFlags()">
+<h3>getErrorFlags</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ErrorFlags.html" title="class in com.lucaf.robotic_core.DH_ROBOTICS.RGI100_22">ErrorFlags</a></span>&nbsp;<span class="element-name">getErrorFlags</span>()
+                         throws <span class="exceptions"><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></span></div>
+<div class="block">Gets the error flags of the device</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the error flags</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></code> - if the thread is interrupted</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="clearError()">
+<h3>clearError</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearError</span>()
+                throws <span class="exceptions"><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></span></div>
+<div class="block">Clears the error flags of the device</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></code> - if the thread is interrupted</dd>
 </dl>
 </section>
 </li>

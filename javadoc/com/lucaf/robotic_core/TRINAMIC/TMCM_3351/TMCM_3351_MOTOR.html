@@ -110,6 +110,16 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearErrors()" class="member-name-link">clearErrors</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Method that clears the errors</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ErrorFlags.html" title="class in com.lucaf.robotic_core.TRINAMIC.TMCM_3351">ErrorFlags</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getErrors()" class="member-name-link">getErrors</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Method to query the driver for alarms</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParameter(byte)" class="member-name-link">getParameter</a><wbr>(byte&nbsp;parameter)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -293,6 +303,32 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>position</code> - the position to move to</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getErrors()">
+<h3>getErrors</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ErrorFlags.html" title="class in com.lucaf.robotic_core.TRINAMIC.TMCM_3351">ErrorFlags</a></span>&nbsp;<span class="element-name">getErrors</span>()
+                     throws <span class="exceptions"><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></span></div>
+<div class="block">Method to query the driver for alarms</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the error flags</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></code> - if there is an error getting the error flags</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="clearErrors()">
+<h3>clearErrors</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearErrors</span>()
+                 throws <span class="exceptions"><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></span></div>
+<div class="block">Method that clears the errors</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></code> - if there is an error clearing the errors</dd>
 </dl>
 </section>
 </li>

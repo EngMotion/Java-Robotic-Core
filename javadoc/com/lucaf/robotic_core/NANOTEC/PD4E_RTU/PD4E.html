@@ -111,14 +111,24 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enable()" class="member-name-link">enable</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearErrors()" class="member-name-link">clearErrors</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Method that clears the errors of the device</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#enable()" class="member-name-link">enable</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that enables the device</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAcceleration()" class="member-name-link">getAcceleration</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAcceleration()" class="member-name-link">getAcceleration</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that gets the acceleration of the device</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ErrorFlags.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">ErrorFlags</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getErrors()" class="member-name-link">getErrors</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Method thar read the error register</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingAcceleration()" class="member-name-link">getHomingAcceleration</a>()</code></div>
@@ -136,60 +146,70 @@ loadScripts(document, 'script');</script>
 <div class="block">Method that gets the maximum current of the device</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPosition()" class="member-name-link">getPosition</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxSpeed()" class="member-name-link">getMaxSpeed</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Method that gets the position of the device</div>
+<div class="block">Method that gets the maximum speed of the device</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTorque()" class="member-name-link">getTorque</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPosition()" class="member-name-link">getPosition</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Method that gets the torque of the device</div>
+<div class="block">Method that gets the position of the device</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVelocity()" class="member-name-link">getVelocity</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTorque()" class="member-name-link">getTorque</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Method that gets the torque of the device</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVelocity()" class="member-name-link">getVelocity</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that gets the velocity of the device</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#home(int)" class="member-name-link">home</a><wbr>(int&nbsp;homeMethod)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#home(int)" class="member-name-link">home</a><wbr>(int&nbsp;homeMethod)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that sets the homing method of the device</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAcceleration(int)" class="member-name-link">setAcceleration</a><wbr>(int&nbsp;acceleration)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAcceleration(int)" class="member-name-link">setAcceleration</a><wbr>(int&nbsp;acceleration)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that sets the acceleration of the device</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setBrakeAddress(int)" class="member-name-link">setBrakeAddress</a><wbr>(int&nbsp;address)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setBrakeAddress(int)" class="member-name-link">setBrakeAddress</a><wbr>(int&nbsp;address)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that sets the brake address</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setBrakeStatus(boolean)" class="member-name-link">setBrakeStatus</a><wbr>(boolean&nbsp;active)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setBrakeStatus(boolean)" class="member-name-link">setBrakeStatus</a><wbr>(boolean&nbsp;active)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that sets the brake status</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDigitalOutput(int,boolean)" class="member-name-link">setDigitalOutput</a><wbr>(int&nbsp;output,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDigitalOutput(int,boolean)" class="member-name-link">setDigitalOutput</a><wbr>(int&nbsp;output,
  boolean&nbsp;value)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that sets the value of a digital output</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHomingAcceleration(int)" class="member-name-link">setHomingAcceleration</a><wbr>(int&nbsp;acceleration)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHomingAcceleration(int)" class="member-name-link">setHomingAcceleration</a><wbr>(int&nbsp;acceleration)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that sets the homing acceleration of the device</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHomingSpeed(int)" class="member-name-link">setHomingSpeed</a><wbr>(int&nbsp;speed)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHomingSpeed(int)" class="member-name-link">setHomingSpeed</a><wbr>(int&nbsp;speed)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that sets the homing speed of the device</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxCurrent(int)" class="member-name-link">setMaxCurrent</a><wbr>(int&nbsp;current)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxCurrent(int)" class="member-name-link">setMaxCurrent</a><wbr>(int&nbsp;current)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that sets the maximum current of the device</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxSpeed(int)" class="member-name-link">setMaxSpeed</a><wbr>(int&nbsp;speed)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Method that sets the maximum speed of the device</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/Future.html" title="class or interface in java.util.concurrent" class="external-link">Future</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPositionAbsolute(int)" class="member-name-link">setPositionAbsolute</a><wbr>(int&nbsp;position)</code></div>
@@ -583,6 +603,34 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="setMaxSpeed(int)">
+<h3>setMaxSpeed</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMaxSpeed</span><wbr><span class="parameters">(int&nbsp;speed)</span>
+                 throws <span class="exceptions"><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></span></div>
+<div class="block">Method that sets the maximum speed of the device</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>speed</code> - The maximum speed of the device in user defined units</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></code> - if there is an error setting the maximum speed</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMaxSpeed()">
+<h3>getMaxSpeed</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getMaxSpeed</span>()
+                throws <span class="exceptions"><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></span></div>
+<div class="block">Method that gets the maximum speed of the device</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>The maximum speed of the device in user defined units</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></code> - if there is an error getting the maximum speed</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getAcceleration()">
 <h3>getAcceleration</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getAcceleration</span>()
@@ -593,6 +641,32 @@ loadScripts(document, 'script');</script>
 <dd>The acceleration of the device in user defined units</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></code> - if there is an error getting the acceleration</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getErrors()">
+<h3>getErrors</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ErrorFlags.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">ErrorFlags</a></span>&nbsp;<span class="element-name">getErrors</span>()
+                     throws <span class="exceptions"><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></span></div>
+<div class="block">Method thar read the error register</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>The error flags</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></code> - if there is an error reading the error register</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="clearErrors()">
+<h3>clearErrors</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearErrors</span>()
+                 throws <span class="exceptions"><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></span></div>
+<div class="block">Method that clears the errors of the device</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="../../exception/DeviceCommunicationException.html" title="class in com.lucaf.robotic_core.exception">DeviceCommunicationException</a></code> - if there is an error clearing the errors</dd>
 </dl>
 </section>
 </li>
