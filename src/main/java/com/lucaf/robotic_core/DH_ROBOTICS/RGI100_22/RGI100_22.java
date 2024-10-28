@@ -537,8 +537,8 @@ public class RGI100_22 {
      */
     public void setGripSpeed(int speed) throws DeviceCommunicationException {
         try {
-            speed = Math.max(0, speed);
             speed = Math.min(100, speed);
+            speed = Math.max(0, speed);
             writeRegister(SPEED, speed);
         } catch (Exception e) {
             throw new DeviceCommunicationException(e.getMessage());

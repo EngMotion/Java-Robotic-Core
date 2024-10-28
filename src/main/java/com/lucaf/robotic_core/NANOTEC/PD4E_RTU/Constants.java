@@ -46,6 +46,15 @@ public class Constants {
     public static final Pair<OdIndex, Integer> VELOCITY_MODE_DECELERATION_DELTA_TIME = new Pair<>(new OdIndex(0x6049, (short) 0x02),16);
 
 
+    public static final Pair<OdIndex, Integer> CL_POSITION_PROPORTIONAL_GAIN = new Pair<>(new OdIndex(0x3210, (short) 0x01),32);
+    public static final Pair<OdIndex, Integer> CL_POSITION_INTEGRAL_GAIN = new Pair<>(new OdIndex(0x3210, (short) 0x02),32);
+    public static final Pair<OdIndex, Integer> CL_VELOCITY_PROPORTIONAL_GAIN = new Pair<>(new OdIndex(0x3210, (short) 0x03),32);
+    public static final Pair<OdIndex, Integer> CL_VELOCITY_INTEGRAL_GAIN = new Pair<>(new OdIndex(0x3210, (short) 0x04),32);
+    public static final Pair<OdIndex, Integer> CL_FLUX_PROPORTIONAL_GAIN = new Pair<>(new OdIndex(0x3210, (short) 0x05),32);
+    public static final Pair<OdIndex, Integer> CL_FLUX_INTEGRAL_GAIN = new Pair<>(new OdIndex(0x3210, (short) 0x06),32);
+    public static final Pair<OdIndex, Integer> CL_TORQUE_PROPORTIONAL_GAIN = new Pair<>(new OdIndex(0x3210, (short) 0x07),32);
+    public static final Pair<OdIndex, Integer> CL_TORQUE_INTEGRAL_GAIN = new Pair<>(new OdIndex(0x3210, (short) 0x08),32);
+
     /**
      * 0: Immediate stop with subsequent state change to Switch on disabled
      * 1: Braking with slow down ramp (deceleration ramp depending on operating mode) and subsequent state change to Switch on disabled

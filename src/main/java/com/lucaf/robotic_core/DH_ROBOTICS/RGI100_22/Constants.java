@@ -39,7 +39,7 @@ public class Constants {
      * Value: 0-100%
      * Type: Read/Write
      */
-    public static final byte[] SPEED = {0x02, 0x04};
+    public static final byte[] SPEED = {0x01, 0x04};
 
     /**
      * The address of the target angle of the rotation: 0x0105

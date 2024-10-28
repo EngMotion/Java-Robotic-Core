@@ -603,7 +603,139 @@ public class PD4E {
     }
 
     /**
+     * Method that sets the deceleration of the device
+     *
+     * @param deceleration The deceleration of the device in user defined units
+     * @throws DeviceCommunicationException if there is an error setting the deceleration
+     */
+    public void setDeceleration(int deceleration) throws DeviceCommunicationException {
+        try {
+            writeRegister(PROFILE_DECELERATION, deceleration);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the deceleration of the device
+     *
+     * @return The deceleration of the device in user defined units
+     * @throws DeviceCommunicationException if there is an error getting the deceleration
+     */
+    public int getDeceleration() throws DeviceCommunicationException {
+        try {
+            return readRegister(PROFILE_DECELERATION);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop position proportional gain
+     * @param gain The gain to set
+     */
+    public void setClosedLoopPositionProportionalGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_POSITION_PROPORTIONAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop position integral gain
+     * @param gain The gain to set
+     * @throws DeviceCommunicationException if there is an error setting the gain
+     */
+    public void setClosedLoopPositionIntegralGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_POSITION_INTEGRAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop velocity proportional gain
+     * @param gain The gain to set
+     * @throws DeviceCommunicationException if there is an error setting the gain
+     */
+    public void setClosedLoopVelocityProportionalGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_VELOCITY_PROPORTIONAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop velocity integral gain
+     * @param gain The gain to set
+     * @throws DeviceCommunicationException if there is an error setting the gain
+     */
+    public void setClosedLoopVelocityIntegralGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_VELOCITY_INTEGRAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop torque proportional gain
+     * @param gain The gain to set
+     * @throws DeviceCommunicationException if there is an error setting the gain
+     */
+    public void setClosedLoopTorqueProportionalGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_TORQUE_PROPORTIONAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop torque integral gain
+     * @param gain The gain to set
+     * @throws DeviceCommunicationException if there is an error setting the gain
+     */
+    public void setClosedLoopTorqueIntegralGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_TORQUE_INTEGRAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop flux proportional gain
+     * @param gain The gain to set
+     * @throws DeviceCommunicationException if there is an error setting the gain
+     */
+    public void setClosedLoopFluxProportionalGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_FLUX_PROPORTIONAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop flux integral gain
+     * @param gain The gain to set
+     * @throws DeviceCommunicationException if there is an error setting the gain
+     */
+    public void setClosedLoopFluxIntegralGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_FLUX_INTEGRAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
      * Method that sets the maximum speed of the device
+     *
      * @param speed The maximum speed of the device in user defined units
      * @throws DeviceCommunicationException if there is an error setting the maximum speed
      */
@@ -617,6 +749,7 @@ public class PD4E {
 
     /**
      * Method that gets the maximum speed of the device
+     *
      * @return The maximum speed of the device in user defined units
      * @throws DeviceCommunicationException if there is an error getting the maximum speed
      */
@@ -645,6 +778,7 @@ public class PD4E {
 
     /**
      * Method thar read the error register
+     *
      * @return The error flags
      * @throws DeviceCommunicationException if there is an error reading the error register
      */
@@ -658,6 +792,7 @@ public class PD4E {
 
     /**
      * Method that clears the errors of the device
+     *
      * @throws DeviceCommunicationException if there is an error clearing the errors
      */
     public void clearErrors() throws DeviceCommunicationException {
@@ -677,6 +812,7 @@ public class PD4E {
 
     /**
      * Method that stores all the parameters of the device
+     *
      * @throws DeviceCommunicationException if there is an error storing the parameters
      */
     public void storeAllParams() throws DeviceCommunicationException {
