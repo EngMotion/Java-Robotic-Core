@@ -7,9 +7,7 @@ public class Constants {
     public static final Pair<OdIndex, Integer> DEVICE_TYPE = new Pair<>(new OdIndex(0x1000, (short) 0x00),32);
     public static final Pair<OdIndex, Integer> ERROR_REGISTER = new Pair<>(new OdIndex(0x1001, (short) 0x00),8);
     public static final Pair<OdIndex, Integer> RESTORE_DEFAULTS = new Pair<>(new OdIndex(0x1011, (short) 0x00),32);
-    /**
-     * 0x2028:0x00 Value between 1 and 247
-     */
+    public static final Pair<OdIndex, Integer> STORE_ALL_PARAMETERS = new Pair<>(new OdIndex(0x1010, (short) 0x01),32);
     public static final Pair<OdIndex, Integer> SLAVE_ADDRESS = new Pair<>(new OdIndex(0x2028, (short) 0x00),8);
     public static final Pair<OdIndex, Integer> BAUDRATE = new Pair<>(new OdIndex(0x202A, (short) 0x00),32);
     public static final Pair<OdIndex, Integer> STOP_BITS = new Pair<>(new OdIndex(0x202C, (short) 0x00),8);

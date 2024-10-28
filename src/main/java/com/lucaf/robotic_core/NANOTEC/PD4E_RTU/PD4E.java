@@ -673,7 +673,18 @@ public class PD4E {
         } catch (NanolibHelper.NanolibException e) {
             throw new DeviceCommunicationException(e.getMessage());
         }
+    }
 
+    /**
+     * Method that stores all the parameters of the device
+     * @throws DeviceCommunicationException if there is an error storing the parameters
+     */
+    public void storeAllParams() throws DeviceCommunicationException {
+        try {
+            writeRegister(STORE_ALL_PARAMETERS, 1702257011);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
     }
 
 }

@@ -157,12 +157,14 @@ public class iDM_RS {
      */
     public void setSpeed(int speed) throws DeviceCommunicationException {
         if (speed < 0) speed = 0;
+        writeRegister(VELOCITY, speed);
         if (controlMode.getCONTROL_MODE()==2){
             if (speed==0) isMoving.set(false);
             else isMoving.set(true);
             stateFunction.notifyStateChange();
+            writeRegister(STATUS_MODE, StatusMode.getSegmentPositioning((byte) 0x00));
         }
-        writeRegister(VELOCITY, speed);
+
     }
 
     /**
