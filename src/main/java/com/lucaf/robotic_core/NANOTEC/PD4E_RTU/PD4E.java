@@ -632,6 +632,7 @@ public class PD4E {
 
     /**
      * Method that sets the closed loop position proportional gain
+     *
      * @param gain The gain to set
      */
     public void setClosedLoopPositionProportionalGain(int gain) throws DeviceCommunicationException {
@@ -644,6 +645,7 @@ public class PD4E {
 
     /**
      * Method that sets the closed loop position integral gain
+     *
      * @param gain The gain to set
      * @throws DeviceCommunicationException if there is an error setting the gain
      */
@@ -657,6 +659,7 @@ public class PD4E {
 
     /**
      * Method that sets the closed loop velocity proportional gain
+     *
      * @param gain The gain to set
      * @throws DeviceCommunicationException if there is an error setting the gain
      */
@@ -670,6 +673,7 @@ public class PD4E {
 
     /**
      * Method that sets the closed loop velocity integral gain
+     *
      * @param gain The gain to set
      * @throws DeviceCommunicationException if there is an error setting the gain
      */
@@ -683,6 +687,7 @@ public class PD4E {
 
     /**
      * Method that sets the closed loop torque proportional gain
+     *
      * @param gain The gain to set
      * @throws DeviceCommunicationException if there is an error setting the gain
      */
@@ -695,7 +700,40 @@ public class PD4E {
     }
 
     /**
+     * Method that sets the unit position factor
+     *
+     * @param factor The factor to set
+     * @throws DeviceCommunicationException if there is an error setting the factor
+     */
+    public void setUnitPositionFactor(int factor) throws DeviceCommunicationException {
+        try {
+            UnitControl unitControl = new UnitControl(readRegister(SI_UNIT_POSITION));
+            unitControl.setFactor(UnitControl.FACTOR(factor));
+            writeRegister(SI_UNIT_POSITION, unitControl.toInt());
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the unit position unit
+     *
+     * @param unit The unit to set
+     * @throws DeviceCommunicationException if there is an error setting the unit
+     */
+    public void setUnitPositionUnit(byte unit) throws DeviceCommunicationException {
+        try {
+            UnitControl unitControl = new UnitControl(readRegister(SI_UNIT_POSITION));
+            unitControl.setUnit(unit);
+            writeRegister(SI_UNIT_POSITION, unitControl.toInt());
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
      * Method that sets the closed loop torque integral gain
+     *
      * @param gain The gain to set
      * @throws DeviceCommunicationException if there is an error setting the gain
      */
@@ -709,6 +747,7 @@ public class PD4E {
 
     /**
      * Method that sets the closed loop flux proportional gain
+     *
      * @param gain The gain to set
      * @throws DeviceCommunicationException if there is an error setting the gain
      */
@@ -722,6 +761,7 @@ public class PD4E {
 
     /**
      * Method that sets the closed loop flux integral gain
+     *
      * @param gain The gain to set
      * @throws DeviceCommunicationException if there is an error setting the gain
      */
