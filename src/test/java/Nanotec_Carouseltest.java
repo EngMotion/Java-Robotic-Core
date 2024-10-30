@@ -42,6 +42,11 @@ public class Nanotec_Carouseltest {
                 public void notifyStateChange() {
 
                 }
+
+                @Override
+                public void notifyError() {
+
+                }
             });
             pd4e.setBrakeAddress(1);
             pd4e.start(Constants.OperationMode.PROFILE_POSITION,21);

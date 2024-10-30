@@ -10,10 +10,10 @@ import java.util.HashMap;
 public class StepperTaraTest {
     public static void main(String[] args) {
         try {
-            PCB_3 bilancia = new PCB_3("COM8");
+            PCB_3 bilancia = new PCB_3("COM5");
             SerialParameters params = new SerialParameters();
             params.setPortName("COM5");
-            params.setBaudRate(115200);
+            params.setBaudRate(57600);
             params.setDatabits(8);
             params.setParity("None");
             params.setStopbits(1);
@@ -25,6 +25,11 @@ public class StepperTaraTest {
             iDM_RS iDM_rs = new iDM_RS(master, (byte) 0x01, new HashMap<>(), new State() {
                 @Override
                 public void notifyStateChange() {
+
+                }
+
+                @Override
+                public void notifyError() {
 
                 }
             });

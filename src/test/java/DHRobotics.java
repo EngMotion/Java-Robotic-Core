@@ -16,6 +16,11 @@ public class DHRobotics {
             public void notifyStateChange() {
 
             }
+
+            @Override
+            public void notifyError() {
+
+            }
         };
         try {
             SerialParameters params = new SerialParameters();

@@ -43,6 +43,11 @@ public class NanotecCan {
                 public void notifyStateChange() {
 
                 }
+
+                @Override
+                public void notifyError() {
+
+                }
             });
         }catch (Exception e){
             e.printStackTrace();

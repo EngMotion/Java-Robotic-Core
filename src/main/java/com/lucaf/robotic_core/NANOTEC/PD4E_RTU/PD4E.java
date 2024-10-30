@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -68,6 +69,11 @@ public class PD4E {
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
+     * Executor service for the error handling
+     */
+    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+
+    /**
      * Current verified position
      */
     AtomicInteger currentPos = new AtomicInteger(0);
@@ -88,6 +94,11 @@ public class PD4E {
     AtomicBoolean initialized = new AtomicBoolean(false);
 
     /**
+     * Error flag
+     */
+    AtomicBoolean has_fault = new AtomicBoolean(false);
+
+    /**
      * Constructor of the class
      *
      * @param nanolibHelper Native methods helper
@@ -101,6 +112,7 @@ public class PD4E {
         this.state = state;
         this.stateFunction = stateFunction;
         initState();
+        setupErrorListener();
     }
 
     /**
@@ -111,6 +123,28 @@ public class PD4E {
         state.put("target_position", targetPos);
         state.put("is_moving", isMoving);
         state.put("initialized", initialized);
+        state.put("has_fault", has_fault);
+        state.put("fault","");
+    }
+
+    /**
+     * Internal method that periodically checks for errors
+     */
+    private void setupErrorListener() {
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            try {
+                ErrorFlags errorFlags = getErrors();
+                if (errorFlags.hasError()) {
+                    state.put("fault", errorFlags.getErrorDescription());
+                    has_fault.set(true);
+                    stateFunction.notifyError();
+                }
+            } catch (DeviceCommunicationException e) {
+                state.put("fault", e.getMessage());
+                has_fault.set(true);
+                stateFunction.notifyError();
+            }
+        }, 1000, 1000, java.util.concurrent.TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -120,7 +154,7 @@ public class PD4E {
      * @param value    The value to write
      * @throws NanolibHelper.NanolibException if the register is not found or there is communication error
      */
-    private void writeRegister(Pair<OdIndex, Integer> register, int value) throws NanolibHelper.NanolibException {
+    public void writeRegister(Pair<OdIndex, Integer> register, int value) throws NanolibHelper.NanolibException {
         nanolibHelper.writeNumber(deviceHandle, value, register.first, register.second);
     }
 
@@ -376,6 +410,7 @@ public class PD4E {
      */
     public void stop() throws DeviceCommunicationException {
         try {
+            setBrakeStatus(true);
             ControlWord controlWord = new ControlWord(0);
             writeRegister(CONTROL_WORD, controlWord.toInt());
             initialized.set(false);
@@ -446,9 +481,10 @@ public class PD4E {
                 setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
                     @Override
                     public boolean checkStatusWord(StatusWord statusWord) {
-                        return statusWord.targetReached;
+                        return statusWord.targetReached || !initialized.get();
                     }
                 });
+                if (!initialized.get()) return false;
                 operationControl.setOperationModeSpecific_4(false);
                 setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
                     @Override
@@ -494,9 +530,10 @@ public class PD4E {
                 setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
                     @Override
                     public boolean checkStatusWord(StatusWord statusWord) {
-                        return statusWord.targetReached;
+                        return statusWord.targetReached || !initialized.get();
                     }
                 });
+                if (!initialized.get()) return false;
                 operationControl.setOperationModeSpecific_4(false);
                 setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
                     @Override
@@ -710,6 +747,20 @@ public class PD4E {
             UnitControl unitControl = new UnitControl(readRegister(SI_UNIT_POSITION));
             unitControl.setFactor(UnitControl.FACTOR(factor));
             writeRegister(SI_UNIT_POSITION, unitControl.toInt());
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the unit position factor
+     *
+     * @return The factor of the unit position
+     * @throws DeviceCommunicationException if there is an error getting the factor
+     */
+    public UnitControl getUnitPosition() throws DeviceCommunicationException {
+        try {
+            return new UnitControl(readRegister(SI_UNIT_POSITION));
         } catch (NanolibHelper.NanolibException e) {
             throw new DeviceCommunicationException(e.getMessage());
         }

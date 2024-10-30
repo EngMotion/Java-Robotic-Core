@@ -90,8 +90,8 @@ public class UnitControl {
     @Override
     public String toString() {
         return "UnitControl{" +
-                "factor=" + factor +
-                ", unit=" + unit +
+                "factor=" + Integer.toHexString(factor) + " (10^" + factor + ")" +
+                ", unit=" + Integer.toHexString(unit) +
                 ", reserved1=" + reserved1 +
                 ", reserved2=" + reserved2 +
                 '}';

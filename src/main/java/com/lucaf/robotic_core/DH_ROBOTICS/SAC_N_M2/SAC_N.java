@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -61,11 +62,18 @@ public class SAC_N {
     private AtomicInteger target_position = new AtomicInteger(0);
 
     /**
+     * Internal state of the fault
+     */
+    private AtomicBoolean has_fault = new AtomicBoolean(false);
+
+    /**
      * Initializes the state
      */
     void initState() {
         state.put("is_moving", is_moving);
         state.put("is_initialized", is_initialized);
+        state.put("has_fault", has_fault);
+        state.put("fault","");
 
         if (state.containsKey("current_position"))
             current_position.set(((Double) state.get("current_position")).intValue());
@@ -79,7 +87,12 @@ public class SAC_N {
     /**
      * The executor service. It is used to run the move commands in a separate thread
      */
-    private ExecutorService executorService = Executors.newFixedThreadPool(4);
+    private ExecutorService executorService = Executors.newFixedThreadPool(1);
+
+    /**
+     * The scheduled executor service. It is used to check for faults
+     */
+    private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
     /**
      * The state class
@@ -96,6 +109,7 @@ public class SAC_N {
         this.state = state;
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
+        setupErrorListener();
     }
 
     /**
@@ -110,6 +124,27 @@ public class SAC_N {
         this.state = state;
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
+        setupErrorListener();
+    }
+
+    /**
+     * Internal method that periodically checks for errors
+     */
+    private void setupErrorListener() {
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            try {
+                ErrorFlags errorFlags = getErrors();
+                if (errorFlags.hasError()) {
+                    state.put("fault", errorFlags.getErrorDescription());
+                    has_fault.set(true);
+                    stateFunction.notifyError();
+                }
+            } catch (DeviceCommunicationException e) {
+                state.put("fault", e.getMessage());
+                has_fault.set(true);
+                stateFunction.notifyError();
+            }
+        }, 1000, 1000, java.util.concurrent.TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -251,7 +286,11 @@ public class SAC_N {
      */
     public synchronized void waitReachedPosition() throws DeviceCommunicationException {
         try {
-            while (!is_arrived()) {
+            while (true) {
+                if (has_fault.get()){
+                    throw new DeviceCommunicationException("Device has fault");
+                }
+                if (is_arrived()) return;
                 Thread.sleep(100);
             }
         } catch (Exception e) {
@@ -268,8 +307,11 @@ public class SAC_N {
             clearErrors();
             setEnabled(true);
             writeRegister(INITIALIZATION, 1);
+            int i = 0;
             while (!hasInitialized()) {
                 Thread.sleep(300);
+                if (i>20) throw new DeviceCommunicationException("Initialization failed");
+                i++;
             }
         } catch (Exception e) {
             throw new DeviceCommunicationException(e.getMessage());
@@ -362,12 +404,8 @@ public class SAC_N {
      * Get motor errors
      * @return ErrorFlag class
      */
-    public ErrorFlags getErrors(){
-        try {
-            int response = readRegister(FEEDBACK_ERROR_CODE);
-            return new ErrorFlags(response);
-        } catch (Exception e) {
-            return new ErrorFlags(0);
-        }
+    public ErrorFlags getErrors() throws DeviceCommunicationException {
+        int response = readRegister(FEEDBACK_ERROR_CODE);
+        return new ErrorFlags(response);
     }
 }

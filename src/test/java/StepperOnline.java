@@ -13,7 +13,7 @@ public class StepperOnline {
         try {
             SerialParameters params = new SerialParameters();
             params.setPortName("COM5");
-            params.setBaudRate(115200);
+            params.setBaudRate(57600);
             params.setDatabits(8);
             params.setParity("None");
             params.setStopbits(1);
@@ -28,15 +28,22 @@ public class StepperOnline {
                 public void notifyStateChange() {
 
                 }
+
+                @Override
+                public void notifyError() {
+
+                }
             });
             iDM_rs.stop();
-            iDM_rs.setPositioningMode();
-            iDM_rs.setRelativePositioning(true);
-            iDM_rs.setDeceleration(100);
-            iDM_rs.setAcceleration(100);
-            iDM_rs.setSpeed(400);
+            iDM_rs.setVelocityMode();
+            //iDM_rs.setRelativePositioning(true);
+            iDM_rs.setDeceleration(50);
+            iDM_rs.setAcceleration(50);
+            iDM_rs.setSpeed(600);
+            Thread.sleep(5000);
+            iDM_rs.setSpeed(0);
             long now = System.currentTimeMillis();
-            iDM_rs.moveToPositionAndWait(-100000).get();
+            //iDM_rs.moveToPositionAndWait(10000).get();
             System.out.println("Ci ho messo " + (System.currentTimeMillis()-now) + " ms");
             Thread.sleep(1000);
 

@@ -20,6 +20,11 @@ public class Trinamic3351 {
                 public void notifyStateChange() {
 
                 }
+
+                @Override
+                public void notifyError() {
+
+                }
             };
             TMCM_3351 tmcm_3351 = new TMCM_3351(usb, new HashMap<>(), state);
             TMCM_3351_MOTOR motor0 = tmcm_3351.getMotor((byte) 0x00, new HashMap<>());

@@ -42,6 +42,11 @@ public class Nanotec_Griptest {
                 public void notifyStateChange() {
 
                 }
+
+                @Override
+                public void notifyError() {
+
+                }
             });
             pd4e.start(Constants.OperationMode.PROFILE_VELOCITY);
 

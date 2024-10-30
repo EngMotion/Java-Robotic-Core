@@ -1,5 +1,7 @@
 import com.lucaf.robotic_core.NANOTEC.PD4E_RTU.Constants;
 import com.lucaf.robotic_core.NANOTEC.PD4E_RTU.PD4E;
+import com.lucaf.robotic_core.NANOTEC.PD4E_RTU.UnitControl;
+import com.lucaf.robotic_core.Pair;
 import com.lucaf.robotic_core.State;
 import com.nanotec.nanolib.*;
 import com.nanotec.nanolib.helper.NanolibHelper;
@@ -42,17 +44,35 @@ public class Nanotec_Arm_Y {
                 public void notifyStateChange() {
 
                 }
+
+                @Override
+                public void notifyError() {
+
+                }
             });
-            pd4e.setBrakeAddress(1);
+           //pd4e.setBrakeAddress(1);
+            //pd4e.stop();
             pd4e.setMaxSpeed(200);
+            pd4e.setAcceleration(100);
+            pd4e.setDeceleration(100);
             //pd4e.home(35);
             pd4e.start(Constants.OperationMode.PROFILE_POSITION);
-            //pd4e.setPositionRelative(35000).get();
+            pd4e.setUnitPositionFactor(-1);
+            pd4e.setUnitPositionUnit(UnitControl.Units.ENCODER);
+            pd4e.setMaxCurrent(4000);
+            pd4e.writeRegister( new Pair<>(new OdIndex(0x3210, (short) 0x0B),32),1000);
+            System.out.println(pd4e.getUnitPosition().toString());
+            //pd4e.setPositionRelative(-4000).get();
+            //pd4e.setPositionRelative(20).get();
+            while (true){
+                //pd4e.setPositionRelative(20000).get();
+                //pd4e.setPositionRelative(-2000).get();
+            }
             //pd4e.setPositionAbsolute(0).get();
             //One turn 13228
-            pd4e.stop();
+            //pd4e.stop();
 
-            pd4e.setBrakeStatus(true);
+            //pd4e.setBrakeStatus(true);
 
         }catch (Exception e){
             e.printStackTrace();
