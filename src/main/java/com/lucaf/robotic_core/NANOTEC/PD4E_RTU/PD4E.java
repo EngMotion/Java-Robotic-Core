@@ -914,4 +914,30 @@ public class PD4E {
         }
     }
 
+    /**
+     * Method that sets the target current of the device
+     * @param current The target current of the device in user defined units
+     * @throws DeviceCommunicationException if there is an error setting the target current
+     */
+    public void setTargetCurrent(int current) throws DeviceCommunicationException {
+        try {
+            writeRegister(TARGET_MOTOR_CURRENT, current);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the target current of the device
+     * @return The target current of the device in user defined units
+     * @throws DeviceCommunicationException if there is an error getting the target current
+     */
+    public int getTargetCurrent() throws DeviceCommunicationException {
+        try {
+            return readRegister(TARGET_MOTOR_CURRENT);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
 }

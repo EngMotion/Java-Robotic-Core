@@ -25,6 +25,7 @@ public class Constants {
     public static final Pair<OdIndex, Integer> PARITY = new Pair<>(new OdIndex(0x202D, (short) 0x00), 8);
     public static final Pair<OdIndex, Integer> POLE_PAIRS = new Pair<>(new OdIndex(0x2030, (short) 0x00), 32);
     public static final Pair<OdIndex, Integer> MAX_MOTOR_CURRENT = new Pair<>(new OdIndex(0x2031, (short) 0x00), 32);
+    public static final Pair<OdIndex, Integer> TARGET_MOTOR_CURRENT = new Pair<>(new OdIndex(0x203B, (short) 0x01), 32);
     public static final Pair<OdIndex, Integer> UPPER_VOTLAGE_WARNING_LIMIT = new Pair<>(new OdIndex(0x2034, (short) 0x00), 32);
     public static final Pair<OdIndex, Integer> LOWER_VOLTAGE_WARNING_LIMIT = new Pair<>(new OdIndex(0x2035, (short) 0x00), 32);
     public static final Pair<OdIndex, Integer> HOMING_CURRENT_BLOCK_DETECTION_CURRENT = new Pair<>(new OdIndex(0x203A, (short) 0x01), 32);
