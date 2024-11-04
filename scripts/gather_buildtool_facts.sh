@@ -27,17 +27,14 @@ else
   subprojects=""
 fi
 
-files="$OUTPUT_DIR$REPOSITORY_NAME-$version-all.jar"
-if ! [ -f "$files" ]; then
-  files=""
-fi
+files=""
 
 for sub in $subprojects; do
   file="$sub/$OUTPUT_DIR"
   if [ -d "$file" ]; then
     # Prevents getting version from wildcard
     # shellcheck disable=SC2086
-    files="$files $(ls $file*-$version.jar | grep -v -original.jar)"
+    files="$files $(ls $file*.jar)"
   fi
 done
 
