@@ -27,16 +27,7 @@ else
   subprojects=""
 fi
 
-files=""
-
-for sub in $subprojects; do
-  file="$sub/$OUTPUT_DIR"
-  if [ -d "$file" ]; then
-    # Prevents getting version from wildcard
-    # shellcheck disable=SC2086
-    files="$files $(ls $file*.jar)"
-  fi
-done
+files="$(ls $OUTPUT_DIR*.jar)"
 
 if [ "$version" == "*" ]; then
   version="UNKNOWN"
