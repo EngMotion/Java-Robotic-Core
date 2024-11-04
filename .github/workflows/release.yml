@@ -26,32 +26,10 @@ jobs:
           distribution: temurin
           java-version: 17
         # Find the current Build tool
-      - name: Setup Build Tool
-        id: getbuildtool
-        run: "echo BUILD_TOOL=$(bash ./scripts/get_build_tool.sh) >> $GITHUB_OUTPUT"
-        shell: bash
-      - name: Check Valid Build Tool
-        if: ${{ steps.getbuildtool.outputs.BUILD_TOOL == 'JAVA' }}
-        run: |-
-          echo "This Github Action does NOT support building from raw Java."
-          echo "Please use Maven or Gradle to build your projects!"
-          exit 1
-        shell: bash
-      # Build using Maven
-      - name: Build Maven
-        id: maven
-        if: ${{ steps.getbuildtool.outputs.BUILD_TOOL == 'MAVEN' }}
-        run: |-
-          /usr/bin/mvn package
-          echo VARIABLES="pom.xml pom.xml modules target/ (?<=<version>)([0-9.]+(-SNAPSHOT)?) (?<=<module>)([^<]+)" >> $GITHUB_OUTPUT
-        shell: bash
-      # Build using Gradle
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-        if: ${{ steps.getbuildtool.outputs.BUILD_TOOL == 'GRADLE' }}
       - name: Build Gradle
         id: gradle
-        if: ${{ steps.getbuildtool.outputs.BUILD_TOOL == 'GRADLE' }}
         run: |-
           chmod +x gradlew
           ./gradlew shadowJar
