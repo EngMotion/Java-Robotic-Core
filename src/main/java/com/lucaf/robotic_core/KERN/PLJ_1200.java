@@ -10,21 +10,19 @@ import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.concurrent.CompletableFuture.runAsync;
-
-public class PCB_3 {
+public class PLJ_1200 {
     private final SerialPort serialPort;
     private CountDownLatch latch = null;
     private String result = "";
     private final OutputStream outputStream;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    public PCB_3(SerialPort serialPort) {
+    public PLJ_1200(SerialPort serialPort) {
         this.serialPort = serialPort;
         initReader();
         outputStream = serialPort.getOutputStream();
     }
 
-    public PCB_3(String portName) {
+    public PLJ_1200(String portName) {
         SerialPort[] ports = SerialPort.getCommPorts();
         SerialPort port = null;
         for (SerialPort p : ports) {
@@ -68,7 +66,7 @@ public class PCB_3 {
     }
 
     public double getReading() throws IOException, InterruptedException {
-        String result = sendDataForResult("w");
+        //String result = sendDataForResult("w");
         Pattern pattern = Pattern.compile("[\\d.]+");
         Matcher matcher = pattern.matcher(result);
         if (!matcher.find()) {
@@ -81,13 +79,13 @@ public class PCB_3 {
     public Future<Boolean> tare(){
         return executor.submit(() -> {
             try {
-                sendDataWithoutResult("t");
+                sendDataWithoutResult("T");
                 int i = 0;
                 while (true){
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                     double getReading = getReading();
                     i++;
-                    if (Math.abs(getReading) < 0.1) {
+                    if (Math.abs(getReading) < 0.01) {
                         return true;
                     }
                     if (i == 10) {
