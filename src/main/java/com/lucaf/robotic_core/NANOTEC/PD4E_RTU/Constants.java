@@ -51,6 +51,8 @@ public class Constants {
     public static final Pair<OdIndex, Integer> QUICK_STOP = new Pair<>(new OdIndex(0x605A, (short) 0x00), 16);
     public static final Pair<OdIndex, Integer> SHUTDOWN = new Pair<>(new OdIndex(0x605B, (short) 0x00), 16);
     public static final Pair<OdIndex, Integer> DISABLE = new Pair<>(new OdIndex(0x605C, (short) 0x00), 16);
+    public static final Pair<OdIndex, Integer> POSITION_WINDOW = new Pair<>(new OdIndex(0x6067, (short) 0x00), 32);
+    public static final Pair<OdIndex, Integer> POSITION_WINDOW_TIME = new Pair<>(new OdIndex(0x6068, (short) 0x00), 16);
     public static final Pair<OdIndex, Integer> MAX_MOTOR_SPEED = new Pair<>(new OdIndex(0x6080, (short) 0x00), 32);
     public static final Pair<OdIndex, Integer> SI_UNIT_POSITION = new Pair<>(new OdIndex(0x60A8, (short) 0x00), 32);
 
@@ -75,7 +77,7 @@ public class Constants {
     public static final Pair<OdIndex, Integer> DIGITAL_OUTPUT_LEVEL = new Pair<>(new OdIndex(0x3250, (short) 0x04), 32);
     public static final Pair<OdIndex, Integer> DIGITAL_OUTPUT_RAW = new Pair<>(new OdIndex(0x3250, (short) 0x06), 32);
     public static final Pair<OdIndex, Integer> DIGITAL_OUTPUT_OUTING = new Pair<>(new OdIndex(0x3250, (short) 0x08), 32);
-    public static final Pair<OdIndex, Integer> HOME_OFFSET = new Pair<>(new OdIndex(0x607C, (short) 0x02), 32);
+    public static final Pair<OdIndex, Integer> HOME_OFFSET = new Pair<>(new OdIndex(0x607C, (short) 0x00), 32);
     public static final Pair<OdIndex, Integer> HOME_METHOD = new Pair<>(new OdIndex(0x6098, (short) 0x00), 8);
     public static final Pair<OdIndex, Integer> HOMING_SPEED = new Pair<>(new OdIndex(0x6099, (short) 0x01), 32);
     public static final Pair<OdIndex, Integer> HOMING_ACCELERATION = new Pair<>(new OdIndex(0x609A, (short) 0x00), 32);
