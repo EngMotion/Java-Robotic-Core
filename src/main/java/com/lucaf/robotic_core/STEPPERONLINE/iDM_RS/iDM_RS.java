@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.Constants.*;
 
@@ -57,6 +59,26 @@ public class iDM_RS {
     final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
+     * Last verified position
+     */
+    AtomicLong currentPos = new AtomicLong(0);
+
+    /**
+     * Target position sent to the device
+     */
+    AtomicLong targetPos = new AtomicLong(0);
+
+    /**
+     * The device is initialized
+     */
+    AtomicBoolean initialized = new AtomicBoolean(false);
+
+    /**
+     * The device is moving
+     */
+    AtomicBoolean isMoving = new AtomicBoolean(false);
+
+    /**
      * Constructor of the class
      * @param rs485 the Modbus master connection
      * @param id the id of the device
@@ -85,12 +107,10 @@ public class iDM_RS {
      * Method that initializes the device state
      */
     private void initState(){
-        state.put("speed", 0);
-        state.put("acceleration", 0);
-        state.put("deceleration", 0);
-        state.put("position", 0L);
-        state.put("ramp_mode", 0);
-        state.put("is_moving", false);
+        state.put("current_position", currentPos);
+        state.put("target_position", targetPos);
+        state.put("is_moving", isMoving);
+        state.put("initialized", initialized);
         stateFunction.notifyStateChange();
     }
 
@@ -137,14 +157,14 @@ public class iDM_RS {
      */
     public void setSpeed(int speed) throws DeviceCommunicationException {
         if (speed < 0) speed = 0;
-        if (controlMode.getCONTROL_MODE()==2){
-            if (speed==0) state.put("is_moving", false);
-            else state.put("is_moving", true);
-        }
-        stateFunction.notifyStateChange();
         writeRegister(VELOCITY, speed);
-        state.put("speed", speed);
-        stateFunction.notifyStateChange();
+        if (controlMode.getCONTROL_MODE()==2){
+            if (speed==0) isMoving.set(false);
+            else isMoving.set(true);
+            stateFunction.notifyStateChange();
+            writeRegister(STATUS_MODE, StatusMode.getSegmentPositioning((byte) 0x00));
+        }
+
     }
 
     /**
@@ -153,10 +173,7 @@ public class iDM_RS {
      * @throws DeviceCommunicationException if there is an error getting the speed
      */
     public int getSpeed() throws DeviceCommunicationException {
-        int speed = readRegister(VELOCITY);
-        state.put("speed", speed);
-        stateFunction.notifyStateChange();
-        return speed;
+        return readRegister(VELOCITY);
     }
 
     /**
@@ -165,7 +182,7 @@ public class iDM_RS {
      */
     public void stop() throws DeviceCommunicationException {
         writeRegister(STATUS_MODE,StatusMode.getEMERGENCY_STOP());
-        state.put("is_moving", false);
+        isMoving.set(false);
         stateFunction.notifyStateChange();
     }
 
@@ -176,8 +193,6 @@ public class iDM_RS {
      */
     public void setAcceleration(int acceleration) throws DeviceCommunicationException {
         writeRegister(ACCELERATION, acceleration);
-        state.put("acceleration", acceleration);
-        stateFunction.notifyStateChange();
     }
 
     /**
@@ -186,10 +201,7 @@ public class iDM_RS {
      * @throws DeviceCommunicationException if there is an error getting the acceleration
      */
     public int getAcceleration() throws DeviceCommunicationException {
-        int acceleration = readRegister(ACCELERATION);
-        state.put("acceleration", acceleration);
-        stateFunction.notifyStateChange();
-        return acceleration;
+        return readRegister(ACCELERATION);
     }
 
     /**
@@ -199,8 +211,6 @@ public class iDM_RS {
      */
     public void setDeceleration(int deceleration) throws DeviceCommunicationException {
         writeRegister(DECELERATION, deceleration);
-        state.put("deceleration", deceleration);
-        stateFunction.notifyStateChange();
     }
 
     /**
@@ -209,10 +219,7 @@ public class iDM_RS {
      * @throws DeviceCommunicationException if there is an error getting the deceleration
      */
     public int getDeceleration() throws DeviceCommunicationException {
-        int deceleration = readRegister(DECELERATION);
-        state.put("deceleration", deceleration);
-        stateFunction.notifyStateChange();
-        return deceleration;
+        return readRegister(DECELERATION);
     }
 
     /**
@@ -222,9 +229,9 @@ public class iDM_RS {
      */
     public void setPosition(long position) throws DeviceCommunicationException {
         if (controlMode.isRELATIVE_POSITIONING()){
-            state.put("position", (long) state.get("position") + position);
+            targetPos.set(targetPos.get() + position);
         }else{
-            state.put("position", position);
+            targetPos.set(position);
         }
         stateFunction.notifyStateChange();
         int position_high = (int) (position >> 16);
@@ -300,11 +307,12 @@ public class iDM_RS {
     public Future<Boolean> moveToPositionAndWait(int position){
         return executorService.submit(() -> {
             try {
-                state.put("is_moving", true);
+                isMoving.set(true);
                 setPosition(position);
                 stateFunction.notifyStateChange();
                 waitReachedPosition();
-                state.put("is_moving", false);
+                isMoving.set(false);
+                currentPos.set(targetPos.get());
                 stateFunction.notifyStateChange();
                 return true;
             }catch (Exception e){
@@ -312,4 +320,6 @@ public class iDM_RS {
             }
         });
     }
+
+
 }

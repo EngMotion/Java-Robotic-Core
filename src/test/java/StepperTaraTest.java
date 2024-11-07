@@ -32,6 +32,11 @@ public class StepperTaraTest {
                 public void notifyStateChange() {
 
                 }
+
+                @Override
+                public void notifyError() {
+
+                }
             });
             iDM_rs.stop();
             iDM_rs.setPositioningMode();

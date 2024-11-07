@@ -1,4 +1,3 @@
-
 plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
@@ -6,7 +5,7 @@ plugins {
 }
 
 group = "com.github.EngMotion"
-version = "1.3.6"
+version = "1.3.12"
 
 repositories {
     mavenCentral()
@@ -20,7 +19,8 @@ dependencies {
     implementation("com.ghgande:j2mod:3.2.1")
     compileOnly("org.projectlombok:lombok:1.18.34")
     annotationProcessor("org.projectlombok:lombok:1.18.34")
-
+    implementation("com.intellij:forms_rt:7.0.3")
+    implementation("com.jgoodies:forms:1.1-preview")
 }
 
 tasks.test {
@@ -43,6 +43,9 @@ publishing() {
 tasks {
     javadoc {
         destinationDir = file("build/docs/javadoc")
+        options {
+            (this as CoreJavadocOptions).addStringOption("Xdoclint:none", "-quiet")
+            (this as CoreJavadocOptions).addStringOption("tag", "noinspection:a:\"\"")
+        }
     }
-
 }

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,7 +26,18 @@ public class RGI100_22 {
     /**
      * The executor service. It is used to run the commands in parallel
      */
-    private ExecutorService executorService = Executors.newFixedThreadPool(4);
+    private ExecutorService executorServiceGrip = Executors.newFixedThreadPool(1);
+
+    /**
+     * The executor service. It is used to run the commands in parallel
+     */
+    private ExecutorService executorServiceRotator = Executors.newFixedThreadPool(1);
+
+
+    /**
+     * The scheduled executor service. It is used to periodic check of errors
+     */
+    private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
     /**
      * The address id of the device
@@ -83,12 +95,19 @@ public class RGI100_22 {
     private AtomicInteger current_angle = new AtomicInteger(0);
 
     /**
+     * Fault boolean
+     */
+    private AtomicBoolean has_fault = new AtomicBoolean(false);
+
+    /**
      * Initializes the state
      */
     void initState() {
         if (state.containsKey("is_moving")) is_moving.set((Boolean) state.get("is_moving"));
         state.put("is_moving", is_moving);
         state.put("is_initialized", is_initialized);
+        state.put("has_fault", has_fault);
+        state.put("fault","");
 
         if (state.containsKey("current_position"))
             current_position.set(((Double) state.get("current_position")).intValue());
@@ -118,6 +137,7 @@ public class RGI100_22 {
         this.state = state;
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
+        setupErrorListener();
     }
 
     /**
@@ -132,6 +152,27 @@ public class RGI100_22 {
         this.state = state;
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
+        setupErrorListener();
+    }
+
+    /**
+     * Internal method that periodically checks for errors
+     */
+    private void setupErrorListener() {
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            try {
+                ErrorFlags errorFlags = getErrorFlags();
+                if (errorFlags.hasError()) {
+                    state.put("fault", errorFlags.getErrorDescription());
+                    has_fault.set(true);
+                    stateFunction.notifyError();
+                }
+            } catch (DeviceCommunicationException e) {
+                state.put("fault", e.getMessage());
+                has_fault.set(true);
+                stateFunction.notifyError();
+            }
+        }, 1000, 1000, java.util.concurrent.TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -332,15 +373,14 @@ public class RGI100_22 {
         try {
             is_moving.set(true);
             while (true) {
+                if (has_fault.get()){
+                    throw new DeviceCommunicationException("Device has fault");
+                }
                 PositionFeedback feedback = isRotationMoving();
                 if (feedback == PositionFeedback.REACHED || feedback == PositionFeedback.BLOCKED) {
                     break;
                 }
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.sleep(300);
             }
             is_moving.set(false);
         } catch (Exception e) {
@@ -355,15 +395,14 @@ public class RGI100_22 {
         try {
             is_moving.set(true);
             while (true) {
+                if (has_fault.get()){
+                    throw new DeviceCommunicationException("Device has fault");
+                }
                 PositionFeedback feedback = isGripMoving();
                 if (feedback == PositionFeedback.REACHED_WITH_OBJ || feedback == PositionFeedback.REACHED_WITHOUT_OBJ) {
                     break;
                 }
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Thread.sleep(300);
             }
             is_moving.set(false);
         } catch (Exception e) {
@@ -378,7 +417,7 @@ public class RGI100_22 {
      * @return a future that returns true if the movement is successful
      */
     public Future<Boolean> moveToRelativeAngleAndWait(int angle) {
-        return executorService.submit(() -> {
+        return executorServiceRotator.submit(() -> {
             try {
                 int newAngle = angle + current_position.get();
                 target_angle.set(newAngle);
@@ -403,7 +442,7 @@ public class RGI100_22 {
      * @return a future that returns true if the movement is successful
      */
     public Future<Boolean> moveToAbsoluteAngleAndWait(int angle) {
-        return executorService.submit(() -> {
+        return executorServiceRotator.submit(() -> {
             try {
                 target_angle.set(angle);
                 is_moving.set(true);
@@ -442,7 +481,7 @@ public class RGI100_22 {
      * @return a future that returns true if the movement is successful
      */
     public Future<Boolean> setGripPositionAndWait(int position) {
-        return executorService.submit(() -> {
+        return executorServiceGrip.submit(() -> {
             try {
                 target_position.set(position);
                 is_moving.set(true);
@@ -537,8 +576,8 @@ public class RGI100_22 {
      */
     public void setGripSpeed(int speed) throws DeviceCommunicationException {
         try {
-            speed = Math.max(0, speed);
             speed = Math.min(100, speed);
+            speed = Math.max(0, speed);
             writeRegister(SPEED, speed);
         } catch (Exception e) {
             throw new DeviceCommunicationException(e.getMessage());
@@ -618,6 +657,34 @@ public class RGI100_22 {
     public boolean saveConfig(boolean defaults) throws DeviceCommunicationException {
         try {
             return writeRegister(SAVE_CONFIG, defaults ? 0 : 1);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Gets the error flags of the device
+     *
+     * @return the error flags
+     * @throws DeviceCommunicationException if the thread is interrupted
+     */
+    public ErrorFlags getErrorFlags() throws DeviceCommunicationException {
+        try {
+            int response = readRegister(FEEDBACK_GRIP_ERROR_CODE);
+            return new ErrorFlags(response);
+        } catch (Exception e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Clears the error flags of the device
+     *
+     * @throws DeviceCommunicationException if the thread is interrupted
+     */
+    public void clearError() throws DeviceCommunicationException {
+        try {
+            //Todo, cant find register
         } catch (Exception e) {
             throw new DeviceCommunicationException(e.getMessage());
         }
