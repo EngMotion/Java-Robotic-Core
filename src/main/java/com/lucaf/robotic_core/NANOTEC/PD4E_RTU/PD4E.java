@@ -681,6 +681,19 @@ public class PD4E {
     }
 
     /**
+     * Method that gets the closed loop position proportional gain
+     * @return The gain of the closed loop position
+     * @throws DeviceCommunicationException if there is an error getting the gain
+     */
+    public int getClosedLoopPositionProportionalGain() throws DeviceCommunicationException {
+        try {
+            return readRegister(CL_POSITION_PROPORTIONAL_GAIN);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
      * Method that sets the closed loop position integral gain
      *
      * @param gain The gain to set
@@ -689,6 +702,19 @@ public class PD4E {
     public void setClosedLoopPositionIntegralGain(int gain) throws DeviceCommunicationException {
         try {
             writeRegister(CL_POSITION_INTEGRAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the closed loop position integral gain
+     * @return The gain of the closed loop position
+     * @throws DeviceCommunicationException if there is an error getting the gain
+     */
+    public int getClosedLoopPositionIntegralGain() throws DeviceCommunicationException {
+        try {
+            return readRegister(CL_POSITION_INTEGRAL_GAIN);
         } catch (NanolibHelper.NanolibException e) {
             throw new DeviceCommunicationException(e.getMessage());
         }
@@ -709,6 +735,19 @@ public class PD4E {
     }
 
     /**
+     * Method that gets the closed loop velocity proportional gain
+     * @return The gain of the closed loop velocity
+     * @throws DeviceCommunicationException if there is an error getting the gain
+     */
+    public int getClosedLoopVelocityProportionalGain() throws DeviceCommunicationException {
+        try {
+            return readRegister(CL_VELOCITY_PROPORTIONAL_GAIN);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
      * Method that sets the closed loop velocity integral gain
      *
      * @param gain The gain to set
@@ -723,6 +762,19 @@ public class PD4E {
     }
 
     /**
+     * Method that gets the closed loop velocity integral gain
+     * @return The gain of the closed loop velocity
+     * @throws DeviceCommunicationException if there is an error getting the gain
+     */
+    public int getClosedLoopVelocityIntegralGain() throws DeviceCommunicationException {
+        try {
+            return readRegister(CL_VELOCITY_INTEGRAL_GAIN);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
      * Method that sets the closed loop torque proportional gain
      *
      * @param gain The gain to set
@@ -731,6 +783,178 @@ public class PD4E {
     public void setClosedLoopTorqueProportionalGain(int gain) throws DeviceCommunicationException {
         try {
             writeRegister(CL_TORQUE_PROPORTIONAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the closed loop torque proportional gain
+     * @return The gain of the closed loop torque
+     * @throws DeviceCommunicationException if there is an error getting the gain
+     */
+    public int getClosedLoopTorqueProportionalGain() throws DeviceCommunicationException {
+        try {
+            return readRegister(CL_TORQUE_PROPORTIONAL_GAIN);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop torque integral gain
+     *
+     * @param gain The gain to set
+     * @throws DeviceCommunicationException if there is an error setting the gain
+     */
+    public void setClosedLoopTorqueIntegralGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_TORQUE_INTEGRAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the closed loop torque integral gain
+     * @return The gain of the closed loop torque
+     * @throws DeviceCommunicationException if there is an error getting the gain
+     */
+    public int getClosedLoopTorqueIntegralGain() throws DeviceCommunicationException {
+        try {
+            return readRegister(CL_TORQUE_INTEGRAL_GAIN);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop flux proportional gain
+     *
+     * @param gain The gain to set
+     * @throws DeviceCommunicationException if there is an error setting the gain
+     */
+    public void setClosedLoopFluxProportionalGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_FLUX_PROPORTIONAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the closed loop flux proportional gain
+     * @return The gain of the closed loop flux
+     * @throws DeviceCommunicationException if there is an error getting the gain
+     */
+    public int getClosedLoopFluxProportionalGain() throws DeviceCommunicationException {
+        try {
+            return readRegister(CL_FLUX_PROPORTIONAL_GAIN);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop flux integral gain
+     *
+     * @param gain The gain to set
+     * @throws DeviceCommunicationException if there is an error setting the gain
+     */
+    public void setClosedLoopFluxIntegralGain(int gain) throws DeviceCommunicationException {
+        try {
+            writeRegister(CL_FLUX_INTEGRAL_GAIN, gain);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the closed loop flux integral gain
+     * @return The gain of the closed loop flux
+     * @throws DeviceCommunicationException if there is an error getting the gain
+     */
+    public int getClosedLoopFluxIntegralGain() throws DeviceCommunicationException {
+        try {
+            return readRegister(CL_FLUX_INTEGRAL_GAIN);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop position window
+     * @param window The window in user defined units of witch the position is considered "REACHED"
+     * @throws DeviceCommunicationException if there is an error setting the window
+     */
+    public void setPositionWindow(int window) throws DeviceCommunicationException {
+        try {
+            writeRegister(POSITION_WINDOW, window);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the closed loop position window
+     * @return The window in user defined units of witch the position is considered "REACHED"
+     * @throws DeviceCommunicationException if there is an error getting the window
+     */
+    public int getPositionWindow() throws DeviceCommunicationException {
+        try {
+            return readRegister(POSITION_WINDOW);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the closed loop position window time
+     * @param time The time in milliseconds of witch the position is considered "REACHED"
+     * @throws DeviceCommunicationException if there is an error setting the window time
+     */
+    public void setPositionWindowTime(int time) throws DeviceCommunicationException {
+        try {
+            writeRegister(POSITION_WINDOW_TIME, time);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the closed loop position window time
+     * @return The time in milliseconds of witch the position is considered "REACHED"
+     * @throws DeviceCommunicationException if there is an error getting the window time
+     */
+    public int getPositionWindowTime() throws DeviceCommunicationException {
+        try {
+            return readRegister(POSITION_WINDOW_TIME);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that sets the offset between actual 0 and hardware 0
+     * @param offset The offset to set
+     * @throws DeviceCommunicationException if there is an error setting the offset
+     */
+    public void setHomeOffset(int offset) throws DeviceCommunicationException {
+        try {
+            writeRegister(HOME_OFFSET, offset);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the offset between actual 0 and hardware 0
+     * @return The offset between actual 0 and hardware 0
+     * @throws DeviceCommunicationException if there is an error getting the offset
+     */
+    public int getHomeOffset() throws DeviceCommunicationException {
+        try {
+            return readRegister(HOME_OFFSET);
         } catch (NanolibHelper.NanolibException e) {
             throw new DeviceCommunicationException(e.getMessage());
         }
@@ -783,48 +1007,6 @@ public class PD4E {
     }
 
     /**
-     * Method that sets the closed loop torque integral gain
-     *
-     * @param gain The gain to set
-     * @throws DeviceCommunicationException if there is an error setting the gain
-     */
-    public void setClosedLoopTorqueIntegralGain(int gain) throws DeviceCommunicationException {
-        try {
-            writeRegister(CL_TORQUE_INTEGRAL_GAIN, gain);
-        } catch (NanolibHelper.NanolibException e) {
-            throw new DeviceCommunicationException(e.getMessage());
-        }
-    }
-
-    /**
-     * Method that sets the closed loop flux proportional gain
-     *
-     * @param gain The gain to set
-     * @throws DeviceCommunicationException if there is an error setting the gain
-     */
-    public void setClosedLoopFluxProportionalGain(int gain) throws DeviceCommunicationException {
-        try {
-            writeRegister(CL_FLUX_PROPORTIONAL_GAIN, gain);
-        } catch (NanolibHelper.NanolibException e) {
-            throw new DeviceCommunicationException(e.getMessage());
-        }
-    }
-
-    /**
-     * Method that sets the closed loop flux integral gain
-     *
-     * @param gain The gain to set
-     * @throws DeviceCommunicationException if there is an error setting the gain
-     */
-    public void setClosedLoopFluxIntegralGain(int gain) throws DeviceCommunicationException {
-        try {
-            writeRegister(CL_FLUX_INTEGRAL_GAIN, gain);
-        } catch (NanolibHelper.NanolibException e) {
-            throw new DeviceCommunicationException(e.getMessage());
-        }
-    }
-
-    /**
      * Method that sets the maximum speed of the device
      *
      * @param speed The maximum speed of the device in user defined units
@@ -851,7 +1033,6 @@ public class PD4E {
             throw new DeviceCommunicationException(e.getMessage());
         }
     }
-
 
     /**
      * Method that gets the acceleration of the device
