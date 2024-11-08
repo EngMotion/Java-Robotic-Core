@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.EngMotion"
-version = "1.3.13"
+version = "1.3.14"
 
 repositories {
     mavenCentral()

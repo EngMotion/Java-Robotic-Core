@@ -84,7 +84,7 @@ public class UnitControl {
      * @return The register of 32 bit.
      */
     public int toInt() {
-        return (factor << 24) | (unit << 16) | (reserved1 << 8) | reserved2;
+        return ((factor & 0xFF) << 24) | ((unit & 0xFF) << 16) | ((reserved1 & 0xFF) << 8) | (reserved2 & 0xFF);
     }
 
     @Override
