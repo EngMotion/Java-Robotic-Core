@@ -369,7 +369,7 @@ public class RGI100_22 {
     /**
      * Waits for the grip to reach the end position. This method is thread blocking and should be used after an interpolation.
      */
-    public synchronized void waitEndPosition() throws DeviceCommunicationException {
+    public void waitEndPosition() throws DeviceCommunicationException {
         try {
             is_moving.set(true);
             while (true) {
@@ -380,7 +380,7 @@ public class RGI100_22 {
                 if (feedback == PositionFeedback.REACHED || feedback == PositionFeedback.BLOCKED) {
                     break;
                 }
-                Thread.sleep(300);
+                Thread.sleep(100);
             }
             is_moving.set(false);
         } catch (Exception e) {
@@ -391,7 +391,7 @@ public class RGI100_22 {
     /**
      * Waits for the grip to reach the end position. This method is thread blocking and should be used after an interpolation.
      */
-    public synchronized void waitEndGrip() throws DeviceCommunicationException {
+    public void waitEndGrip() throws DeviceCommunicationException {
         try {
             is_moving.set(true);
             while (true) {

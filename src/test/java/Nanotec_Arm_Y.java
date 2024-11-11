@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class Nanotec_Arm_Y {
     public static void main(String[] args) {
-        String port = "COM10";
+        String port = "COM12";
         try {
             NanolibHelper nanolibHelper = new NanolibHelper();
             nanolibHelper.setup();
@@ -53,20 +53,21 @@ public class Nanotec_Arm_Y {
            //pd4e.setBrakeAddress(1);
             //pd4e.stop();
             pd4e.setMaxSpeed(200);
-            pd4e.setAcceleration(100);
-            pd4e.setDeceleration(100);
+            pd4e.setAcceleration(200);
+            pd4e.setDeceleration(200);
             //pd4e.home(35);
             pd4e.start(Constants.OperationMode.PROFILE_POSITION);
             pd4e.setUnitPositionFactor(-1);
             pd4e.setUnitPositionUnit(UnitControl.Units.ENCODER);
             pd4e.setMaxCurrent(4000);
-            pd4e.writeRegister( new Pair<>(new OdIndex(0x3210, (short) 0x0B),32),1000);
-            System.out.println(pd4e.getUnitPosition().toString());
+            pd4e.setTargetCurrent(4000);
+            //pd4e.writeRegister( new Pair<>(new OdIndex(0x3210, (short) 0x0B),32),1000);
+            //System.out.println(pd4e.getUnitPosition().toString());
             //pd4e.setPositionRelative(-4000).get();
             //pd4e.setPositionRelative(20).get();
             while (true){
-                //pd4e.setPositionRelative(20000).get();
-                //pd4e.setPositionRelative(-2000).get();
+                pd4e.setPositionRelative(20000).get();
+                pd4e.setPositionRelative(-20000).get();
             }
             //pd4e.setPositionAbsolute(0).get();
             //One turn 13228

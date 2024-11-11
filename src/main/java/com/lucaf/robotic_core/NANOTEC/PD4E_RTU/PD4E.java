@@ -640,6 +640,32 @@ public class PD4E {
     }
 
     /**
+     * Method that sets the ramp speed of the device
+     * @param speed The speed of the device in user defined units
+     * @throws DeviceCommunicationException if there is an error setting the speed
+     */
+    public void setTravelSpeed(int speed) throws DeviceCommunicationException {
+        try {
+            writeRegister(PROFILE_VELOCITY, speed);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
+     * Method that gets the ramp speed of the device
+     * @return The speed of the device in user defined units
+     * @throws DeviceCommunicationException if there is an error getting the speed
+     */
+    public int getTravelSpeed() throws DeviceCommunicationException {
+        try {
+            return readRegister(PROFILE_VELOCITY);
+        } catch (NanolibHelper.NanolibException e) {
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
+    /**
      * Method that sets the deceleration of the device
      *
      * @param deceleration The deceleration of the device in user defined units
