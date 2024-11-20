@@ -368,6 +368,26 @@ public class PD4E {
     }
 
     /**
+     * Method that disables the device. Only turns off the power. Not the logic
+     *
+     * @throws NanolibHelper.NanolibException if there is an error disabling the device
+     */
+    public void disable() throws NanolibHelper.NanolibException {
+        ControlWord controlWord = new ControlWord();
+        controlWord.setEnableOperation(false);
+        controlWord.setSwitchOn(false);
+        controlWord.setEnableVoltage(false);
+        controlWord.setQuickStop(false);
+        writeRegister(CONTROL_WORD, controlWord.toInt());
+        setControlWordAndWaitForAck(controlWord, new StatusWordCheck() {
+            @Override
+            public boolean checkStatusWord(StatusWord statusWord) {
+                return !statusWord.readyToSwitchOn;
+            }
+        });
+    }
+
+    /**
      * Method that starts the device
      *
      * @param operationMode The operation mode of the device
