@@ -73,4 +73,14 @@ public class Constants {
      */
     public static final byte[] PAUSE_TIME = new byte[]{0x62, 0x06};
 
+    public static final byte[] HOMING_METHOD = new byte[]{0x60, 0x0A};
+
+    public static final byte[] HOMING_SPEED_HIGH = new byte[]{0x60, 0x0F};
+
+    public static final byte[] HOMING_SPEED_LOW = new byte[]{0x60, 0x10};
+
+    public static final byte[] HOMING_ACCELERATION = new byte[]{0x60, 0x11};
+
+    public static final byte[] HOMING_DECELERATION = new byte[]{0x60, 0x12};
+
 }

@@ -286,6 +286,32 @@ public class iDM_RS {
         writeControlMode();
     }
 
+    public void setHomingSpeed(int speed) throws DeviceCommunicationException {
+        int speed_high = (int) (speed >> 16);
+        int speed_low = (int) (speed & 0xFFFF);
+        writeRegister(HOMING_SPEED_HIGH, speed_high);
+        writeRegister(HOMING_SPEED_LOW, speed_low);
+    }
+
+    public void setHomingAcceleration(int acceleration) throws DeviceCommunicationException {
+        writeRegister(HOMING_ACCELERATION, acceleration);
+    }
+
+    public void setHomingDeceleration(int deceleration) throws DeviceCommunicationException {
+        writeRegister(HOMING_DECELERATION, deceleration);
+    }
+
+    @SneakyThrows
+    public void homing(HomingControl homingControl) throws DeviceCommunicationException {
+        writeRegister(HOMING_METHOD, homingControl.toInt());
+        writeRegister(STATUS_MODE, StatusMode.HOMING);
+        while (true){
+            StatusMode mode = getStatusMode();
+            if (mode.getSTATUS_CODE() == 0) break;
+            Thread.sleep(50);
+        }
+    }
+
     /**
      * Method that waits for the device to reach the position
      * @throws DeviceCommunicationException if there is an error waiting for the position
