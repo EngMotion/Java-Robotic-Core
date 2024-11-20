@@ -37,7 +37,7 @@ public class RGI100_22 {
     /**
      * The scheduled executor service. It is used to periodic check of errors
      */
-    private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService scheduledExecutorService;
 
     /**
      * The address id of the device
@@ -137,7 +137,15 @@ public class RGI100_22 {
         this.state = state;
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
-        setupErrorListener();
+    }
+
+    public static boolean ping(ModbusSerialMaster rs485, int id){
+        try {
+            Register[] regs = rs485.readMultipleRegisters(id, 0, 1);
+            return regs != null;
+        } catch (ModbusException e) {
+            return false;
+        }
     }
 
     /**
@@ -159,6 +167,10 @@ public class RGI100_22 {
      * Internal method that periodically checks for errors
      */
     private void setupErrorListener() {
+        if (scheduledExecutorService != null) {
+            scheduledExecutorService.shutdown();
+        }
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(() -> {
             try {
                 ErrorFlags errorFlags = getErrorFlags();
@@ -263,6 +275,7 @@ public class RGI100_22 {
             current_angle.set(0);
             current_position.set(0);
             stateFunction.notifyStateChange();
+            setupErrorListener();
         }
     }
 

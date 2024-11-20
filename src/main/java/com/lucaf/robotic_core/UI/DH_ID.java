@@ -13,6 +13,8 @@ import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DH_ID {
     private JComboBox comList;
@@ -37,16 +39,29 @@ public class DH_ID {
         }
     }
 
+    ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     void listConnected() {
-        selectMotor.setModel(new DefaultComboBoxModel<>());
-        selectID.setModel(new DefaultComboBoxModel<>());
-        for (int i = 0; i <= 255; i++) {
-            if (false) {
-                selectMotor.addItem(i);
-            } else {
-                selectID.addItem(i);
+        executorService.submit(() -> {
+            try {
+                refreshMotor.setEnabled(false);
+                selectMotor.setModel(new DefaultComboBoxModel<>());
+                selectID.setModel(new DefaultComboBoxModel<>());
+                master.setTimeout(20);
+                for (int i = 0; i <= 255; i++) {
+                    System.out.println("Checking motor " + i);
+                    if (RGI100_22.ping(master, i)) {
+                        selectMotor.addItem(i);
+                    } else {
+                        selectID.addItem(i);
+                    }
+                }
+                refreshMotor.setEnabled(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }
+        });
+
     }
 
     boolean connect() {

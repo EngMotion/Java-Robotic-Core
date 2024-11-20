@@ -111,6 +111,31 @@ public class Constants {
     public static final byte PARAM_STOP_DECELERATION = (byte) 21;
 
     /**
+     * Closed Gamma Vmin: 108
+     */
+    public static final byte PARAM_CL_GAMMA_VMIN = (byte) 108;
+
+    /**
+     * Closed Gamma Vmax: 109
+     */
+    public static final byte PARAM_CL_GAMMA_VMAX = (byte) 109;
+
+    /**
+     * Closed max gamma: 110
+     */
+    public static final byte PARAM_CL_MAX_GAMMA = (byte) 110;
+
+    /**
+     * Closed Loop Beta: 111
+     */
+    public static final byte PARAM_CL_BETA = (byte) 111;
+
+    /**
+     * Closed Loop Offset: 112
+     */
+    public static final byte PARAM_CL_OFFSET = (byte) 112;
+
+    /**
      * Closed Loop Minimum Current: 113
      */
     public static final byte PARAM_CL_MIN_CURRENT = (byte) 113;
@@ -119,6 +144,46 @@ public class Constants {
      * Closed Loop Maximum Current: 114
      */
     public static final byte PARAM_CL_MAX_CURRENT = (byte) 114;
+
+    /**
+     * Closed Loop Correction Velocity P: 115
+     */
+    public static final byte PARAM_CL_CORRECTION_VELOCITY_P = (byte) 115;
+
+    /**
+     * Closed Loop Correction Velocity I: 116
+     */
+    public static final byte PARAM_CL_CORRECTION_VELOCITY_I = (byte) 116;
+
+    /**
+     * Closed Loop Correction Velocity I Clipping: 117
+     */
+    public static final byte PARAM_CL_CORRECTION_VELOCITY_I_CLIPPING = (byte) 117;
+
+    /**
+     * Closed Loop Correction Velocity Dv Clock: 118
+     */
+    public static final byte PARAM_CL_CORRECTION_VELOCITY_DV_CLOCK = (byte) 118;
+
+    /**
+     * Closed Loop Correction Velocity Dv Clip: 119
+     */
+    public static final byte PARAM_CL_CORRECTION_VELOCITY_DV_CLIP = (byte) 119;
+
+    /**
+     * Closed Loop Upscale Delay: 120
+     */
+    public static final byte PARAM_CL_UPSCALE_DELAY = (byte) 120;
+
+    /**
+     * Closed Loop Downscale Delay: 121
+     */
+    public static final byte PARAM_CL_DOWNSCALE_DELAY = (byte) 121;
+
+    /**
+     * Closed Loop Correction Velocity Dv: 122
+     */
+    public static final byte PARAM_CL_ACTUAL_SCALER = (byte) 123;
 
     /**
      * Closed Loop Correction Position: 124
@@ -154,6 +219,11 @@ public class Constants {
      * Closed Loop Initialization: 133
      */
     public static final byte PARAM_CLOSED_LOOP_INIT = (byte) 133;
+
+    /**
+     * Positioning window: 134
+     */
+    public static final byte PARAM_POSITIONING_WINDOW = (byte) 134;
 
     /**
      * Microstep Resolution: 140

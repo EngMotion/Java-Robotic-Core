@@ -92,7 +92,7 @@ public class SAC_N {
     /**
      * The scheduled executor service. It is used to check for faults
      */
-    private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+    private ScheduledExecutorService scheduledExecutorService;
 
     /**
      * The state class
@@ -109,7 +109,6 @@ public class SAC_N {
         this.state = state;
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
-        setupErrorListener();
     }
 
     /**
@@ -131,6 +130,10 @@ public class SAC_N {
      * Internal method that periodically checks for errors
      */
     private void setupErrorListener() {
+        if (scheduledExecutorService != null) {
+            scheduledExecutorService.shutdown();
+        }
+        scheduledExecutorService = Executors.newScheduledThreadPool(1);
         scheduledExecutorService.scheduleAtFixedRate(() -> {
             try {
                 ErrorFlags errorFlags = getErrors();
@@ -320,6 +323,7 @@ public class SAC_N {
             target_position.set(0);
             current_position.set(0);
             stateFunction.notifyStateChange();
+            setupErrorListener();
         }
     }
 
