@@ -286,6 +286,11 @@ public class iDM_RS {
         writeControlMode();
     }
 
+    /**
+     * Method that sets the homing speed
+     * @param speed the speed to set
+     * @throws DeviceCommunicationException if there is an error setting the homing speed
+     */
     public void setHomingSpeed(int speed) throws DeviceCommunicationException {
         int speed_high = (int) (speed >> 16);
         int speed_low = (int) (speed & 0xFFFF);
@@ -293,14 +298,58 @@ public class iDM_RS {
         writeRegister(HOMING_SPEED_LOW, speed_low);
     }
 
+    /**
+     * Method that gets the homing speed
+     * @return the homing speed
+     * @throws DeviceCommunicationException if there is an error getting the homing speed
+     */
+    public int getHomingSpeed() throws DeviceCommunicationException {
+        int speed_high = readRegister(HOMING_SPEED_HIGH);
+        int speed_low = readRegister(HOMING_SPEED_LOW);
+        return (speed_high << 16) | speed_low;
+    }
+
+    /**
+     * Method that sets the homing acceleration
+     * @param acceleration the acceleration to set
+     * @throws DeviceCommunicationException if there is an error setting the homing acceleration
+     */
     public void setHomingAcceleration(int acceleration) throws DeviceCommunicationException {
         writeRegister(HOMING_ACCELERATION, acceleration);
     }
 
+    /**
+     * Method that gets the homing acceleration
+     * @return the homing acceleration
+     * @throws DeviceCommunicationException if there is an error getting the homing acceleration
+     */
+    public int getHomingAcceleration() throws DeviceCommunicationException {
+        return readRegister(HOMING_ACCELERATION);
+    }
+
+    /**
+     * Method that sets the homing deceleration
+     * @param deceleration the deceleration to set
+     * @throws DeviceCommunicationException if there is an error setting the homing deceleration
+     */
     public void setHomingDeceleration(int deceleration) throws DeviceCommunicationException {
         writeRegister(HOMING_DECELERATION, deceleration);
     }
 
+    /**
+     * Method that gets the homing deceleration
+     * @return the homing deceleration
+     * @throws DeviceCommunicationException if there is an error getting the homing deceleration
+     */
+    public int getHomingDeceleration() throws DeviceCommunicationException {
+        return readRegister(HOMING_DECELERATION);
+    }
+
+    /**
+     * Method that starts the homing
+     * @param homingControl the homing method to set
+     * @throws DeviceCommunicationException if there is an error setting the homing method
+     */
     @SneakyThrows
     public void homing(HomingControl homingControl) throws DeviceCommunicationException {
         writeRegister(HOMING_METHOD, homingControl.toInt());
@@ -310,6 +359,15 @@ public class iDM_RS {
             if (mode.getSTATUS_CODE() == 0) break;
             Thread.sleep(50);
         }
+    }
+
+    /**
+     * Method that gets the homing method
+     * @return the homing method
+     * @throws DeviceCommunicationException if there is an error getting the homing method
+     */
+    public HomingControl getHomingMethod() throws DeviceCommunicationException {
+        return new HomingControl(readRegister(HOMING_METHOD));
     }
 
     /**
