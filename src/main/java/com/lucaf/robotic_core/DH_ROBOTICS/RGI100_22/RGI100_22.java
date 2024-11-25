@@ -107,7 +107,7 @@ public class RGI100_22 {
         state.put("is_moving", is_moving);
         state.put("is_initialized", is_initialized);
         state.put("has_fault", has_fault);
-        state.put("fault","");
+        state.put("fault", "");
 
         if (state.containsKey("current_position"))
             current_position.set(((Double) state.get("current_position")).intValue());
@@ -139,7 +139,7 @@ public class RGI100_22 {
         if (stateFunction != null) initState();
     }
 
-    public static boolean ping(ModbusSerialMaster rs485, int id){
+    public static boolean ping(ModbusSerialMaster rs485, int id) {
         try {
             Register[] regs = rs485.readMultipleRegisters(id, 0, 1);
             return regs != null;
@@ -255,20 +255,21 @@ public class RGI100_22 {
     /**
      * Initializes the grip and the rotation
      *
-     * @throws DeviceCommunicationException if the thread is interrupted
+     * @return a future that returns true if the initialization is successful
      */
-    public void initialize() throws DeviceCommunicationException {
-        try {
-            //If the grip and the rotation are already initialized, return
-            if (!(hasGripInitialized() && hasRotationInitialized())) {
+    public Future<Boolean> initialize(){
+        return executorServiceGrip.submit(() -> {
+            try {
                 writeRegister(INITIALIZATION, 1);
                 while (!hasGripInitialized() || !hasRotationInitialized()) {
                     Thread.sleep(500);
                 }
+                is_initialized.set(true);
+                stateFunction.notifyStateChange();
+                setupErrorListener();
+            } catch (Exception e) {
+                return false;
             }
-        } catch (Exception e) {
-            throw new DeviceCommunicationException(e.getMessage());
-        } finally {
             is_initialized.set(true);
             target_angle.set(0);
             target_position.set(0);
@@ -276,7 +277,8 @@ public class RGI100_22 {
             current_position.set(0);
             stateFunction.notifyStateChange();
             setupErrorListener();
-        }
+            return true;
+        });
     }
 
     /**
@@ -386,7 +388,7 @@ public class RGI100_22 {
         try {
             is_moving.set(true);
             while (true) {
-                if (has_fault.get()){
+                if (has_fault.get()) {
                     throw new DeviceCommunicationException("Device has fault");
                 }
                 PositionFeedback feedback = isRotationMoving();
@@ -408,7 +410,7 @@ public class RGI100_22 {
         try {
             is_moving.set(true);
             while (true) {
-                if (has_fault.get()){
+                if (has_fault.get()) {
                     throw new DeviceCommunicationException("Device has fault");
                 }
                 PositionFeedback feedback = isGripMoving();

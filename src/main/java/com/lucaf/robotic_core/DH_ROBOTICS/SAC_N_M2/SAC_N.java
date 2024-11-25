@@ -73,7 +73,7 @@ public class SAC_N {
         state.put("is_moving", is_moving);
         state.put("is_initialized", is_initialized);
         state.put("has_fault", has_fault);
-        state.put("fault","");
+        state.put("fault", "");
 
         if (state.containsKey("current_position"))
             current_position.set(((Double) state.get("current_position")).intValue());
@@ -290,7 +290,7 @@ public class SAC_N {
     public synchronized void waitReachedPosition() throws DeviceCommunicationException {
         try {
             while (true) {
-                if (has_fault.get()){
+                if (has_fault.get()) {
                     throw new DeviceCommunicationException("Device has fault");
                 }
                 if (is_arrived()) return;
@@ -303,28 +303,32 @@ public class SAC_N {
 
     /**
      * Initializes the device
+     *
+     * @return a Future object that will return true when the device has initialized
      */
-    public void initialize() throws DeviceCommunicationException {
-        try {
-            setEnabled(false);
-            clearErrors();
-            setEnabled(true);
-            writeRegister(INITIALIZATION, 1);
-            int i = 0;
-            while (!hasInitialized()) {
-                Thread.sleep(300);
-                if (i>20) throw new DeviceCommunicationException("Initialization failed");
-                i++;
+    public Future<Boolean> initialize() {
+        return executorService.submit(() -> {
+            try {
+                setEnabled(false);
+                clearErrors();
+                setEnabled(true);
+                writeRegister(INITIALIZATION, 1);
+                int i = 0;
+                while (!hasInitialized()) {
+                    Thread.sleep(300);
+                    if (i > 20) throw new DeviceCommunicationException("Initialization failed");
+                    i++;
+                }
+            } catch (Exception e) {
+                return false;
             }
-        } catch (Exception e) {
-            throw new DeviceCommunicationException(e.getMessage());
-        } finally {
             is_initialized.set(true);
             target_position.set(0);
             current_position.set(0);
             stateFunction.notifyStateChange();
             setupErrorListener();
-        }
+            return true;
+        });
     }
 
     /**
@@ -406,6 +410,7 @@ public class SAC_N {
 
     /**
      * Get motor errors
+     *
      * @return ErrorFlag class
      */
     public ErrorFlags getErrors() throws DeviceCommunicationException {

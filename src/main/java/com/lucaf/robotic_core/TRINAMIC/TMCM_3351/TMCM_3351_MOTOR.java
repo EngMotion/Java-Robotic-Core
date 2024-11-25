@@ -15,7 +15,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 import static com.lucaf.robotic_core.TRINAMIC.TMCM_3351.Constants.*;
 
@@ -197,7 +196,7 @@ public class TMCM_3351_MOTOR {
      *
      * @throws DeviceCommunicationException if there is an error stopping the motor
      */
-    private void stopMotor() throws DeviceCommunicationException {
+    public void stopMotor() throws DeviceCommunicationException {
         isMoving.set(false);
         stateFunction.notifyStateChange();
         TMCLCommand command = new TMCLCommand(address, motor);
@@ -211,13 +210,85 @@ public class TMCM_3351_MOTOR {
      * @param mode the mode of the reference search
      * @throws DeviceCommunicationException if there is an error starting the reference search
      */
-    private void startReferenceSearch(byte mode) throws DeviceCommunicationException {
+    private int referenceSearch(int mode) throws DeviceCommunicationException {
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(RFS);
-        command.setType(mode);
-        usb.write(command);
+        command.setType((byte) mode);
+        TMCLCommand response = usb.write(command);
+        return response.getValue();
+    }
+
+    /**
+     * Method that starts the reference search
+     * @throws DeviceCommunicationException if there is an error starting the reference search
+     */
+    private void startReferenceSearch() throws DeviceCommunicationException {
+        referenceSearch(0);
         targetPos.set(0);
         currentPos.set(0);
+    }
+
+    /**
+     * Method that stops the reference search
+     * @throws DeviceCommunicationException if there is an error stopping the reference search
+     */
+    public void stopReferenceSearch() throws DeviceCommunicationException {
+        referenceSearch(1);
+    }
+
+    /**
+     * Method that checks if the reference search is complete
+     * @return true if the reference search is complete, false otherwise
+     * @throws DeviceCommunicationException if there is an error checking if the reference search is complete
+     */
+    public boolean isReferenceSearchComplete() throws DeviceCommunicationException {
+        return referenceSearch(2) == 0;
+    }
+
+    /**
+     * Method that starts the reference search and waits for it to end
+     * @return a future that represents the result of the operation
+     */
+    public Future<Boolean> startReferenceSearchAndWait() {
+        return executorService.submit(() -> {
+            try {
+                startReferenceSearch();
+                while (!isReferenceSearchComplete()) {
+                    Thread.sleep(50);
+                }
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        });
+    }
+
+    /**
+     * Method that sets the output of the motor
+     * @param port the port to set
+     * @param value the value to set
+     * @throws DeviceCommunicationException if there is an error setting the output
+     */
+    public void setOutput(int port, boolean value) throws DeviceCommunicationException {
+        TMCLCommand command = new TMCLCommand(address, motor);
+        command.setCommand(SIO);
+        command.setType((byte) port);
+        command.setValue(value ? 1 : 0);
+        usb.write(command);
+    }
+
+    /**
+     * Method that gets the input of the motor
+     * @param port the port to get
+     * @return the value of the input
+     * @throws DeviceCommunicationException if there is an error getting the input
+     */
+    public int getInput(int port) throws DeviceCommunicationException {
+        TMCLCommand command = new TMCLCommand(address, motor);
+        command.setCommand(GIO);
+        command.setType((byte) port);
+        TMCLCommand response = usb.write(command);
+        return response.getValue();
     }
 
     /**
