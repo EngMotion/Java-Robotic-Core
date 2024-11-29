@@ -438,17 +438,17 @@ public class Constants {
     /**
      * Reference search: 11
      */
-    public static final byte RFS = 11;
+    public static final byte RFS = 13;
 
     /**
      * Set digital output: 12
      */
-    public static final byte SIO = 12;
+    public static final byte SIO = 14;
 
     /**
      * Get digital input: 13
      */
-    public static final byte GIO = 13;
+    public static final byte GIO = 15;
 
     /**
      * Clear error flags: 36

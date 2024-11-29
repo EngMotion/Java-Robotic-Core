@@ -258,6 +258,8 @@ public class TMCM_3351_MOTOR {
                 }
                 return true;
             } catch (Exception e) {
+                System.out.println("Error starting reference search");
+                e.printStackTrace();
                 return false;
             }
         });
@@ -405,6 +407,8 @@ public class TMCM_3351_MOTOR {
                 stateFunction.notifyStateChange();
                 return true;
             } catch (Exception e) {
+                System.out.println("Error moving to position");
+                e.printStackTrace();
                 return false;
             }
         });
