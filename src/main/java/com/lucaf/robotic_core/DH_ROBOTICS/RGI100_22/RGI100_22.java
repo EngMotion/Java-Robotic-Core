@@ -138,16 +138,6 @@ public class RGI100_22 {
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
     }
-
-    public static boolean ping(ModbusSerialMaster rs485, int id) {
-        try {
-            Register[] regs = rs485.readMultipleRegisters(id, 0, 1);
-            return regs != null;
-        } catch (ModbusException e) {
-            return false;
-        }
-    }
-
     /**
      * Constructor that initializes the RGI100_22 object with an existing RS485 connection
      *
@@ -160,7 +150,22 @@ public class RGI100_22 {
         this.state = state;
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
-        setupErrorListener();
+    }
+
+
+    /**
+     * Method that checks if the device is connected
+     * @param rs485 the RS485 connection object
+     * @param id the address id of the device
+     * @return true if the device is connected, false otherwise
+     */
+    public static boolean ping(ModbusSerialMaster rs485, int id) {
+        try {
+            Register[] regs = rs485.readMultipleRegisters(id, 0, 1);
+            return regs != null;
+        } catch (ModbusException e) {
+            return false;
+        }
     }
 
     /**
@@ -185,6 +190,16 @@ public class RGI100_22 {
                 stateFunction.notifyError();
             }
         }, 1000, 1000, java.util.concurrent.TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Stops the scheduled executor service and the device
+     * @throws DeviceCommunicationException if there is an error in the communication with the device
+     */
+    public void stop() throws DeviceCommunicationException {
+        if (scheduledExecutorService != null) {
+            scheduledExecutorService.shutdown();
+        }
     }
 
     /**

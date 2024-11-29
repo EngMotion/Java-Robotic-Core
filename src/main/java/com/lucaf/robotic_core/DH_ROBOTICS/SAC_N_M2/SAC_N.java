@@ -123,7 +123,6 @@ public class SAC_N {
         this.state = state;
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
-        setupErrorListener();
     }
 
     /**
@@ -148,6 +147,17 @@ public class SAC_N {
                 stateFunction.notifyError();
             }
         }, 1000, 1000, java.util.concurrent.TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Stops the scheduled executor service and the device
+     * @throws DeviceCommunicationException if there is an error in the communication with the device
+     */
+    public void stop() throws DeviceCommunicationException {
+        if (scheduledExecutorService != null) {
+            scheduledExecutorService.shutdown();
+        }
+        setEnabled(false);
     }
 
     /**
