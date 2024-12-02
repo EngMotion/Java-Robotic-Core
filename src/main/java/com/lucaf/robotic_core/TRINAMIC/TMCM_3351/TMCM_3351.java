@@ -129,4 +129,61 @@ public class TMCM_3351 {
     public TMCM_3351_MOTOR getMotor(byte motorNumber, HashMap<String, Object> state) {
         return new TMCM_3351_MOTOR(this, motorNumber, state, stateFunction);
     }
+
+    /**
+     * Method that sets the output of the motor
+     * @param port the port to set
+     * @param value the value to set
+     * @throws DeviceCommunicationException if there is an error setting the output
+     */
+    public void setDigitalOutput(int port, boolean value) throws DeviceCommunicationException {
+        TMCLCommand command = new TMCLCommand(address, (byte) 2);
+        command.setCommand(SIO);
+        command.setType((byte) port);
+        command.setValue(value ? 1 : 0);
+        usb.write(command);
+    }
+
+    /**
+     * Method that gets the input of the motor
+     * @param port the port to get
+     * @return the value of the input
+     * @throws DeviceCommunicationException if there is an error getting the input
+     */
+    public int getDigitalInput(int port) throws DeviceCommunicationException {
+        TMCLCommand command = new TMCLCommand(address, (byte) 2);
+        command.setCommand(GIO);
+        command.setType((byte) port);
+        TMCLCommand response = usb.write(command);
+        return response.getValue();
+    }
+
+    /**
+     * Method that sets the output of the motor
+     * @param port the port to set
+     * @param value the value to set
+     * @throws DeviceCommunicationException if there is an error setting the output
+     */
+    public void setAnalogOutput(int port, int value) throws DeviceCommunicationException {
+        TMCLCommand command = new TMCLCommand(address, (byte) 0);
+        command.setCommand(SIO);
+        command.setType((byte) port);
+        command.setValue(value);
+        usb.write(command);
+    }
+
+    /**
+     * Method that gets the input of the motor
+     * @param port the port to get
+     * @return the value of the input
+     * @throws DeviceCommunicationException if there is an error getting the input
+     */
+    public int getAnalogInput(int port) throws DeviceCommunicationException {
+        TMCLCommand command = new TMCLCommand(address, (byte) 0);
+        command.setCommand(GIO);
+        command.setType((byte) port);
+        TMCLCommand response = usb.write(command);
+        return response.getValue();
+    }
 }
+

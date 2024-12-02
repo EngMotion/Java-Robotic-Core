@@ -266,34 +266,6 @@ public class TMCM_3351_MOTOR {
     }
 
     /**
-     * Method that sets the output of the motor
-     * @param port the port to set
-     * @param value the value to set
-     * @throws DeviceCommunicationException if there is an error setting the output
-     */
-    public void setOutput(int port, boolean value) throws DeviceCommunicationException {
-        TMCLCommand command = new TMCLCommand(address, motor);
-        command.setCommand(SIO);
-        command.setType((byte) port);
-        command.setValue(value ? 1 : 0);
-        usb.write(command);
-    }
-
-    /**
-     * Method that gets the input of the motor
-     * @param port the port to get
-     * @return the value of the input
-     * @throws DeviceCommunicationException if there is an error getting the input
-     */
-    public int getInput(int port) throws DeviceCommunicationException {
-        TMCLCommand command = new TMCLCommand(address, motor);
-        command.setCommand(GIO);
-        command.setType((byte) port);
-        TMCLCommand response = usb.write(command);
-        return response.getValue();
-    }
-
-    /**
      * Method that moves the motor to the given position
      *
      * @param mode     the mode of the movement
