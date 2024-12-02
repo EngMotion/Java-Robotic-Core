@@ -433,4 +433,22 @@ public class TMCM_3351_MOTOR {
         command.setValue(0);
         usb.write(command);
     }
+
+    public void enableClosedLoop() throws DeviceCommunicationException {
+        setParameter(PARAM_CL_MODE, 1);
+        while (true) {
+            if (getParameter(PARAM_CLOSED_LOOP_INIT) == 1) {
+                break;
+            }
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void disableClosedLoop() throws DeviceCommunicationException {
+        setParameter(PARAM_CL_MODE, 0);
+    }
 }
