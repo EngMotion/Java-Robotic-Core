@@ -21,6 +21,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.34")
     implementation("com.intellij:forms_rt:7.0.3")
     implementation("com.jgoodies:forms:1.1-preview")
+    implementation("de.exlll:configlib-yaml:4.5.0")
 }
 
 tasks.test {
