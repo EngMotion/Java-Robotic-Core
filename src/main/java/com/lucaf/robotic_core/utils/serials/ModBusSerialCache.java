@@ -10,11 +10,11 @@ import java.util.Map;
 public class ModBusSerialCache {
     static Map<String, ModbusSerialMaster> modbusSerialMasterHashMap = new HashMap<>();
 
-    public static ModbusSerialMaster getModBusMasterCom(String com) throws Exception {
+    public static ModbusSerialMaster getModBusMasterCom(String com, int baudrate) throws Exception {
         if (modbusSerialMasterHashMap.containsKey(com)) return modbusSerialMasterHashMap.get(com);
         SerialParameters params = new SerialParameters();
         params.setPortName(com);
-        params.setBaudRate(115200);
+        params.setBaudRate(baudrate);
         params.setDatabits(8);
         params.setParity("None");
         params.setStopbits(1);
