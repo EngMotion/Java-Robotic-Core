@@ -494,6 +494,7 @@ public class RGI100_22 {
                 stateFunction.notifyStateChange();
                 return new Pair<>(true, feedback);
             } catch (Exception e) {
+                logger.error("[RGI100_22] Error moving to relative angle: " + e.getMessage());
                 return new Pair<>(false, PositionFeedback.ERROR);
             }
         });
@@ -519,6 +520,7 @@ public class RGI100_22 {
                 stateFunction.notifyStateChange();
                 return new Pair<>(true, feedback);
             } catch (Exception e) {
+                logger.error("[RGI100_22] Error moving to absolute angle: " + e.getMessage());
                 return new Pair<>(false, PositionFeedback.ERROR);
             }
         });
@@ -545,7 +547,7 @@ public class RGI100_22 {
      * @param position the position to set
      * @return a future that returns true if the movement is successful
      */
-    public Future<Boolean> setGripPositionAndWait(int position) {
+    public Future<Pair<Boolean,PositionFeedback>> setGripPositionAndWait(int position) {
         return executorServiceGrip.submit(() -> {
             try {
                 logger.debug("[RGI100_22] Setting grip position: " + position);
@@ -553,13 +555,14 @@ public class RGI100_22 {
                 is_moving.set(true);
                 stateFunction.notifyStateChange();
                 setGripPosition(position);
-                waitEndGrip();
+                PositionFeedback feedback = waitEndGrip();
                 current_position.set(position);
                 is_moving.set(false);
                 stateFunction.notifyStateChange();
-                return true;
+                return new Pair<>(true, feedback);
             } catch (Exception e) {
-                return false;
+                logger.error("[RGI100_22] Error setting grip position: " + e.getMessage());
+                return new Pair<>(false, PositionFeedback.ERROR);
             }
         });
     }

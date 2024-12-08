@@ -71,14 +71,14 @@ public class DHRobotics {
             while (true){
                 Future<Boolean> task5 = sac_n.move_absoluteAndWait(15000);
                 Future<Pair<Boolean, RGI100_22.PositionFeedback>> task1 = rgi10022.moveToAbsoluteAngleAndWait(200);
-                Future<Boolean> task2 = rgi10022.setGripPositionAndWait(10);
+                Future<Pair<Boolean, RGI100_22.PositionFeedback>> task2 = rgi10022.setGripPositionAndWait(10);
                 task1.get();
                 task2.get();
                 task5.get();
 
                 Future<Boolean> task6 = sac_n.move_absoluteAndWait(500);
                 Future<Pair<Boolean, RGI100_22.PositionFeedback>> task3 = rgi10022.moveToAbsoluteAngleAndWait(-200);
-                Future<Boolean> task4 = rgi10022.setGripPositionAndWait(1000);
+                Future<Pair<Boolean, RGI100_22.PositionFeedback>> task4 = rgi10022.setGripPositionAndWait(1000);
                 task3.get();
                 task4.get();
                 task6.get();
