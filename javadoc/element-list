@@ -11,5 +11,7 @@ com.lucaf.robotic_core.TRINAMIC.TMCM_1140
 com.lucaf.robotic_core.TRINAMIC.TMCM_3351
 com.lucaf.robotic_core.TRINAMIC.utils
 com.lucaf.robotic_core.UI
+com.lucaf.robotic_core.utils.configurations
+com.lucaf.robotic_core.utils.serials
 com.nanotec.nanolib
 com.nanotec.nanolib.helper
