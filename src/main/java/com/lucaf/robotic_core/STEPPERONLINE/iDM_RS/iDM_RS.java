@@ -4,6 +4,7 @@ import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.procimg.Register;
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import lombok.Setter;
@@ -79,17 +80,23 @@ public class iDM_RS {
     AtomicBoolean isMoving = new AtomicBoolean(false);
 
     /**
+     * Global Logger
+     */
+    final Logger logger;
+
+    /**
      * Constructor of the class
      * @param rs485 the Modbus master connection
      * @param id the id of the device
      * @param state the state of the device
      * @param notifyStateChange the state class with the onStateChange method
      */
-    public iDM_RS(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange){
+    public iDM_RS(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
         this.rs485 = rs485;
         this.state = state;
         this.stateFunction = notifyStateChange;
         this.id = id;
+        this.logger = logger;
         initState();
     }
 
@@ -98,6 +105,7 @@ public class iDM_RS {
      * @param rampMode the ramp mode number
      */
     public void setRampMode(byte rampMode) {
+        logger.debug("[iDM_RS] Setting ramp mode to " + rampMode);
         this.rampMode = rampMode;
         state.put("ramp_mode", rampMode);
         stateFunction.notifyStateChange();
@@ -122,13 +130,16 @@ public class iDM_RS {
      */
     private synchronized int readRegister(byte[] register) throws DeviceCommunicationException {
         try {
+            logger.debug("[iDM_RS] Reading register " + register[0] + " " + register[1]);
             int startRegister = register[0] << 8 | register[1];
             Register[] regs = rs485.readMultipleRegisters(id, startRegister, 1);
             if (regs != null) {
+                logger.debug("[iDM_RS] Read register " + register[0] + " " + register[1] + " value " + regs[0].getValue());
                 return regs[0].getValue();
             }
             return -1;
         } catch (ModbusException e) {
+            logger.error("[iDM_RS] Error reading register " + register[0] + " " + register[1]);
             throw new DeviceCommunicationException(e.getMessage());
         }
     }
@@ -142,10 +153,12 @@ public class iDM_RS {
      */
     private synchronized boolean writeRegister(byte[] register, int data) throws DeviceCommunicationException {
         try {
+            logger.debug("[iDM_RS] Writing register " + register[0] + " " + register[1] + " value " + data);
             int startRegister = register[0] << 8 | register[1];
             rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
             return true;
         } catch (ModbusException e) {
+            logger.error("[iDM_RS] Error writing register " + register[0] + " " + register[1] + " value " + data);
             throw new DeviceCommunicationException(e.getMessage());
         }
     }
@@ -181,6 +194,7 @@ public class iDM_RS {
      * @throws DeviceCommunicationException
      */
     public void stop() throws DeviceCommunicationException {
+        logger.log("[iDM_RS] Emergency stop");
         writeRegister(STATUS_MODE,StatusMode.getEMERGENCY_STOP());
         isMoving.set(false);
         stateFunction.notifyStateChange();
@@ -351,7 +365,8 @@ public class iDM_RS {
      * @throws DeviceCommunicationException if there is an error setting the homing method
      */
     @SneakyThrows
-    public void homing(HomingControl homingControl) throws DeviceCommunicationException {
+    public void homing(HomingControl homingControl) {
+        logger.log("[iDM_RS] Starting homing");
         writeRegister(HOMING_METHOD, homingControl.toInt());
         writeRegister(STATUS_MODE, StatusMode.HOMING);
         while (true){
@@ -390,6 +405,7 @@ public class iDM_RS {
      */
     public Future<Boolean> moveToPositionAndWait(int position){
         return executorService.submit(() -> {
+            logger.log("[iDM_RS] Moving to position " + position);
             try {
                 isMoving.set(true);
                 setPosition(position);
@@ -400,6 +416,7 @@ public class iDM_RS {
                 stateFunction.notifyStateChange();
                 return true;
             }catch (Exception e){
+                logger.error("[iDM_RS] Error moving to position " + position);
                 return false;
             }
         });

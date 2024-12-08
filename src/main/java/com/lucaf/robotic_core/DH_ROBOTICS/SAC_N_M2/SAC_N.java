@@ -4,6 +4,7 @@ import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.procimg.Register;
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import lombok.Setter;
@@ -67,6 +68,11 @@ public class SAC_N {
     private AtomicBoolean has_fault = new AtomicBoolean(false);
 
     /**
+     * Global logger class
+     */
+    private final Logger logger;
+
+    /**
      * Initializes the state
      */
     void initState() {
@@ -104,11 +110,12 @@ public class SAC_N {
      *
      * @param rs485 the RS485 connection object
      */
-    public SAC_N(ModbusSerialMaster rs485, HashMap<String, Object> state, State notifyStateChange) {
+    public SAC_N(ModbusSerialMaster rs485, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
         this.rs485 = rs485;
         this.state = state;
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
+        this.logger = logger;
     }
 
     /**
@@ -117,31 +124,37 @@ public class SAC_N {
      * @param rs485 the RS485 connection object
      * @param id    the address id of the device
      */
-    public SAC_N(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange) {
+    public SAC_N(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
         this.rs485 = rs485;
         setId(id);
         this.state = state;
         this.stateFunction = notifyStateChange;
         if (stateFunction != null) initState();
+        this.logger = logger;
     }
 
     /**
      * Internal method that periodically checks for errors
      */
     private void setupErrorListener() {
+        logger.log("[SAC_N] Setting up error listener");
         if (scheduledExecutorService != null) {
+            logger.debug("[SAC_N] Shutting down previous error listener");
             scheduledExecutorService.shutdown();
         }
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
         scheduledExecutorService.scheduleAtFixedRate(() -> {
             try {
+                if (scheduledExecutorService== null || scheduledExecutorService.isShutdown()) return;
                 ErrorFlags errorFlags = getErrors();
+                logger.debug("[SAC_N] Checking for errors: " + errorFlags.toString());
                 if (errorFlags.hasError()) {
                     state.put("fault", errorFlags.getErrorDescription());
                     has_fault.set(true);
                     stateFunction.notifyError();
                 }
             } catch (DeviceCommunicationException e) {
+                logger.error("[SAC_N] Error checking for errors: " + e.getMessage());
                 state.put("fault", e.getMessage());
                 has_fault.set(true);
                 stateFunction.notifyError();
@@ -154,6 +167,7 @@ public class SAC_N {
      * @throws DeviceCommunicationException if there is an error in the communication with the device
      */
     public void stop() throws DeviceCommunicationException {
+        logger.log("[SAC_N] Stopping device");
         if (scheduledExecutorService != null) {
             scheduledExecutorService.shutdown();
         }
@@ -168,13 +182,16 @@ public class SAC_N {
      */
     private synchronized int readRegister(byte[] register) throws DeviceCommunicationException {
         try {
+            logger.debug("[SAC_N] Reading register: " + Integer.toHexString(register[0] << 8 | register[1]));
             int startRegister = register[0] << 8 | register[1];
             Register[] regs = rs485.readMultipleRegisters(id, startRegister, 1);
             if (regs != null) {
+                logger.debug("[SAC_N] Read register: " + regs[0].getValue());
                 return regs[0].getValue();
             }
             return -1;
         } catch (ModbusException e) {
+            logger.error("[SAC_N] Error reading register " + Integer.toHexString(register[0] << 8 | register[1]) + ": " + e.getMessage());
             throw new DeviceCommunicationException(e.getMessage());
         }
     }
@@ -188,10 +205,12 @@ public class SAC_N {
      */
     private synchronized boolean writeRegister(byte[] register, int data) throws DeviceCommunicationException {
         try {
+            logger.debug("[SAC_N] Writing register: " + Integer.toHexString(register[0] << 8 | register[1]) + " with data: " + data);
             int startRegister = register[0] << 8 | register[1];
             rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
             return true;
         } catch (ModbusException e) {
+            logger.error("[SAC_N] Error writing register " + Integer.toHexString(register[0] << 8 | register[1]) + ": " + e.getMessage());
             throw new DeviceCommunicationException(e.getMessage());
         }
     }
@@ -319,6 +338,7 @@ public class SAC_N {
     public Future<Boolean> initialize() {
         return executorService.submit(() -> {
             try {
+                logger.log("[SAC_N] Initializing device");
                 setEnabled(false);
                 clearErrors();
                 setEnabled(true);
@@ -329,14 +349,15 @@ public class SAC_N {
                     if (i > 20) throw new DeviceCommunicationException("Initialization failed");
                     i++;
                 }
+                is_initialized.set(true);
+                target_position.set(0);
+                current_position.set(0);
+                stateFunction.notifyStateChange();
+                setupErrorListener();
             } catch (Exception e) {
+                logger.error("[SAC_N] Error initializing device: " + e.getMessage());
                 return false;
             }
-            is_initialized.set(true);
-            target_position.set(0);
-            current_position.set(0);
-            stateFunction.notifyStateChange();
-            setupErrorListener();
             return true;
         });
     }
@@ -385,6 +406,7 @@ public class SAC_N {
     public Future<Boolean> move_absoluteAndWait(int position) {
         return executorService.submit(() -> {
             try {
+                logger.log("[SAC_N] Moving to position: " + position);
                 target_position.set(position);
                 is_moving.set(true);
                 stateFunction.notifyStateChange();
@@ -395,6 +417,7 @@ public class SAC_N {
                 stateFunction.notifyStateChange();
                 return true;
             } catch (Exception e) {
+                logger.error("[SAC_N] Error moving to position: " + e.getMessage());
                 return false;
             }
         });
@@ -409,10 +432,12 @@ public class SAC_N {
     public Future<Boolean> move_relativeAndWait(int position) {
         return executorService.submit(() -> {
             try {
+                logger.log("[SAC_N] Moving to relative position: " + position);
                 move_relative(position);
                 waitReachedPosition();
                 return true;
             } catch (Exception e) {
+                logger.error("[SAC_N] Error moving to relative position: " + e.getMessage());
                 return false;
             }
         });

@@ -35,7 +35,6 @@ public class RGI100_22 {
      */
     private ExecutorService executorServiceRotator = Executors.newFixedThreadPool(1);
 
-
     /**
      * The scheduled executor service. It is used to periodic check of errors
      */

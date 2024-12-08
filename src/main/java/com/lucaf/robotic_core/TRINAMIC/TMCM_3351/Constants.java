@@ -454,4 +454,9 @@ public class Constants {
      * Clear error flags: 36
      */
     public static final byte CLE = 36;
+
+    /**
+     * Restart: 48
+     */
+    public static final byte RST = 48;
 }

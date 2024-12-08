@@ -20,4 +20,9 @@ public class ErrorFlags {
         };
     }
 
+    @Override
+    public String toString() {
+        return "ErrorFlags(errorCode=" + this.errorCode + ")";
+    }
+
 }

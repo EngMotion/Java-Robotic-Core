@@ -1,5 +1,6 @@
 package com.lucaf.robotic_core.TRINAMIC.TMCM_3351;
 
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.TRINAMIC.USB;
 import com.lucaf.robotic_core.TRINAMIC.utils.TMCLCommand;
@@ -44,16 +45,22 @@ public class TMCM_3351 {
     private final Class<?> constantsClass;
 
     /**
+     * Global Logger
+     */
+    final Logger logger;
+
+    /**
      * Constructor of the class
      *
      * @param com           the USB communication class
      * @param state         the state of the device
      * @param stateFunction the state class, includes the onStateChange method
      */
-    public TMCM_3351(USB com, HashMap<String, Object> state, State stateFunction) {
+    public TMCM_3351(USB com, HashMap<String, Object> state, State stateFunction, Logger logger) {
         this.state = state;
         this.stateFunction = stateFunction;
         this.usb = com;
+        this.logger = logger;
         try {
             constantsClass = Class.forName("com.lucaf.robotic_core.TRINAMIC.TMCM_3351.Constants");
         } catch (ClassNotFoundException e) {
@@ -78,6 +85,7 @@ public class TMCM_3351 {
      * @throws DeviceCommunicationException if there is an error setting the parameter
      */
     private void setGlobalParameter(byte parameter, int value) throws DeviceCommunicationException {
+        logger.debug("[TMCM_3351] Setting parameter " + parameter + " to " + value);
         TMCLCommand command = new TMCLCommand(address, (byte) 0x00);
         command.setCommand(SGP);
         command.setValue(value);
@@ -96,6 +104,7 @@ public class TMCM_3351 {
      */
     private void setGlobalParameter(String parameter, int value) throws ConfigurationException {
         try {
+            logger.log("[TMCM_3351] Setting parameter " + parameter + " to " + value);
             Field field = constantsClass.getField(parameter);
             setGlobalParameter((byte) field.get(null), value);
             HashMap<String, Integer> globalParameters = (HashMap<String, Integer>) state.get("global_parameters");
@@ -127,7 +136,7 @@ public class TMCM_3351 {
      * @return the motor class
      */
     public TMCM_3351_MOTOR getMotor(byte motorNumber, HashMap<String, Object> state) {
-        return new TMCM_3351_MOTOR(this, motorNumber, state, stateFunction);
+        return new TMCM_3351_MOTOR(this, motorNumber, state, stateFunction, logger);
     }
 
     /**
@@ -184,6 +193,18 @@ public class TMCM_3351 {
         command.setType((byte) port);
         TMCLCommand response = usb.write(command);
         return response.getValue();
+    }
+
+    /**
+     * Method that restarts the module
+     * @throws DeviceCommunicationException if there is an error restarting the module
+     */
+    public void restart() throws DeviceCommunicationException {
+        TMCLCommand command = new TMCLCommand(address, (byte) 0);
+        command.setCommand(RST);
+        command.setType((byte) 0);
+        command.setValue(0);
+        usb.write(command);
     }
 }
 

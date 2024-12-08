@@ -1,5 +1,6 @@
 package com.lucaf.robotic_core.TRINAMIC;
 
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.TRINAMIC.utils.TMCLCommand;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import jssc.SerialPort;
@@ -22,11 +23,16 @@ public class USB implements SerialPortEventListener {
     private final SerialPort serialPort;
 
     /**
+     * Global Logger
+     */
+    final Logger logger;
+
+    /**
      * Constructor of the class
      * @param com the COM port of the USB. Will initialize the port
      * @throws SerialPortException if the port is not found
      */
-    public USB(String com) throws SerialPortException {
+    public USB(String com, Logger logger) throws SerialPortException {
         serialPort = new SerialPort(com);
         serialPort.openPort();
         serialPort.setParams(
@@ -35,6 +41,7 @@ public class USB implements SerialPortEventListener {
                 SerialPort.STOPBITS_1,
                 SerialPort.PARITY_NONE
         );
+        this.logger = logger;
         int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;
         serialPort.setEventsMask(mask);
         serialPort.addEventListener(this);
@@ -62,6 +69,7 @@ public class USB implements SerialPortEventListener {
      * @throws DeviceCommunicationException if there is an error writing the command
      */
     public synchronized TMCLCommand write(TMCLCommand command) throws DeviceCommunicationException {
+        logger.debug("[USB] Writing command: " + command.toString());
         latch = new CountDownLatch(1);
         try {
             serialPort.purgePort(SerialPort.PURGE_RXCLEAR);
@@ -77,8 +85,10 @@ public class USB implements SerialPortEventListener {
             if (!lastResponse.isOk()) {
                 throw new DeviceCommunicationException("Response is not OK: " + lastResponse.toString());
             }
+            logger.debug("[USB] Response: " + lastResponse.toString());
             return lastResponse;
         } catch (SerialPortException | InterruptedException e) {
+            logger.error("[USB] Error writing command: " + command.toString());
             throw new DeviceCommunicationException(e.getMessage());
         }
     }
@@ -89,6 +99,7 @@ public class USB implements SerialPortEventListener {
      */
     @Override
     public void serialEvent(SerialPortEvent serialPortEvent) {
+        logger.debug("[USB] Serial event: " + serialPortEvent.getEventType());
         if (serialPortEvent.isRXCHAR()) {
             if (serialPortEvent.getEventValue() > 0) {
                 try {

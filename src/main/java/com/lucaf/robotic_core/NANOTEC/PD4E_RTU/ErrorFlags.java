@@ -58,4 +58,9 @@ public class ErrorFlags {
         }
         return "Unknown error: " + errorCode;
     }
+
+    @Override
+    public String toString() {
+        return "ErrorFlags(errorCode=" + this.errorCode + ")";
+    }
 }

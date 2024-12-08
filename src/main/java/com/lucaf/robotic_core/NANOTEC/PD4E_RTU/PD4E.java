@@ -1,5 +1,6 @@
 package com.lucaf.robotic_core.NANOTEC.PD4E_RTU;
 
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.Pair;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
@@ -71,7 +72,7 @@ public class PD4E {
     /**
      * Executor service for the error handling
      */
-    private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService scheduledExecutorService;
 
     /**
      * Current verified position
@@ -99,6 +100,11 @@ public class PD4E {
     AtomicBoolean has_fault = new AtomicBoolean(false);
 
     /**
+     * Global logger
+     */
+    final Logger logger;
+
+    /**
      * Constructor of the class
      *
      * @param nanolibHelper Native methods helper
@@ -106,12 +112,13 @@ public class PD4E {
      * @param state         The state of the device
      * @param stateFunction The state class
      */
-    public PD4E(NanolibHelper nanolibHelper, DeviceHandle deviceHandle, HashMap<String, Object> state, State stateFunction) {
+    public PD4E(NanolibHelper nanolibHelper, DeviceHandle deviceHandle, HashMap<String, Object> state, State stateFunction, Logger logger) {
         this.nanolibHelper = nanolibHelper;
         this.deviceHandle = deviceHandle;
         this.state = state;
         this.stateFunction = stateFunction;
         initState();
+        this.logger = logger;
         setupErrorListener();
     }
 
@@ -131,9 +138,17 @@ public class PD4E {
      * Internal method that periodically checks for errors
      */
     private void setupErrorListener() {
+        logger.log("[PD4E] Setting up error listener");
+        if (scheduledExecutorService != null){
+            logger.debug("[PD4E] Shutting down previous error listener");
+            scheduledExecutorService.shutdown();
+        }
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(() -> {
+            if (scheduledExecutorService.isShutdown()) return;
             try {
                 ErrorFlags errorFlags = getErrors();
+                logger.debug("[PD4E] Error flags: " + errorFlags);
                 if (errorFlags.hasError()) {
                     state.put("fault", errorFlags.getErrorDescription());
                     has_fault.set(true);
@@ -155,6 +170,7 @@ public class PD4E {
      * @throws NanolibHelper.NanolibException if the register is not found or there is communication error
      */
     public void writeRegister(Pair<OdIndex, Integer> register, int value) throws NanolibHelper.NanolibException {
+        logger.debug("[PD4E] Writing register " + register.first.toString() + " with value " + value);
         nanolibHelper.writeNumber(deviceHandle, value, register.first, register.second);
     }
 
@@ -166,7 +182,9 @@ public class PD4E {
      * @throws NanolibHelper.NanolibException if the register is not found or there is communication error
      */
     private int readRegister(Pair<OdIndex, Integer> register) throws NanolibHelper.NanolibException {
-        return (int) nanolibHelper.readNumber(deviceHandle, register.first);
+        int r = (int) nanolibHelper.readNumber(deviceHandle, register.first);
+        logger.debug("[PD4E] Reading register " + register.first.toString() + " with value " + r);
+        return r;
     }
 
     /**
@@ -178,7 +196,9 @@ public class PD4E {
     private StatusWord getStatusWord() throws DeviceCommunicationException {
         try {
             int statusWord = readRegister(STATUS_WORD);
-            return new StatusWord(statusWord);
+            StatusWord sw = new StatusWord(statusWord);
+            logger.debug("[PD4E] Status word: " + sw);
+            return sw;
         } catch (NanolibHelper.NanolibException e) {
             throw new DeviceCommunicationException(e.getMessage());
         }
@@ -202,6 +222,7 @@ public class PD4E {
      */
     public void setBrakeStatus(boolean active) throws DeviceCommunicationException {
         if (brakeAddress == 0) return;
+        logger.debug("[PD4E] Setting brake status to " + active);
         setDigitalOutput(brakeAddress, active);
     }
 
@@ -214,6 +235,7 @@ public class PD4E {
      */
     public void setDigitalOutput(int output, boolean value) throws DeviceCommunicationException {
         if (output < 1 || output > 4) throw new RuntimeException("Output must be between 1 and 4");
+        logger.debug("[PD4E] Setting digital output " + output + " to " + value);
         try {
             DigitalOutputs digitalOutputs = new DigitalOutputs(readRegister(DIGITAL_OUTPUTS));
             switch (output) {
@@ -316,6 +338,7 @@ public class PD4E {
      * @throws DeviceCommunicationException if there is an error setting the homing method
      */
     public void home(int homeMethod) throws NanolibHelper.NanolibException, DeviceCommunicationException, InterruptedException {
+        logger.debug("[PD4E] Homing with method " + homeMethod);
         setBrakeStatus(false);
         InputSpecialFunction inputSpecialFunction = new InputSpecialFunction(readRegister(INPUT_SPECIAL_FUNCTION));
         inputSpecialFunction.setHomeSwitch(true);
@@ -486,6 +509,7 @@ public class PD4E {
         if (operationMode != OperationMode.PROFILE_POSITION)
             throw new RuntimeException("Operation mode is not PROFILE_POSITION");
         position = Math.max(-8388608, Math.min(8388607, position));
+        logger.debug("[PD4E] Setting absolute position to " + position);
         this.position = position;
         int finalPosition = position;
         targetPos.set(position);
@@ -495,6 +519,7 @@ public class PD4E {
             try {
                 setBrakeStatus(false);
                 writeRegister(TARGET_POSITION, finalPosition);
+                logger.debug("[PD4E] Setting control word");
                 operationControl.setOperationModeSpecific_4(true);
                 operationControl.setOperationModeSpecific_5(true);
                 operationControl.setOperationModeSpecific_6(false);
@@ -505,6 +530,7 @@ public class PD4E {
                     }
                 });
                 if (!initialized.get()) return false;
+                logger.debug("[PD4E] Starting absolute movement");
                 operationControl.setOperationModeSpecific_4(false);
                 setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
                     @Override
@@ -516,8 +542,10 @@ public class PD4E {
                 currentPos.set(finalPosition);
                 isMoving.set(false);
                 stateFunction.notifyStateChange();
+                logger.debug("[PD4E] Absolute movement completed");
                 return true;
             } catch (Exception e) {
+                logger.error("[PD4E] Error setting absolute position: " + e.getMessage());
                 return false;
             }
         });
@@ -535,8 +563,10 @@ public class PD4E {
         if (operationMode != OperationMode.PROFILE_POSITION)
             throw new RuntimeException("Operation mode is not PROFILE_POSITION");
         position = Math.max(-8388608, Math.min(8388607, position));
+        logger.debug("[PD4E] Setting relative position to " + position);
         this.position += position;
         int finalPosition = position;
+        logger.debug("[PD4E] Final position: " + finalPosition);
         targetPos.set(this.position);
         isMoving.set(true);
         stateFunction.notifyStateChange();
@@ -547,6 +577,7 @@ public class PD4E {
                 operationControl.setOperationModeSpecific_4(true);
                 operationControl.setOperationModeSpecific_5(true);
                 operationControl.setOperationModeSpecific_6(true);
+                logger.debug("[PD4E] Setting control word");
                 setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
                     @Override
                     public boolean checkStatusWord(StatusWord statusWord) {
@@ -554,6 +585,7 @@ public class PD4E {
                     }
                 });
                 if (!initialized.get()) return false;
+                logger.debug("[PD4E] Starting relative movement");
                 operationControl.setOperationModeSpecific_4(false);
                 setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
                     @Override
@@ -565,8 +597,10 @@ public class PD4E {
                 currentPos.set(this.position);
                 isMoving.set(false);
                 stateFunction.notifyStateChange();
+                logger.debug("[PD4E] Relative movement completed");
                 return true;
             } catch (Exception e) {
+                logger.error("[PD4E] Error setting relative position: " + e.getMessage());
                 return false;
             }
         });
@@ -1115,6 +1149,7 @@ public class PD4E {
      */
     public void clearErrors() throws DeviceCommunicationException {
         try {
+            logger.debug("[PD4E] Clearing errors");
             operationControl.setFaultReset(true);
             setControlWordAndWaitForAck(operationControl, new StatusWordCheck() {
                 @Override

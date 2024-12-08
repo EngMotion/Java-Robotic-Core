@@ -1,5 +1,6 @@
 package com.lucaf.robotic_core.TRINAMIC.TMCM_3351;
 
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.TRINAMIC.USB;
 import com.lucaf.robotic_core.TRINAMIC.utils.TMCLCommand;
@@ -79,6 +80,11 @@ public class TMCM_3351_MOTOR {
     AtomicBoolean initialized = new AtomicBoolean(false);
 
     /**
+     * Global Logger
+     */
+    final Logger logger;
+
+    /**
      * Constructor of the class
      *
      * @param tmcm_3351     the TMCM_3351 class
@@ -86,13 +92,14 @@ public class TMCM_3351_MOTOR {
      * @param state         the state of the motor
      * @param stateFunction the state interface with the onStateChange method
      */
-    public TMCM_3351_MOTOR(TMCM_3351 tmcm_3351, byte motorNumber, HashMap<String, Object> state, State stateFunction) {
+    public TMCM_3351_MOTOR(TMCM_3351 tmcm_3351, byte motorNumber, HashMap<String, Object> state, State stateFunction, Logger logger) {
         this.usb = tmcm_3351.getUsb();
         this.address = tmcm_3351.getAddress();
         this.motor = motorNumber;
         this.state = state;
         this.stateFunction = stateFunction;
         constantsClass = tmcm_3351.getConstantsClass();
+        this.logger = logger;
         initState();
     }
 
@@ -128,6 +135,7 @@ public class TMCM_3351_MOTOR {
      */
     public void setParameter(String value, int parameter) throws ConfigurationException {
         try {
+            logger.log("[TMCM_3351_MOTOR] Setting parameter " + value + " to " + parameter);
             Field field = constantsClass.getField(value);
             setParameter((byte) field.get(null), parameter);
         } catch (NoSuchFieldException | IllegalAccessException | DeviceCommunicationException e) {
@@ -143,6 +151,7 @@ public class TMCM_3351_MOTOR {
      * @throws DeviceCommunicationException if there is an error setting the parameter
      */
     private void setParameter(byte parameter, int value) throws DeviceCommunicationException {
+        logger.debug("[TMCM_3351_MOTOR] Setting parameter " + parameter + " to " + value);
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(SAP);
         command.setValue(value);
@@ -251,6 +260,7 @@ public class TMCM_3351_MOTOR {
      */
     public Future<Boolean> startReferenceSearchAndWait() {
         return executorService.submit(() -> {
+            logger.log("[TMCM_3351_MOTOR] Starting reference search");
             try {
                 startReferenceSearch();
                 while (!isReferenceSearchComplete()) {
@@ -344,6 +354,7 @@ public class TMCM_3351_MOTOR {
      */
     public Future<Boolean> moveToRelativePositionAndWait(int position) {
         return executorService.submit(() -> {
+            logger.debug("[TMCM_3351_MOTOR] Moving to relative position: " + position);
             try {
                 waitStatusUnlock();
                 isMoving.set(true);
@@ -355,6 +366,7 @@ public class TMCM_3351_MOTOR {
                 stateFunction.notifyStateChange();
                 return true;
             } catch (Exception e) {
+                logger.error("[TMCM_3351_MOTOR] Error moving to position: " + e.getMessage());
                 return false;
             }
         });
@@ -368,6 +380,7 @@ public class TMCM_3351_MOTOR {
      */
     public Future<Boolean> moveToAbsolutePositionAndWait(int position) {
         return executorService.submit(() -> {
+            logger.debug("[TMCM_3351_MOTOR] Moving to absolute position: " + position);
             try {
                 waitStatusUnlock();
                 isMoving.set(true);
@@ -379,8 +392,7 @@ public class TMCM_3351_MOTOR {
                 stateFunction.notifyStateChange();
                 return true;
             } catch (Exception e) {
-                System.out.println("Error moving to position");
-                e.printStackTrace();
+                logger.error("[TMCM_3351_MOTOR] Error moving to position: " + e.getMessage());
                 return false;
             }
         });
@@ -400,12 +412,18 @@ public class TMCM_3351_MOTOR {
      * @throws DeviceCommunicationException if there is an error clearing the errors
      */
     public void clearErrors() throws DeviceCommunicationException {
+        logger.debug("[TMCM_3351_MOTOR] Clearing errors");
         TMCLCommand command = new TMCLCommand(address, motor);
         command.setCommand(CLE);
         command.setValue(0);
         usb.write(command);
     }
 
+    /**
+     * Method that enables the closed loop
+     * @param mode the mode of the closed loop
+     * @throws DeviceCommunicationException if there is an error enabling the closed loop
+     */
     public void enableClosedLoop(int mode) throws DeviceCommunicationException {
         setParameter(PARAM_CL_MODE, mode);
         while (true) {
@@ -420,6 +438,10 @@ public class TMCM_3351_MOTOR {
         }
     }
 
+    /**
+     * Method that disables the closed loop
+     * @throws DeviceCommunicationException if there is an error disabling the closed loop
+     */
     public void disableClosedLoop() throws DeviceCommunicationException {
         setParameter(PARAM_CL_MODE, 0);
     }
