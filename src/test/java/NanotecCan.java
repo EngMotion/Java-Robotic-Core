@@ -1,3 +1,4 @@
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.NANOTEC.PD4E_RTU.PD4E;
 import com.lucaf.robotic_core.State;
 import com.nanotec.nanolib.*;
@@ -7,6 +8,27 @@ import java.util.HashMap;
 
 public class NanotecCan {
     public static void main(String[] args){
+        Logger logger = new Logger() {
+            @Override
+            public void log(String message) {
+                System.out.println(message);
+            }
+
+            @Override
+            public void error(String message) {
+                System.err.println(message);
+            }
+
+            @Override
+            public void warn(String message) {
+                System.out.println(message);
+            }
+
+            @Override
+            public void debug(String message) {
+                System.out.println(message);
+            }
+        };
         try{
             NanolibHelper nanolibHelper = new NanolibHelper();
             nanolibHelper.setup();
@@ -48,7 +70,7 @@ public class NanotecCan {
                 public void notifyError() {
 
                 }
-            });
+            }, logger);
         }catch (Exception e){
             e.printStackTrace();
         }

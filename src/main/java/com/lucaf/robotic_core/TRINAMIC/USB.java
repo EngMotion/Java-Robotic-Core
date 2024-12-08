@@ -7,6 +7,7 @@ import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
+import lombok.Setter;
 
 
 import java.util.concurrent.CountDownLatch;
@@ -25,14 +26,15 @@ public class USB implements SerialPortEventListener {
     /**
      * Global Logger
      */
-    final Logger logger;
+    @Setter
+    Logger logger;
 
     /**
      * Constructor of the class
      * @param com the COM port of the USB. Will initialize the port
      * @throws SerialPortException if the port is not found
      */
-    public USB(String com, Logger logger) throws SerialPortException {
+    public USB(String com) throws SerialPortException {
         serialPort = new SerialPort(com);
         serialPort.openPort();
         serialPort.setParams(
@@ -41,7 +43,6 @@ public class USB implements SerialPortEventListener {
                 SerialPort.STOPBITS_1,
                 SerialPort.PARITY_NONE
         );
-        this.logger = logger;
         int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;
         serialPort.setEventsMask(mask);
         serialPort.addEventListener(this);
@@ -69,7 +70,9 @@ public class USB implements SerialPortEventListener {
      * @throws DeviceCommunicationException if there is an error writing the command
      */
     public synchronized TMCLCommand write(TMCLCommand command) throws DeviceCommunicationException {
-        logger.debug("[USB] Writing command: " + command.toString());
+        if (logger != null) {
+            logger.debug("[USB] Writing command: " + command.toString());
+        }
         latch = new CountDownLatch(1);
         try {
             serialPort.purgePort(SerialPort.PURGE_RXCLEAR);
@@ -85,10 +88,14 @@ public class USB implements SerialPortEventListener {
             if (!lastResponse.isOk()) {
                 throw new DeviceCommunicationException("Response is not OK: " + lastResponse.toString());
             }
-            logger.debug("[USB] Response: " + lastResponse.toString());
+            if (logger != null) {
+                logger.debug("[USB] Response: " + lastResponse.toString());
+            }
             return lastResponse;
         } catch (SerialPortException | InterruptedException e) {
-            logger.error("[USB] Error writing command: " + command.toString());
+            if (logger != null) {
+                logger.error("[USB] Error writing command: " + e.getMessage());
+            }
             throw new DeviceCommunicationException(e.getMessage());
         }
     }

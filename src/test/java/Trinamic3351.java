@@ -1,3 +1,4 @@
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.TRINAMIC.TMCM_3351.TMCM_3351;
 import com.lucaf.robotic_core.TRINAMIC.TMCM_3351.TMCM_3351_MOTOR;
@@ -26,7 +27,28 @@ public class Trinamic3351 {
 
                 }
             };
-            TMCM_3351 tmcm_3351 = new TMCM_3351(usb, new HashMap<>(), state);
+            Logger logger = new Logger() {
+                @Override
+                public void log(String message) {
+                    System.out.println(message);
+                }
+
+                @Override
+                public void error(String message) {
+                    System.err.println(message);
+                }
+
+                @Override
+                public void warn(String message) {
+                    System.out.println(message);
+                }
+
+                @Override
+                public void debug(String message) {
+                    System.out.println(message);
+                }
+            };
+            TMCM_3351 tmcm_3351 = new TMCM_3351(usb, new HashMap<>(), state, logger);
             TMCM_3351_MOTOR motor0 = tmcm_3351.getMotor((byte) 0x00, new HashMap<>());
             motor0.setParameters(
                     Map.ofEntries(

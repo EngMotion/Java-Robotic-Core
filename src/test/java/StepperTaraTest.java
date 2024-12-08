@@ -3,6 +3,7 @@ import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 import com.lucaf.robotic_core.KERN.PCB_3;
 import com.lucaf.robotic_core.KERN.PLJ_1200;
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.iDM_RS;
 import com.lucaf.robotic_core.State;
 
@@ -12,6 +13,27 @@ import java.util.List;
 
 public class StepperTaraTest {
     public static void main(String[] args) {
+        Logger logger = new Logger() {
+            @Override
+            public void log(String message) {
+                System.out.println(message);
+            }
+
+            @Override
+            public void error(String message) {
+                System.err.println(message);
+            }
+
+            @Override
+            public void warn(String message) {
+                System.out.println(message);
+            }
+
+            @Override
+            public void debug(String message) {
+                System.out.println(message);
+            }
+        };
         try {
             //PCB_3 bilancia = new PCB_3("COM6");
             PLJ_1200 bilancia = new PLJ_1200("COM6");
@@ -37,7 +59,7 @@ public class StepperTaraTest {
                 public void notifyError() {
 
                 }
-            });
+            }, logger);
             iDM_rs.stop();
             iDM_rs.setPositioningMode();
             //iDM_rs.setVelocityMode();

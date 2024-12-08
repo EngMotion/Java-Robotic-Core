@@ -55,6 +55,7 @@ public class TMCM_3351 {
      * @param com           the USB communication class
      * @param state         the state of the device
      * @param stateFunction the state class, includes the onStateChange method
+     * @param logger        the logger
      */
     public TMCM_3351(USB com, HashMap<String, Object> state, State stateFunction, Logger logger) {
         this.state = state;

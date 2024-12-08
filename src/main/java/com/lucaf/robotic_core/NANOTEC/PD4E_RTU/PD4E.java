@@ -111,6 +111,7 @@ public class PD4E {
      * @param deviceHandle  The device handle
      * @param state         The state of the device
      * @param stateFunction The state class
+     * @param logger        The logger
      */
     public PD4E(NanolibHelper nanolibHelper, DeviceHandle deviceHandle, HashMap<String, Object> state, State stateFunction, Logger logger) {
         this.nanolibHelper = nanolibHelper;

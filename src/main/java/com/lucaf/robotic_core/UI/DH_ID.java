@@ -8,6 +8,8 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import com.lucaf.robotic_core.DH_ROBOTICS.RGI100_22.RGI100_22;
+import com.lucaf.robotic_core.Logger;
+import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 
 import javax.swing.*;
@@ -86,7 +88,37 @@ public class DH_ID {
     void startUpdate() throws DeviceCommunicationException {
         byte id = Byte.parseByte(selectMotor.getSelectedItem().toString());
         int newId = Integer.parseInt(selectID.getSelectedItem().toString());
-        RGI100_22 rgi100_22 = new RGI100_22(master, new HashMap<>(), null);
+        RGI100_22 rgi100_22 = new RGI100_22(master, new HashMap<>(), new State() {
+            @Override
+            public void notifyStateChange() {
+
+            }
+
+            @Override
+            public void notifyError() {
+
+            }
+        }, new Logger() {
+            @Override
+            public void log(String message) {
+
+            }
+
+            @Override
+            public void error(String message) {
+
+            }
+
+            @Override
+            public void warn(String message) {
+
+            }
+
+            @Override
+            public void debug(String message) {
+
+            }
+        });
         rgi100_22.setId(id);
         if (rgi100_22.changeAddress(newId)) {
             if (rgi100_22.saveConfig()) {

@@ -107,8 +107,10 @@ public class SAC_N {
 
     /**
      * Constructor that initializes the SAC_N object with an existing RS485 connection
-     *
      * @param rs485 the RS485 connection object
+     * @param state the state of the device
+     * @param notifyStateChange the state class, includes the onStateChange method
+     * @param logger the logger class
      */
     public SAC_N(ModbusSerialMaster rs485, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
         this.rs485 = rs485;
@@ -119,10 +121,12 @@ public class SAC_N {
     }
 
     /**
-     * Constructor that initializes the SAC_N object with an existing RS485 connection
-     *
+     * Constructor that initializes the SAC_N object with an existing RS485 connection and an id
      * @param rs485 the RS485 connection object
-     * @param id    the address id of the device
+     * @param id the address id of the device
+     * @param state the state of the device
+     * @param notifyStateChange the state class, includes the onStateChange method
+     * @param logger the logger class
      */
     public SAC_N(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
         this.rs485 = rs485;

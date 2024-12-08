@@ -90,6 +90,7 @@ public class iDM_RS {
      * @param id the id of the device
      * @param state the state of the device
      * @param notifyStateChange the state class with the onStateChange method
+     * @param logger the logger
      */
     public iDM_RS(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
         this.rs485 = rs485;

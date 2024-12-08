@@ -1,3 +1,4 @@
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.NANOTEC.PD4E_RTU.Constants;
 import com.lucaf.robotic_core.NANOTEC.PD4E_RTU.PD4E;
 import com.lucaf.robotic_core.State;
@@ -8,6 +9,27 @@ import java.util.HashMap;
 
 public class Nanotec_Griptest {
     public static void main(String[] args) {
+        Logger logger = new Logger() {
+            @Override
+            public void log(String message) {
+                System.out.println(message);
+            }
+
+            @Override
+            public void error(String message) {
+                System.err.println(message);
+            }
+
+            @Override
+            public void warn(String message) {
+                System.out.println(message);
+            }
+
+            @Override
+            public void debug(String message) {
+                System.out.println(message);
+            }
+        };
         String port = "COM3";
         try {
             NanolibHelper nanolibHelper = new NanolibHelper();
@@ -47,7 +69,7 @@ public class Nanotec_Griptest {
                 public void notifyError() {
 
                 }
-            });
+            }, logger);
             pd4e.start(Constants.OperationMode.PROFILE_VELOCITY);
 
 

@@ -1,6 +1,7 @@
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
+import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.StatusMode;
 import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.iDM_RS;
 import com.lucaf.robotic_core.State;
@@ -9,7 +10,27 @@ import java.util.HashMap;
 
 public class StepperOnline {
     public static void main(String[] args) {
+        Logger logger = new Logger() {
+            @Override
+            public void log(String message) {
+                System.out.println(message);
+            }
 
+            @Override
+            public void error(String message) {
+                System.err.println(message);
+            }
+
+            @Override
+            public void warn(String message) {
+                System.out.println(message);
+            }
+
+            @Override
+            public void debug(String message) {
+                System.out.println(message);
+            }
+        };
         try {
             SerialParameters params = new SerialParameters();
             params.setPortName("COM5");
@@ -33,7 +54,7 @@ public class StepperOnline {
                 public void notifyError() {
 
                 }
-            });
+            }, logger);
             iDM_rs.stop();
             iDM_rs.setVelocityMode();
             //iDM_rs.setRelativePositioning(true);
