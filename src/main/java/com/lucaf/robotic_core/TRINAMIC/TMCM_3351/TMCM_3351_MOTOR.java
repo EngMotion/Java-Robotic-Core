@@ -406,8 +406,8 @@ public class TMCM_3351_MOTOR {
         usb.write(command);
     }
 
-    public void enableClosedLoop() throws DeviceCommunicationException {
-        setParameter(PARAM_CL_MODE, 1);
+    public void enableClosedLoop(int mode) throws DeviceCommunicationException {
+        setParameter(PARAM_CL_MODE, mode);
         while (true) {
             if (getParameter(PARAM_CLOSED_LOOP_INIT) == 1) {
                 break;

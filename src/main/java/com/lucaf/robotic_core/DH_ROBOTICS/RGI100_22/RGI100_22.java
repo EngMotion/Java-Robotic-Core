@@ -4,6 +4,8 @@ import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.procimg.Register;
 import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
+import com.lucaf.robotic_core.Logger;
+import com.lucaf.robotic_core.Pair;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import lombok.Setter;
@@ -54,6 +56,7 @@ public class RGI100_22 {
      */
     private final ModbusSerialMaster rs485;
 
+
     /**
      * The state of the device
      */
@@ -63,6 +66,11 @@ public class RGI100_22 {
      * The state class
      */
     private final State stateFunction;
+
+    /**
+     * Global logger class
+     */
+    private final Logger logger;
 
     /**
      * Internal state of the device
@@ -126,37 +134,39 @@ public class RGI100_22 {
         stateFunction.notifyStateChange();
     }
 
-
     /**
      * Constructor that initializes the RGI100_22 object with an existing RS485 connection
      *
      * @param rs485 the RS485 connection object
      */
-    public RGI100_22(ModbusSerialMaster rs485, HashMap<String, Object> state, State notifyStateChange) {
+    public RGI100_22(ModbusSerialMaster rs485, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
         this.rs485 = rs485;
         this.state = state;
         this.stateFunction = notifyStateChange;
+        this.logger = logger;
         if (stateFunction != null) initState();
     }
+
     /**
      * Constructor that initializes the RGI100_22 object with an existing RS485 connection
      *
      * @param rs485 the RS485 connection object
      * @param id    the address id of the device
      */
-    public RGI100_22(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange) {
+    public RGI100_22(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
         this.rs485 = rs485;
         setId(id);
         this.state = state;
         this.stateFunction = notifyStateChange;
+        this.logger = logger;
         if (stateFunction != null) initState();
     }
 
-
     /**
      * Method that checks if the device is connected
+     *
      * @param rs485 the RS485 connection object
-     * @param id the address id of the device
+     * @param id    the address id of the device
      * @return true if the device is connected, false otherwise
      */
     public static boolean ping(ModbusSerialMaster rs485, int id) {
@@ -172,19 +182,26 @@ public class RGI100_22 {
      * Internal method that periodically checks for errors
      */
     private void setupErrorListener() {
+        logger.debug("[RGI100_22] Setting up error listener");
         if (scheduledExecutorService != null) {
+            logger.debug("[RGI100_22] Shutting down previous error listener");
             scheduledExecutorService.shutdown();
         }
+        logger.debug("[RGI100_22] Setting up new error listener");
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(() -> {
+            if (scheduledExecutorService == null || scheduledExecutorService.isShutdown()) return;
             try {
+                logger.debug("[RGI100_22] Checking for errors");
                 ErrorFlags errorFlags = getErrorFlags();
+                logger.debug("[RGI100_22] Error flags: " + errorFlags);
                 if (errorFlags.hasError()) {
                     state.put("fault", errorFlags.getErrorDescription());
                     has_fault.set(true);
                     stateFunction.notifyError();
                 }
             } catch (DeviceCommunicationException e) {
+                logger.error("[RGI100_22] Error checking for errors: " + e.getMessage());
                 state.put("fault", e.getMessage());
                 has_fault.set(true);
                 stateFunction.notifyError();
@@ -194,12 +211,17 @@ public class RGI100_22 {
 
     /**
      * Stops the scheduled executor service and the device
+     *
      * @throws DeviceCommunicationException if there is an error in the communication with the device
      */
-    public void stop() throws DeviceCommunicationException {
+    public void stop() throws ModbusException {
+        logger.log("[RGI100_22] Stopping device");
         if (scheduledExecutorService != null) {
+            logger.debug("[RGI100_22] Shutting down error listener");
             scheduledExecutorService.shutdown();
         }
+        logger.debug("[RGI100_22] Stopping device");
+        writeRegister(STOP, 1);
     }
 
     /**
@@ -209,10 +231,11 @@ public class RGI100_22 {
      * @return the response of the device
      */
     private synchronized int readRegister(byte[] register) throws ModbusException {
-
+        logger.debug("[RGI100_22] Reading register: " + Integer.toHexString(register[0] << 8 | register[1]));
         int startRegister = register[0] << 8 | register[1];
         Register[] regs = rs485.readMultipleRegisters(id, startRegister, 1);
         if (regs != null) {
+            logger.debug("[RGI100_22] Register value: " + regs[0].getValue());
             return regs[0].getValue();
         }
         return -1;
@@ -227,6 +250,7 @@ public class RGI100_22 {
      * @return true if the write is successful, false otherwise
      */
     private synchronized boolean writeRegister(byte[] register, int data) throws ModbusException {
+        logger.debug("[RGI100_22] Writing register: " + Integer.toHexString(register[0] << 8 | register[1]) + " with data: " + data);
         int startRegister = register[0] << 8 | register[1];
         rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
         return true;
@@ -272,27 +296,27 @@ public class RGI100_22 {
      *
      * @return a future that returns true if the initialization is successful
      */
-    public Future<Boolean> initialize(){
+    public Future<Boolean> initialize() {
         return executorServiceGrip.submit(() -> {
+            logger.log("[RGI100_22] Initializing device");
             try {
                 writeRegister(INITIALIZATION, 1);
                 while (!hasGripInitialized() || !hasRotationInitialized()) {
                     Thread.sleep(500);
                 }
+                logger.debug("[RGI100_22] Device initialized");
                 is_initialized.set(true);
+                target_angle.set(0);
+                target_position.set(0);
+                current_angle.set(0);
+                current_position.set(0);
                 stateFunction.notifyStateChange();
                 setupErrorListener();
+                return true;
             } catch (Exception e) {
+                logger.error("[RGI100_22] Error initializing device: " + e.getMessage());
                 return false;
             }
-            is_initialized.set(true);
-            target_angle.set(0);
-            target_position.set(0);
-            current_angle.set(0);
-            current_position.set(0);
-            stateFunction.notifyStateChange();
-            setupErrorListener();
-            return true;
         });
     }
 
@@ -331,8 +355,10 @@ public class RGI100_22 {
         BLOCKED,
         REACHED_WITH_OBJ,
         REACHED_WITHOUT_OBJ,
-        FALL
+        FALL,
+        ERROR
     }
+
 
     /**
      * Checks if the grip is rotating
@@ -399,20 +425,22 @@ public class RGI100_22 {
     /**
      * Waits for the grip to reach the end position. This method is thread blocking and should be used after an interpolation.
      */
-    public void waitEndPosition() throws DeviceCommunicationException {
+    public PositionFeedback waitEndPosition() throws DeviceCommunicationException {
         try {
             is_moving.set(true);
+            PositionFeedback feedback;
             while (true) {
                 if (has_fault.get()) {
                     throw new DeviceCommunicationException("Device has fault");
                 }
-                PositionFeedback feedback = isRotationMoving();
+                feedback = isRotationMoving();
                 if (feedback == PositionFeedback.REACHED || feedback == PositionFeedback.BLOCKED) {
                     break;
                 }
                 Thread.sleep(100);
             }
             is_moving.set(false);
+            return feedback;
         } catch (Exception e) {
             throw new DeviceCommunicationException(e.getMessage());
         }
@@ -421,20 +449,22 @@ public class RGI100_22 {
     /**
      * Waits for the grip to reach the end position. This method is thread blocking and should be used after an interpolation.
      */
-    public void waitEndGrip() throws DeviceCommunicationException {
+    public PositionFeedback waitEndGrip() throws DeviceCommunicationException {
         try {
             is_moving.set(true);
+            PositionFeedback feedback;
             while (true) {
                 if (has_fault.get()) {
                     throw new DeviceCommunicationException("Device has fault");
                 }
-                PositionFeedback feedback = isGripMoving();
-                if (feedback == PositionFeedback.REACHED_WITH_OBJ || feedback == PositionFeedback.REACHED_WITHOUT_OBJ) {
+                feedback = isGripMoving();
+                if (feedback == PositionFeedback.REACHED_WITH_OBJ || feedback == PositionFeedback.REACHED_WITHOUT_OBJ || feedback == PositionFeedback.FALL) {
                     break;
                 }
                 Thread.sleep(300);
             }
             is_moving.set(false);
+            return feedback;
         } catch (Exception e) {
             throw new DeviceCommunicationException(e.getMessage());
         }
@@ -446,21 +476,22 @@ public class RGI100_22 {
      * @param angle the angle to move to
      * @return a future that returns true if the movement is successful
      */
-    public Future<Boolean> moveToRelativeAngleAndWait(int angle) {
+    public Future<Pair<Boolean, PositionFeedback>> moveToRelativeAngleAndWait(int angle) {
         return executorServiceRotator.submit(() -> {
             try {
+                logger.debug("[RGI100_22] Moving to relative angle: " + angle);
                 int newAngle = angle + current_position.get();
                 target_angle.set(newAngle);
                 is_moving.set(true);
                 stateFunction.notifyStateChange();
                 moveToRelativeAngle(angle);
-                waitEndPosition();
+                PositionFeedback feedback = waitEndPosition();
                 current_angle.set(newAngle);
                 is_moving.set(false);
                 stateFunction.notifyStateChange();
-                return true;
+                return new Pair<>(true, feedback);
             } catch (Exception e) {
-                return false;
+                return new Pair<>(false, PositionFeedback.ERROR);
             }
         });
     }
@@ -471,20 +502,21 @@ public class RGI100_22 {
      * @param angle the angle to move to
      * @return a future that returns true if the movement is successful
      */
-    public Future<Boolean> moveToAbsoluteAngleAndWait(int angle) {
+    public Future<Pair<Boolean, PositionFeedback>> moveToAbsoluteAngleAndWait(int angle) {
         return executorServiceRotator.submit(() -> {
             try {
+                logger.debug("[RGI100_22] Moving to absolute angle: " + angle);
                 target_angle.set(angle);
                 is_moving.set(true);
                 stateFunction.notifyStateChange();
                 moveToAbsoluteAngle(angle);
-                waitEndPosition();
+                PositionFeedback feedback = waitEndPosition();
                 current_angle.set(angle);
                 is_moving.set(false);
                 stateFunction.notifyStateChange();
-                return true;
+                return new Pair<>(true, feedback);
             } catch (Exception e) {
-                return false;
+                return new Pair<>(false, PositionFeedback.ERROR);
             }
         });
     }
@@ -513,6 +545,7 @@ public class RGI100_22 {
     public Future<Boolean> setGripPositionAndWait(int position) {
         return executorServiceGrip.submit(() -> {
             try {
+                logger.debug("[RGI100_22] Setting grip position: " + position);
                 target_position.set(position);
                 is_moving.set(true);
                 stateFunction.notifyStateChange();
@@ -715,6 +748,7 @@ public class RGI100_22 {
     public void clearError() throws DeviceCommunicationException {
         try {
             //Todo, cant find register
+            logger.error("[RGI100_22] Clearing error not implemented");
         } catch (Exception e) {
             throw new DeviceCommunicationException(e.getMessage());
         }
