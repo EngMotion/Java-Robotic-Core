@@ -106,9 +106,12 @@ public class USB implements SerialPortEventListener {
      */
     @Override
     public void serialEvent(SerialPortEvent serialPortEvent) {
-        logger.debug("[USB] Serial event: " + serialPortEvent.getEventType());
+
         if (serialPortEvent.isRXCHAR()) {
             if (serialPortEvent.getEventValue() > 0) {
+                if (logger!=null){
+                    logger.debug("[USB] Serial response: " + serialPortEvent.getEventValue());
+                }
                 try {
                     byte[] frames = serialPort.readBytes(serialPortEvent.getEventValue());
                     lastResponse = new TMCLCommand(frames);

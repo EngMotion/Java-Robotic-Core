@@ -398,8 +398,8 @@ public class RGI100_22 {
             }
             return switch (response) {
                 case 0 -> PositionFeedback.MOVING;
-                case 1 -> PositionFeedback.REACHED_WITH_OBJ;
-                case 2 -> PositionFeedback.REACHED_WITHOUT_OBJ;
+                case 1 -> PositionFeedback.REACHED_WITHOUT_OBJ;
+                case 2 -> PositionFeedback.REACHED_WITH_OBJ;
                 case 3 -> PositionFeedback.FALL;
                 default -> PositionFeedback.MOVING;
             };
