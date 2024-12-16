@@ -62,7 +62,7 @@ public class PD4Tuner {
         for (int i = 0; i < units.length; i++) {
             try {
                 Field field = UnitControl.Units.class.getField(units[i]);
-                if (field.getByte(null) == unit) {
+                if (Integer.valueOf(field.getByte(null)) == unit) {
                     return units[i];
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -204,6 +204,22 @@ public class PD4Tuner {
             }
             return null;
         }, propsPanel);
+        createPanelTemplate("Home speed", 0, 10000, pd4e.getHomingSpeed(), value -> {
+            try {
+                pd4e.setHomingSpeed(value);
+            } catch (DeviceCommunicationException e) {
+                JOptionPane.showMessageDialog(null, "Error setting home offset", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            return null;
+        }, propsPanel);
+        createPanelTemplate("Home acceleration", 0, 10000, pd4e.getHomingAcceleration(), value -> {
+            try {
+                pd4e.setHomingAcceleration(value);
+            } catch (DeviceCommunicationException e) {
+                JOptionPane.showMessageDialog(null, "Error setting home offset", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            return null;
+        }, propsPanel);
         createPanelTemplate("Position Window", 0, 10000, pd4e.getPositionWindow(), value -> {
             try {
                 pd4e.setPositionWindow(value);
@@ -224,11 +240,13 @@ public class PD4Tuner {
         unitScale.setValue(unitControl.getFactor());
         unitScale.addChangeListener(e -> {
             try {
-                pd4e.setUnitPositionFactor((Integer) unitScale.getValue());
+                System.out.println(unitScale.getValue());
+                pd4e.setUnitPositionFactor(Integer.parseInt(String.valueOf(unitScale.getValue())));
             } catch (DeviceCommunicationException deviceCommunicationException) {
                 JOptionPane.showMessageDialog(null, "Error setting unit position factor", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+        unitSelector.setModel(new DefaultComboBoxModel<>(getUnits()));
         unitSelector.setSelectedItem(unitToString(unitControl.getUnit()));
         unitSelector.addItemListener(e -> {
             try {
@@ -245,7 +263,6 @@ public class PD4Tuner {
                 JOptionPane.showMessageDialog(null, "Error saving parameters", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
-        unitSelector.setModel(new DefaultComboBoxModel<>(getUnits()));
     }
 
     public void show() {

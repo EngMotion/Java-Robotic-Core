@@ -42,7 +42,7 @@ public class UnitControl {
         if (n >= 0) {
             return (byte) n;
         } else {
-            return (byte) (256 - n);
+            return (byte) (256 + n);
         }
     }
 

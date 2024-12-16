@@ -110,7 +110,13 @@ public class RGI100_22 {
      * Initializes the state
      */
     void initState() {
-        if (state.containsKey("is_moving")) is_moving.set((Boolean) state.get("is_moving"));
+        if (state.containsKey("is_moving")) {
+            if (state.get("is_moving") instanceof Boolean) {
+                is_moving.set((Boolean) state.get("is_moving"));
+            }else if (state.get("is_moving") instanceof AtomicBoolean) {
+                is_moving = (AtomicBoolean) state.get("is_moving");
+            }
+        }
         state.put("is_moving", is_moving);
         state.put("is_initialized", is_initialized);
         state.put("has_fault", has_fault);

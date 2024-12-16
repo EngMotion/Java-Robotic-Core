@@ -1051,6 +1051,9 @@ public class PD4E {
         try {
             UnitControl unitControl = new UnitControl(readRegister(SI_UNIT_POSITION));
             unitControl.setFactor(UnitControl.FACTOR(factor));
+            logger.debug("[PD4E] Setting unit position factor to " + unitControl.getFactor());
+            logger.debug("[PD4E] Setting unit position unit to " + unitControl.getUnit());
+            logger.debug("[PD4E] Setting unit to" + unitControl.toInt());
             writeRegister(SI_UNIT_POSITION, unitControl.toInt());
         } catch (NanolibHelper.NanolibException e) {
             throw new DeviceCommunicationException(e.getMessage());
@@ -1081,6 +1084,9 @@ public class PD4E {
         try {
             UnitControl unitControl = new UnitControl(readRegister(SI_UNIT_POSITION));
             unitControl.setUnit(unit);
+            logger.debug("[PD4E] Setting unit position factor to " + unitControl.getFactor());
+            logger.debug("[PD4E] Setting unit position unit to " + unitControl.getUnit());
+            logger.debug("[PD4E] Setting unit to" + unitControl.toInt());
             writeRegister(SI_UNIT_POSITION, unitControl.toInt());
         } catch (NanolibHelper.NanolibException e) {
             throw new DeviceCommunicationException(e.getMessage());
