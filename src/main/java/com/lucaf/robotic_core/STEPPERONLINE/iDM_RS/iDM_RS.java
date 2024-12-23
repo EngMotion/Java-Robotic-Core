@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.Constants.*;
@@ -116,7 +117,30 @@ public class iDM_RS {
      * Method that initializes the device state
      */
     private void initState(){
+        if(state.containsKey("current_position")){
+            if (state.get("current_position") instanceof AtomicInteger) {
+                currentPos = (AtomicLong) state.get("current_position");
+            }else if (state.get("current_position") instanceof Integer) {
+                currentPos.set((Integer) state.get("current_position"));
+            }else if (state.get("current_position") instanceof Double) {
+                currentPos.set(((Double) state.get("current_position")).intValue());
+            }else if (state.get("current_position") instanceof Long) {
+                currentPos.set((Long) state.get("current_position"));
+            }
+        }
         state.put("current_position", currentPos);
+
+        if(state.containsKey("target_position")){
+            if (state.get("target_position") instanceof AtomicInteger) {
+                targetPos = (AtomicLong) state.get("target_position");
+            }else if (state.get("target_position") instanceof Integer) {
+                targetPos.set((Integer) state.get("target_position"));
+            }else if (state.get("target_position") instanceof Double) {
+                targetPos.set(((Double) state.get("target_position")).intValue());
+            }else if (state.get("target_position") instanceof Long) {
+                targetPos.set((Long) state.get("target_position"));
+            }
+        }
         state.put("target_position", targetPos);
         state.put("is_moving", isMoving);
         state.put("initialized", initialized);

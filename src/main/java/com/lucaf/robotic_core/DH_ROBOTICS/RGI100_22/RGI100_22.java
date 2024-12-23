@@ -122,18 +122,48 @@ public class RGI100_22 {
         state.put("has_fault", has_fault);
         state.put("fault", "");
 
-        if (state.containsKey("current_position"))
-            current_position.set(((Double) state.get("current_position")).intValue());
+        if(state.containsKey("current_position")){
+            if (state.get("current_position") instanceof AtomicInteger) {
+                current_position = (AtomicInteger) state.get("current_position");
+            }else if (state.get("current_position") instanceof Integer) {
+                current_position.set((Integer) state.get("current_position"));
+            }else if (state.get("current_position") instanceof Double) {
+                current_position.set(((Double) state.get("current_position")).intValue());
+            }
+        }
         state.put("current_position", current_position);
 
-        if (state.containsKey("target_position"))
-            target_position.set(((Double) state.get("target_position")).intValue());
+        if(state.containsKey("target_position")){
+            if (state.get("target_position") instanceof AtomicInteger) {
+                target_position = (AtomicInteger) state.get("target_position");
+            }else if (state.get("target_position") instanceof Integer) {
+                target_position.set((Integer) state.get("target_position"));
+            }else if (state.get("target_position") instanceof Double) {
+                target_position.set(((Double) state.get("target_position")).intValue());
+            }
+        }
         state.put("target_position", target_position);
 
-        if (state.containsKey("current_angle")) target_position.set(((Double) state.get("current_angle")).intValue());
+        if(state.containsKey("current_angle")){
+            if (state.get("current_angle") instanceof AtomicInteger) {
+                current_angle = (AtomicInteger) state.get("current_angle");
+            }else if (state.get("current_angle") instanceof Integer) {
+                current_angle.set((Integer) state.get("current_angle"));
+            }else if (state.get("current_angle") instanceof Double) {
+                current_angle.set(((Double) state.get("current_angle")).intValue());
+            }
+        }
         state.put("current_angle", current_angle);
 
-        if (state.containsKey("target_angle")) target_position.set(((Double) state.get("target_angle")).intValue());
+        if(state.containsKey("target_angle")){
+            if (state.get("target_angle") instanceof AtomicInteger) {
+                target_angle = (AtomicInteger) state.get("target_angle");
+            }else if (state.get("target_angle") instanceof Integer) {
+                target_angle.set((Integer) state.get("target_angle"));
+            }else if (state.get("target_angle") instanceof Double) {
+                target_angle.set(((Double) state.get("target_angle")).intValue());
+            }
+        }
         state.put("target_angle", target_angle);
 
         stateFunction.notifyStateChange();

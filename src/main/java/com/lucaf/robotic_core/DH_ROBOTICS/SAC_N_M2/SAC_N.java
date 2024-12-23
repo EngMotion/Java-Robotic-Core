@@ -88,12 +88,26 @@ public class SAC_N {
         state.put("has_fault", has_fault);
         state.put("fault", "");
 
-        if (state.containsKey("current_position"))
-            current_position.set(((Double) state.get("current_position")).intValue());
+        if(state.containsKey("current_position")){
+            if (state.get("current_position") instanceof AtomicInteger) {
+                current_position = (AtomicInteger) state.get("current_position");
+            }else if (state.get("current_position") instanceof Integer) {
+                current_position.set((Integer) state.get("current_position"));
+            }else if (state.get("current_position") instanceof Double) {
+                current_position.set(((Double) state.get("current_position")).intValue());
+            }
+        }
         state.put("current_position", current_position);
 
-        if (state.containsKey("target_position"))
-            target_position.set(((Double) state.get("target_position")).intValue());
+        if(state.containsKey("target_position")){
+            if (state.get("target_position") instanceof AtomicInteger) {
+                target_position = (AtomicInteger) state.get("target_position");
+            }else if (state.get("target_position") instanceof Integer) {
+                target_position.set((Integer) state.get("target_position"));
+            }else if (state.get("target_position") instanceof Double) {
+                target_position.set(((Double) state.get("target_position")).intValue());
+            }
+        }
         state.put("target_position", target_position);
     }
 

@@ -107,7 +107,26 @@ public class TMCM_3351_MOTOR {
      * Method that initializes the state of the specific motor
      */
     void initState() {
+        if(state.containsKey("current_position")){
+            if (state.get("current_position") instanceof AtomicInteger) {
+                currentPos = (AtomicInteger) state.get("current_position");
+            }else if (state.get("current_position") instanceof Integer) {
+                currentPos.set((Integer) state.get("current_position"));
+            }else if (state.get("current_position") instanceof Double) {
+                currentPos.set(((Double) state.get("current_position")).intValue());
+            }
+        }
         state.put("current_position", currentPos);
+
+        if(state.containsKey("target_position")){
+            if (state.get("target_position") instanceof AtomicInteger) {
+                targetPos = (AtomicInteger) state.get("target_position");
+            }else if (state.get("target_position") instanceof Integer) {
+                targetPos.set((Integer) state.get("target_position"));
+            }else if (state.get("target_position") instanceof Double) {
+                targetPos.set(((Double) state.get("target_position")).intValue());
+            }
+        }
         state.put("target_position", targetPos);
         state.put("is_moving", isMoving);
         state.put("initialized", initialized);
