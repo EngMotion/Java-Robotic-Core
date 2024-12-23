@@ -35,12 +35,13 @@ public class StepperTaraTest {
             }
         };
         try {
-            //PCB_3 bilancia = new PCB_3("COM6");
-            PLJ_1200 bilancia = new PLJ_1200("COM6");
+            PCB_3 bilancia = new PCB_3("COM6");
+            //PLJ_1200 bilancia = new PLJ_1200("COM6");
+            //PLJ_1200 bilancia = null;
             SerialParameters params = new SerialParameters();
             params.setPortName("COM5");
-            params.setBaudRate(115200);
-            //params.setBaudRate(57600);
+            //params.setBaudRate(115200); //stepper
+            params.setBaudRate(57600); //servo
             params.setDatabits(8);
             params.setParity("None");
             params.setStopbits(1);
@@ -66,34 +67,34 @@ public class StepperTaraTest {
             iDM_rs.setRelativePositioning(true);
             iDM_rs.setDeceleration(100);
             iDM_rs.setAcceleration(100);
-            iDM_rs.setSpeed(150);
+            iDM_rs.setSpeed(1200);
 
             double dosaggio = 10;
-            int cicli = 20;
+            int cicli = 1;
             //int quantita = (int) Math.round((dosaggio / 0.) * 1667);
-            int quantita = 3333;
-            int back = 0;
+            int quantita = 387785;
+            int back = 5000;
             String scale = "on";
 
-            System.out.println("Dosaggio: " + dosaggio + " - Passi: " + quantita);
+            System.out.println("Dosaggio: " + dosaggio + " - Impulsi: " + quantita);
 
             List<Double> numeri = new ArrayList<>();
             List<Double> tempi = new ArrayList<>();
 
             if (scale == "on") {
-                bilancia.tare().get();
+                if (bilancia != null) bilancia.tare().get();
             }
 
             for (int i = 0; i < cicli; i++) {
                 double now = System.currentTimeMillis();
                 iDM_rs.moveToPositionAndWait(-quantita).get();
                 //System.out.println("Ci ho messo " + (System.currentTimeMillis()-now) + " ms");
-                tempi.add(System.currentTimeMillis()-now);
+                tempi.add(System.currentTimeMillis() - now);
                 iDM_rs.moveToPositionAndWait(back).get();
 
                 if (scale == "on") {
-                    Thread.sleep(8000);
-                    System.out.println(String.valueOf(bilancia.getReading()).replace(".",","));
+                    Thread.sleep(12000);
+                    System.out.println(String.valueOf(bilancia.getReading()).replace(".", ","));
                     numeri.add(bilancia.getReading());
                     Thread.sleep(200);
                 } else {
@@ -101,11 +102,11 @@ public class StepperTaraTest {
                 }
 
                 if (scale == "on") {
-                    bilancia.tare().get();
+                    if (bilancia != null) bilancia.tare().get();
                 }
             }
 
-           bilancia.closePort();
+            if (bilancia != null) bilancia.closePort();
 
             double media = numeri.stream()
                     .mapToDouble(Double::doubleValue)
