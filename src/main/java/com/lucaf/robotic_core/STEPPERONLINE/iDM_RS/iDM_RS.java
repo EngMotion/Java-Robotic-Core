@@ -155,11 +155,11 @@ public class iDM_RS {
      */
     private synchronized int readRegister(byte[] register) throws DeviceCommunicationException {
         try {
-            logger.debug("[iDM_RS] Reading register " + register[0] + " " + register[1]);
+            //logger.debug("[iDM_RS] Reading register " + register[0] + " " + register[1]);
             int startRegister = register[0] << 8 | register[1];
             Register[] regs = rs485.readMultipleRegisters(id, startRegister, 1);
             if (regs != null) {
-                logger.debug("[iDM_RS] Read register " + register[0] + " " + register[1] + " value " + regs[0].getValue());
+                //logger.debug("[iDM_RS] Read register " + register[0] + " " + register[1] + " value " + regs[0].getValue());
                 return regs[0].getValue();
             }
             return -1;
@@ -178,12 +178,12 @@ public class iDM_RS {
      */
     private synchronized boolean writeRegister(byte[] register, int data) throws DeviceCommunicationException {
         try {
-            logger.debug("[iDM_RS] Writing register " + register[0] + " " + register[1] + " value " + data);
+            //logger.debug("[iDM_RS] Writing register " + register[0] + " " + register[1] + " value " + data);
             int startRegister = register[0] << 8 | register[1];
             rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
             return true;
         } catch (ModbusException e) {
-            logger.error("[iDM_RS] Error writing register " + register[0] + " " + register[1] + " value " + data);
+            //logger.error("[iDM_RS] Error writing register " + register[0] + " " + register[1] + " value " + data);
             throw new DeviceCommunicationException(e.getMessage());
         }
     }
@@ -430,7 +430,7 @@ public class iDM_RS {
      */
     public Future<Boolean> moveToPositionAndWait(int position){
         return executorService.submit(() -> {
-            logger.log("[iDM_RS] Moving to position " + position);
+            //logger.log("[iDM_RS] Moving to position " + position);
             try {
                 isMoving.set(true);
                 setPosition(position);

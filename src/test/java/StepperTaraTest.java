@@ -10,9 +10,12 @@ import com.lucaf.robotic_core.State;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class StepperTaraTest {
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
         Logger logger = new Logger() {
             @Override
             public void log(String message) {
@@ -70,11 +73,17 @@ public class StepperTaraTest {
             iDM_rs.setSpeed(1200);
 
             double dosaggio = 10;
-            int cicli = 1;
+
             //int quantita = (int) Math.round((dosaggio / 0.) * 1667);
-            int quantita = 387785;
+
+
+            int cicli = 200;
+            int quantita = 356238;
+
+
+
             int back = 5000;
-            String scale = "on";
+            String scale = "on0";
 
             System.out.println("Dosaggio: " + dosaggio + " - Impulsi: " + quantita);
 
@@ -98,7 +107,9 @@ public class StepperTaraTest {
                     numeri.add(bilancia.getReading());
                     Thread.sleep(200);
                 } else {
-                    Thread.sleep(2000);
+                    System.out.println("Premere Invio per continuare...");
+                    scanner.nextLine(); // Attende che l'utente prema Invio
+                    //Thread.sleep(12000);
                 }
 
                 if (scale == "on") {
