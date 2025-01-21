@@ -155,11 +155,11 @@ public class iDM_RS {
      */
     private synchronized int readRegister(byte[] register) throws DeviceCommunicationException {
         try {
-            //logger.debug("[iDM_RS] Reading register " + register[0] + " " + register[1]);
+            logger.debug("[iDM_RS] Reading register " + register[0] + " " + register[1]);
             int startRegister = register[0] << 8 | register[1];
             Register[] regs = rs485.readMultipleRegisters(id, startRegister, 1);
             if (regs != null) {
-                //logger.debug("[iDM_RS] Read register " + register[0] + " " + register[1] + " value " + regs[0].getValue());
+                logger.debug("[iDM_RS] Read register " + register[0] + " " + register[1] + " value " + regs[0].getValue());
                 return regs[0].getValue();
             }
             return -1;
@@ -194,7 +194,7 @@ public class iDM_RS {
      * @throws DeviceCommunicationException if there is an error setting the speed
      */
     public void setSpeed(int speed) throws DeviceCommunicationException {
-        if (speed < 0) speed = 0;
+        //if (speed < 0) speed = 0;
         writeRegister(VELOCITY, speed);
         if (controlMode.getCONTROL_MODE()==2){
             if (speed==0) isMoving.set(false);
@@ -430,7 +430,7 @@ public class iDM_RS {
      */
     public Future<Boolean> moveToPositionAndWait(int position){
         return executorService.submit(() -> {
-            //logger.log("[iDM_RS] Moving to position " + position);
+            logger.log("[iDM_RS] Moving to position " + position);
             try {
                 isMoving.set(true);
                 setPosition(position);
