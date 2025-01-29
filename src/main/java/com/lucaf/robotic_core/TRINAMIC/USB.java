@@ -123,4 +123,12 @@ public class USB implements SerialPortEventListener {
             }
         }
     }
+
+    /**
+     * Method that closes the port
+     * @throws SerialPortException
+     */
+    public void close() throws SerialPortException {
+        serialPort.closePort();
+    }
 }

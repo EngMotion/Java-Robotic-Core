@@ -10,6 +10,13 @@ import java.util.Map;
 public class ModBusSerialCache {
     static Map<String, ModbusSerialMaster> modbusSerialMasterHashMap = new HashMap<>();
 
+    /**
+     * Get the ModBus master for the specified COM port
+     * @param com the COM port
+     * @param baudrate the baudrate
+     * @return the ModBus master
+     * @throws Exception if the connection fails
+     */
     public static ModbusSerialMaster getModBusMasterCom(String com, int baudrate) throws Exception {
         if (modbusSerialMasterHashMap.containsKey(com)) return modbusSerialMasterHashMap.get(com);
         SerialParameters params = new SerialParameters();
@@ -25,5 +32,15 @@ public class ModBusSerialCache {
         master.connect();
         modbusSerialMasterHashMap.put(com, master);
         return master;
+    }
+
+    /**
+     * Close all the connections
+     */
+    public static void closeAll() {
+        for (Map.Entry<String, ModbusSerialMaster> entry : modbusSerialMasterHashMap.entrySet()) {
+            entry.getValue().disconnect();
+            modbusSerialMasterHashMap.remove(entry.getKey());
+        }
     }
 }
