@@ -39,7 +39,9 @@ public class ModBusSerialCache {
      */
     public static void closeAll() {
         for (Map.Entry<String, ModbusSerialMaster> entry : modbusSerialMasterHashMap.entrySet()) {
-            entry.getValue().disconnect();
+            if (entry.getValue().isConnected()){
+                entry.getValue().disconnect();
+            }
             modbusSerialMasterHashMap.remove(entry.getKey());
         }
     }

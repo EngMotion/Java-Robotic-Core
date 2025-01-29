@@ -46,6 +46,9 @@ public class USB implements SerialPortEventListener {
         int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;
         serialPort.setEventsMask(mask);
         serialPort.addEventListener(this);
+        if (!serialPort.isOpened()){
+            serialPort.openPort();
+        }
     }
 
     /**
@@ -128,6 +131,8 @@ public class USB implements SerialPortEventListener {
      * @throws SerialPortException
      */
     public void close() throws SerialPortException {
-        serialPort.closePort();
+        if (serialPort.isOpened()) {
+            serialPort.closePort();
+        }
     }
 }
