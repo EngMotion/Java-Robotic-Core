@@ -75,8 +75,7 @@ public class USB implements SerialPortEventListener {
         }
         latch = new CountDownLatch(1);
         try {
-            serialPort.purgePort(SerialPort.PURGE_RXCLEAR);
-            serialPort.purgePort(SerialPort.PURGE_TXCLEAR);
+            serialPort.purgePort(SerialPort.PURGE_RXCLEAR | SerialPort.PURGE_TXCLEAR | SerialPort.PURGE_RXABORT | SerialPort.PURGE_TXABORT);
             expected = command.getFrame();
             lastResponse = null;
             serialPort.writeBytes(expected);
