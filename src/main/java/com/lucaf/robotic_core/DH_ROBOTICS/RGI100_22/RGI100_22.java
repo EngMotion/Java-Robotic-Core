@@ -74,7 +74,12 @@ public class RGI100_22 {
     /**
      * Internal state of the device
      */
-    private AtomicBoolean is_moving = new AtomicBoolean(false);
+    private AtomicBoolean is_moving_grip = new AtomicBoolean(false);
+
+    /**
+     * Internal state of the device
+     */
+    private AtomicBoolean is_moving_rotator = new AtomicBoolean(false);
 
     /**
      * Internal state of the device
@@ -110,14 +115,22 @@ public class RGI100_22 {
      * Initializes the state
      */
     void initState() {
-        if (state.containsKey("is_moving")) {
-            if (state.get("is_moving") instanceof Boolean) {
-                is_moving.set((Boolean) state.get("is_moving"));
-            }else if (state.get("is_moving") instanceof AtomicBoolean) {
-                is_moving = (AtomicBoolean) state.get("is_moving");
+        if (state.containsKey("is_moving_grip")) {
+            if (state.get("is_moving_grip") instanceof Boolean) {
+                is_moving_grip.set((Boolean) state.get("is_moving_grip"));
+            }else if (state.get("is_moving_grip") instanceof AtomicBoolean) {
+                is_moving_grip = (AtomicBoolean) state.get("is_moving_grip");
             }
         }
-        state.put("is_moving", is_moving);
+        state.put("is_moving_grip", is_moving_grip);
+        if (state.containsKey("is_moving_rotator")) {
+            if (state.get("is_moving_rotator") instanceof Boolean) {
+                is_moving_rotator.set((Boolean) state.get("is_moving_rotator"));
+            }else if (state.get("is_moving_rotator") instanceof AtomicBoolean) {
+                is_moving_rotator = (AtomicBoolean) state.get("is_moving_rotator");
+            }
+        }
+        state.put("is_moving_rotator", is_moving_rotator);
         state.put("is_initialized", is_initialized);
         state.put("has_fault", has_fault);
         state.put("fault", "");
@@ -253,14 +266,24 @@ public class RGI100_22 {
      *
      * @throws DeviceCommunicationException if there is an error in the communication with the device
      */
-    public void stop() throws ModbusException {
+    public void stop(boolean listener) throws ModbusException {
         logger.log("[RGI100_22] Stopping device");
-        if (scheduledExecutorService != null) {
+        if (listener && scheduledExecutorService != null) {
             logger.debug("[RGI100_22] Shutting down error listener");
             scheduledExecutorService.shutdown();
         }
         logger.debug("[RGI100_22] Stopping device");
+        is_moving_grip.set(false);
+        is_moving_rotator.set(false);
         writeRegister(STOP, 1);
+    }
+
+    /**
+     * Stops the scheduled executor service and the device
+     * @throws ModbusException if there is an error in the communication with the device
+     */
+    public void stop() throws ModbusException {
+        stop(false);
     }
 
     /**
@@ -291,7 +314,8 @@ public class RGI100_22 {
     private synchronized boolean writeRegister(byte[] register, int data) throws ModbusException {
         logger.debug("[RGI100_22] Writing register: " + Integer.toHexString(register[0] << 8 | register[1]) + " with data: " + data);
         int startRegister = register[0] << 8 | register[1];
-        rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
+        int fb = rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
+        logger.debug("[RGI100_22] Write response: " + fb);
         return true;
 
     }
@@ -340,9 +364,9 @@ public class RGI100_22 {
             logger.log("[RGI100_22] Initializing device");
             try {
                 writeRegister(INITIALIZATION, 1);
-                while (!hasGripInitialized() || !hasRotationInitialized()) {
-                    Thread.sleep(500);
-                }
+                do  {
+                    Thread.sleep(300);
+                } while (!hasGripInitialized() || !hasRotationInitialized());
                 logger.debug("[RGI100_22] Device initialized");
                 is_initialized.set(true);
                 target_angle.set(0);
@@ -466,9 +490,13 @@ public class RGI100_22 {
      */
     public PositionFeedback waitEndPosition() throws DeviceCommunicationException {
         try {
-            is_moving.set(true);
+            is_moving_rotator.set(true);
             PositionFeedback feedback;
             while (true) {
+                Thread.sleep(100);
+                if (!is_moving_rotator.get()){
+                    throw new DeviceCommunicationException("Device is not moving");
+                }
                 if (has_fault.get()) {
                     throw new DeviceCommunicationException("Device has fault");
                 }
@@ -476,9 +504,8 @@ public class RGI100_22 {
                 if (feedback == PositionFeedback.REACHED || feedback == PositionFeedback.BLOCKED) {
                     break;
                 }
-                Thread.sleep(100);
             }
-            is_moving.set(false);
+            is_moving_rotator.set(false);
             return feedback;
         } catch (Exception e) {
             throw new DeviceCommunicationException(e.getMessage());
@@ -490,9 +517,13 @@ public class RGI100_22 {
      */
     public PositionFeedback waitEndGrip() throws DeviceCommunicationException {
         try {
-            is_moving.set(true);
+            is_moving_grip.set(true);
             PositionFeedback feedback;
             while (true) {
+                Thread.sleep(100);
+                if (!is_moving_grip.get()){
+                    throw new DeviceCommunicationException("Device is not moving");
+                }
                 if (has_fault.get()) {
                     throw new DeviceCommunicationException("Device has fault");
                 }
@@ -500,9 +531,8 @@ public class RGI100_22 {
                 if (feedback == PositionFeedback.REACHED_WITH_OBJ || feedback == PositionFeedback.REACHED_WITHOUT_OBJ || feedback == PositionFeedback.FALL) {
                     break;
                 }
-                Thread.sleep(300);
             }
-            is_moving.set(false);
+            is_moving_grip.set(false);
             return feedback;
         } catch (Exception e) {
             throw new DeviceCommunicationException(e.getMessage());
@@ -521,12 +551,12 @@ public class RGI100_22 {
                 logger.debug("[RGI100_22] Moving to relative angle: " + angle);
                 int newAngle = angle + current_position.get();
                 target_angle.set(newAngle);
-                is_moving.set(true);
+                is_moving_rotator.set(true);
                 stateFunction.notifyStateChange();
                 moveToRelativeAngle(angle);
                 PositionFeedback feedback = waitEndPosition();
                 current_angle.set(newAngle);
-                is_moving.set(false);
+                is_moving_rotator.set(false);
                 stateFunction.notifyStateChange();
                 return new Pair<>(true, feedback);
             } catch (Exception e) {
@@ -547,12 +577,12 @@ public class RGI100_22 {
             try {
                 logger.debug("[RGI100_22] Moving to absolute angle: " + angle);
                 target_angle.set(angle);
-                is_moving.set(true);
+                is_moving_rotator.set(true);
                 stateFunction.notifyStateChange();
                 moveToAbsoluteAngle(angle);
                 PositionFeedback feedback = waitEndPosition();
                 current_angle.set(angle);
-                is_moving.set(false);
+                is_moving_rotator.set(false);
                 stateFunction.notifyStateChange();
                 return new Pair<>(true, feedback);
             } catch (Exception e) {
@@ -588,12 +618,12 @@ public class RGI100_22 {
             try {
                 logger.debug("[RGI100_22] Setting grip position: " + position);
                 target_position.set(position);
-                is_moving.set(true);
+                is_moving_grip.set(true);
                 stateFunction.notifyStateChange();
                 setGripPosition(position);
                 PositionFeedback feedback = waitEndGrip();
                 current_position.set(position);
-                is_moving.set(false);
+                is_moving_grip.set(false);
                 stateFunction.notifyStateChange();
                 return new Pair<>(true, feedback);
             } catch (Exception e) {

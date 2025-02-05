@@ -344,6 +344,7 @@ public class TMCM_3351_MOTOR {
     @SneakyThrows
     private void waitTillPositionReached() throws DeviceCommunicationException {
         while (true) {
+            if (!isMoving.get()) throw new DeviceCommunicationException("Moving to position is cancelled");
             int status = getParameter(PARAM_POSITION_FLAG);
             //1 = reached , 0 = not reached
             if (status == 1) {

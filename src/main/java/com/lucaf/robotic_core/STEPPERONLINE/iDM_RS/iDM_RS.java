@@ -220,8 +220,8 @@ public class iDM_RS {
      */
     public void stop() throws DeviceCommunicationException {
         logger.log("[iDM_RS] Emergency stop");
-        writeRegister(STATUS_MODE,StatusMode.getEMERGENCY_STOP());
         isMoving.set(false);
+        writeRegister(STATUS_MODE,StatusMode.getEMERGENCY_STOP());
         stateFunction.notifyStateChange();
     }
 
@@ -417,6 +417,7 @@ public class iDM_RS {
     @SneakyThrows
     public void waitReachedPosition() throws DeviceCommunicationException {
         while (true){
+            if (!isMoving.get()) throw new DeviceCommunicationException("Device stopped");
             StatusMode mode = getStatusMode();
             if (!mode.isRunning()) break;
             Thread.sleep(50);

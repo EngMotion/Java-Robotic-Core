@@ -191,12 +191,21 @@ public class SAC_N {
      * Stops the scheduled executor service and the device
      * @throws DeviceCommunicationException if there is an error in the communication with the device
      */
-    public void stop() throws DeviceCommunicationException {
+    public void stop(boolean listener) throws DeviceCommunicationException {
         logger.log("[SAC_N] Stopping device");
-        if (scheduledExecutorService != null) {
+        if (scheduledExecutorService != null && listener) {
             scheduledExecutorService.shutdown();
         }
+        is_moving.set(false);
         setEnabled(false);
+    }
+
+    /**
+     * Stops the scheduled executor service and the device
+     * @throws DeviceCommunicationException if there is an error in the communication with the device
+     */
+    public void stop() throws DeviceCommunicationException {
+        stop(true);
     }
 
     /**
