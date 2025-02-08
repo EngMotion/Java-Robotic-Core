@@ -36,6 +36,7 @@ public class USB implements SerialPortEventListener {
      */
     public USB(String com) throws SerialPortException {
         serialPort = new SerialPort(com);
+        if (serialPort.isOpened()) serialPort.closePort();
         serialPort.openPort();
         serialPort.setParams(
                 SerialPort.BAUDRATE_9600,
