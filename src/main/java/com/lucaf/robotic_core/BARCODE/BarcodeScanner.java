@@ -28,6 +28,22 @@ public class BarcodeScanner implements SerialPortEventListener{
     List<BarcodeScanEvent> barcodeScanEvents = new ArrayList<>();
 
     /**
+     * The connected state of the barcode scanner
+     */
+    boolean connected = false;
+
+    /**
+     * Method that returns the connected state of the barcode scanner
+     * @return true if the barcode scanner is connected, false otherwise
+     */
+    boolean isConnected(){
+        if (serialPort != null){
+            return serialPort.isOpened();
+        }
+        return connected;
+    }
+
+    /**
      * Constructor of the class
      * @param config the configuration of the barcode scanner
      * @param logger the logger of the application
@@ -82,11 +98,30 @@ public class BarcodeScanner implements SerialPortEventListener{
             int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;
             serialPort.setEventsMask(mask);
             serialPort.addEventListener(this);
+            connected = true;
         }catch (Exception e){
             logger.error("Error while setting up serial port for barcode scanner, device not connected?: " + e.getMessage());
         }
     }
 
+    /**
+     * Method that closes the serial port
+     */
+    public void close(){
+        if (serialPort != null){
+            try {
+                serialPort.removeEventListener();
+                serialPort.closePort();
+            } catch (SerialPortException e) {
+                logger.error("Error while closing serial port: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Method that ensures the connection to the barcode scanner
+     * @return true if the connection is established, false otherwise
+     */
     public boolean ensureConnection(){
         if (serialPort == null){
             setupKeyListener();
@@ -111,7 +146,7 @@ public class BarcodeScanner implements SerialPortEventListener{
                     }
                     serialPort.purgePort(SerialPort.PURGE_RXCLEAR | SerialPort.PURGE_TXCLEAR | SerialPort.PURGE_RXABORT | SerialPort.PURGE_TXABORT);
                 } catch (SerialPortException e) {
-                    e.printStackTrace();
+                    logger.warn("Error while reading barcode scanner: " + e.getMessage());
                 }
             }
         }
@@ -147,6 +182,6 @@ public class BarcodeScanner implements SerialPortEventListener{
                 }
             });
         }
-
+        connected = true;
     }
 }
