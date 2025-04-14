@@ -7,7 +7,6 @@ import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
 import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
-import lombok.Setter;
 import lombok.SneakyThrows;
 
 import java.util.HashMap;
@@ -23,7 +22,7 @@ import static com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.Constants.*;
 /**
  * Class that represents the iDM_RS StepperOnline device
  */
-public class iDM_RS {
+public class IDM_RS {
 
     /**
      * The Modbus master connection
@@ -87,13 +86,14 @@ public class iDM_RS {
 
     /**
      * Constructor of the class
-     * @param rs485 the Modbus master connection
-     * @param id the id of the device
-     * @param state the state of the device
+     *
+     * @param rs485             the Modbus master connection
+     * @param id                the id of the device
+     * @param state             the state of the device
      * @param notifyStateChange the state class with the onStateChange method
-     * @param logger the logger
+     * @param logger            the logger
      */
-    public iDM_RS(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
+    public IDM_RS(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
         this.rs485 = rs485;
         this.state = state;
         this.stateFunction = notifyStateChange;
@@ -104,6 +104,7 @@ public class iDM_RS {
 
     /**
      * Method to set the ramp mode. Refer to the datasheet for more information
+     *
      * @param rampMode the ramp mode number
      */
     public void setRampMode(byte rampMode) {
@@ -116,28 +117,28 @@ public class iDM_RS {
     /**
      * Method that initializes the device state
      */
-    private void initState(){
-        if(state.containsKey("current_position")){
+    private void initState() {
+        if (state.containsKey("current_position")) {
             if (state.get("current_position") instanceof AtomicInteger) {
                 currentPos = (AtomicLong) state.get("current_position");
-            }else if (state.get("current_position") instanceof Integer) {
+            } else if (state.get("current_position") instanceof Integer) {
                 currentPos.set((Integer) state.get("current_position"));
-            }else if (state.get("current_position") instanceof Double) {
+            } else if (state.get("current_position") instanceof Double) {
                 currentPos.set(((Double) state.get("current_position")).intValue());
-            }else if (state.get("current_position") instanceof Long) {
+            } else if (state.get("current_position") instanceof Long) {
                 currentPos.set((Long) state.get("current_position"));
             }
         }
         state.put("current_position", currentPos);
 
-        if(state.containsKey("target_position")){
+        if (state.containsKey("target_position")) {
             if (state.get("target_position") instanceof AtomicInteger) {
                 targetPos = (AtomicLong) state.get("target_position");
-            }else if (state.get("target_position") instanceof Integer) {
+            } else if (state.get("target_position") instanceof Integer) {
                 targetPos.set((Integer) state.get("target_position"));
-            }else if (state.get("target_position") instanceof Double) {
+            } else if (state.get("target_position") instanceof Double) {
                 targetPos.set(((Double) state.get("target_position")).intValue());
-            }else if (state.get("target_position") instanceof Long) {
+            } else if (state.get("target_position") instanceof Long) {
                 targetPos.set((Long) state.get("target_position"));
             }
         }
@@ -153,7 +154,7 @@ public class iDM_RS {
      * @param register the register to read
      * @return the response of the device
      */
-    private synchronized int readRegister(byte[] register) throws DeviceCommunicationException {
+    public synchronized int readRegister(byte[] register) throws DeviceCommunicationException {
         try {
             logger.debug("[iDM_RS] Reading register " + register[0] + " " + register[1]);
             int startRegister = register[0] << 8 | register[1];
@@ -176,28 +177,29 @@ public class iDM_RS {
      * @param data     the data to write
      * @return true if the write is successful, false otherwise
      */
-    private synchronized boolean writeRegister(byte[] register, int data) throws DeviceCommunicationException {
+    public synchronized boolean writeRegister(byte[] register, int data) throws DeviceCommunicationException {
         try {
-            //logger.debug("[iDM_RS] Writing register " + register[0] + " " + register[1] + " value " + data);
+            logger.debug("[iDM_RS] Writing register " + register[0] + " " + register[1] + " value " + data);
             int startRegister = register[0] << 8 | register[1];
             rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
             return true;
         } catch (ModbusException e) {
-            //logger.error("[iDM_RS] Error writing register " + register[0] + " " + register[1] + " value " + data);
+            logger.error("[iDM_RS] Error writing register " + register[0] + " " + register[1] + " value " + data);
             throw new DeviceCommunicationException(e.getMessage());
         }
     }
 
     /**
      * Method that sets the speed of the device
+     *
      * @param speed the speed to set
      * @throws DeviceCommunicationException if there is an error setting the speed
      */
     public void setSpeed(int speed) throws DeviceCommunicationException {
         //if (speed < 0) speed = 0;
         writeRegister(VELOCITY, speed);
-        if (controlMode.getCONTROL_MODE()==2){
-            if (speed==0) isMoving.set(false);
+        if (controlMode.getCONTROL_MODE() == 2) {
+            if (speed == 0) isMoving.set(false);
             else isMoving.set(true);
             stateFunction.notifyStateChange();
             writeRegister(STATUS_MODE, StatusMode.getSegmentPositioning((byte) 0x00));
@@ -207,6 +209,7 @@ public class iDM_RS {
 
     /**
      * Method that gets the speed of the device
+     *
      * @return the speed of the device
      * @throws DeviceCommunicationException if there is an error getting the speed
      */
@@ -216,17 +219,19 @@ public class iDM_RS {
 
     /**
      * Method that emergency stops the device
+     *
      * @throws DeviceCommunicationException
      */
     public void stop() throws DeviceCommunicationException {
         logger.log("[iDM_RS] Emergency stop");
         isMoving.set(false);
-        writeRegister(STATUS_MODE,StatusMode.getEMERGENCY_STOP());
+        writeRegister(STATUS_MODE, StatusMode.getEMERGENCY_STOP());
         stateFunction.notifyStateChange();
     }
 
     /**
      * Method that sets the acceleration of the device
+     *
      * @param acceleration the acceleration to set
      * @throws DeviceCommunicationException if there is an error setting the acceleration
      */
@@ -236,6 +241,7 @@ public class iDM_RS {
 
     /**
      * Method that gets the acceleration of the device
+     *
      * @return the acceleration of the device
      * @throws DeviceCommunicationException if there is an error getting the acceleration
      */
@@ -245,6 +251,7 @@ public class iDM_RS {
 
     /**
      * Method that sets the deceleration of the device
+     *
      * @param deceleration the deceleration to set
      * @throws DeviceCommunicationException if there is an error setting the deceleration
      */
@@ -254,6 +261,7 @@ public class iDM_RS {
 
     /**
      * Method that gets the deceleration of the device
+     *
      * @return the deceleration of the device
      * @throws DeviceCommunicationException if there is an error getting the deceleration
      */
@@ -263,13 +271,14 @@ public class iDM_RS {
 
     /**
      * Method that moves the device to a position
+     *
      * @param position the position to move to
      * @throws DeviceCommunicationException if there is an error moving the device
      */
     public void setPosition(long position) throws DeviceCommunicationException {
-        if (controlMode.isRELATIVE_POSITIONING()){
+        if (controlMode.isRELATIVE_POSITIONING()) {
             targetPos.set(targetPos.get() + position);
-        }else{
+        } else {
             targetPos.set(position);
         }
         stateFunction.notifyStateChange();
@@ -282,6 +291,7 @@ public class iDM_RS {
 
     /**
      * Method that sets the control mode
+     *
      * @throws DeviceCommunicationException if there is an error setting the control mode
      */
     public void writeControlMode() throws DeviceCommunicationException {
@@ -290,6 +300,7 @@ public class iDM_RS {
 
     /**
      * Method that sets mode to positioning
+     *
      * @throws DeviceCommunicationException if there is an error setting the mode
      */
     public void setPositioningMode() throws DeviceCommunicationException {
@@ -299,6 +310,7 @@ public class iDM_RS {
 
     /**
      * Method that sets mode to velocity
+     *
      * @throws DeviceCommunicationException if there is an error setting the mode
      */
     public void setVelocityMode() throws DeviceCommunicationException {
@@ -308,6 +320,7 @@ public class iDM_RS {
 
     /**
      * Methos that gets the status of the motor
+     *
      * @return StatusMode class with the status of the motor
      * @throws DeviceCommunicationException if there is an error getting the status
      */
@@ -317,6 +330,7 @@ public class iDM_RS {
 
     /**
      * Method that enables the relative positioning
+     *
      * @param relative if relative positioning
      * @throws DeviceCommunicationException if there is an error setting the relative positioning
      */
@@ -326,7 +340,162 @@ public class iDM_RS {
     }
 
     /**
+     * Method that gets the digital input statuses
+     *
+     * @return DigitalInputs class with the digital input statuses
+     * @throws DeviceCommunicationException if there is an error getting the digital input statuses
+     */
+    public DigitalInputs getDigitalInputs() throws DeviceCommunicationException {
+        return new DigitalInputs(readRegister(DIGITAL_INPUTS_STATUS));
+    }
+
+    /**
+     * Method that sets the digital input statuses
+     *
+     * @param digitalInputs the digital input statuses to set
+     * @throws DeviceCommunicationException if there is an error setting the digital input statuses
+     */
+    public void setDigitalInputs(DigitalInputs digitalInputs) throws DeviceCommunicationException {
+        writeRegister(DIGITAL_INPUTS_STATUS, digitalInputs.toInt());
+    }
+
+    /**
+     * Method that gets the digital output statuses
+     *
+     * @return DigitalOutputs class with the digital output statuses
+     * @throws DeviceCommunicationException if there is an error getting the digital output statuses
+     */
+    public DigitalOutputs getDigitalOutputs() throws DeviceCommunicationException {
+        return new DigitalOutputs(readRegister(DIGITAL_OUTPUTS_STATUS));
+    }
+
+    /**
+     * Method that sets the digital output statuses
+     *
+     * @param digitalOutputs the digital output statuses to set
+     * @throws DeviceCommunicationException if there is an error setting the digital output statuses
+     */
+    public void setDigitalOutputs(DigitalOutputs digitalOutputs) throws DeviceCommunicationException {
+        writeRegister(DIGITAL_OUTPUTS_STATUS, digitalOutputs.toInt());
+    }
+
+    /**
+     * Method that gets the digital input
+     *
+     * @param input the digital input number
+     * @return DigitalInput class with the digital input settings
+     * @throws DeviceCommunicationException if there is an error getting the digital input
+     */
+    public DigitalInput getDigitalInput(int input) throws DeviceCommunicationException {
+        if (input <= 0 || input > 7) throw new RuntimeException("Invalid digital input number");
+        switch (input) {
+            case 1 -> {
+                return new DigitalInput(readRegister(DI1));
+            }
+            case 2 -> {
+                return new DigitalInput(readRegister(DI2));
+            }
+            case 3 -> {
+                return new DigitalInput(readRegister(DI3));
+            }
+            case 4 -> {
+                return new DigitalInput(readRegister(DI4));
+            }
+            case 5 -> {
+                return new DigitalInput(readRegister(DI5));
+            }
+            case 6 -> {
+                return new DigitalInput(readRegister(DI6));
+            }
+            case 7 -> {
+                return new DigitalInput(readRegister(DI7));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Method that sets the digital input
+     *
+     * @param input        the digital input number
+     * @param digitalInput the digital input settings to set
+     * @throws DeviceCommunicationException if there is an error setting the digital input
+     */
+    public void setDigitalInput(int input, DigitalInput digitalInput) throws DeviceCommunicationException {
+        if (input <= 0 || input > 7) throw new RuntimeException("Invalid digital input number");
+        switch (input) {
+            case 1 -> {
+                writeRegister(DI1, digitalInput.toInt());
+            }
+            case 2 -> {
+                writeRegister(DI2, digitalInput.toInt());
+            }
+            case 3 -> {
+                writeRegister(DI3, digitalInput.toInt());
+            }
+            case 4 -> {
+                writeRegister(DI4, digitalInput.toInt());
+            }
+            case 5 -> {
+                writeRegister(DI5, digitalInput.toInt());
+            }
+            case 6 -> {
+                writeRegister(DI6, digitalInput.toInt());
+            }
+            case 7 -> {
+                writeRegister(DI7, digitalInput.toInt());
+            }
+        }
+    }
+
+    /**
+     * Method that gets the digital output
+     *
+     * @param output the digital output number
+     * @return DigitalOutput class with the digital output settings
+     * @throws DeviceCommunicationException if there is an error getting the digital output
+     */
+    public DigitalOutput getDigitalOutput(int output) throws DeviceCommunicationException {
+        if (output <= 0 || output > 3) throw new RuntimeException("Invalid digital output number");
+        switch (output) {
+            case 1 -> {
+                return new DigitalOutput(readRegister(DO1));
+            }
+            case 2 -> {
+                return new DigitalOutput(readRegister(DO2));
+            }
+            case 3 -> {
+                return new DigitalOutput(readRegister(DO3));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Method that sets the digital output
+     *
+     * @param output        the digital output number
+     * @param digitalOutput the digital output settings to set
+     * @throws DeviceCommunicationException if there is an error setting the digital output
+     */
+    public void setDigitalOutput(int output, DigitalOutput digitalOutput) throws DeviceCommunicationException {
+        if (output <= 0 || output > 3) throw new RuntimeException("Invalid digital output number");
+        switch (output) {
+            case 1 -> {
+                writeRegister(DO1, digitalOutput.toInt());
+            }
+            case 2 -> {
+                writeRegister(DO2, digitalOutput.toInt());
+            }
+            case 3 -> {
+                writeRegister(DO3, digitalOutput.toInt());
+            }
+        }
+    }
+
+    /**
      * Method that sets the homing speed
+     *
      * @param speed the speed to set
      * @throws DeviceCommunicationException if there is an error setting the homing speed
      */
@@ -339,6 +508,7 @@ public class iDM_RS {
 
     /**
      * Method that gets the homing speed
+     *
      * @return the homing speed
      * @throws DeviceCommunicationException if there is an error getting the homing speed
      */
@@ -350,6 +520,7 @@ public class iDM_RS {
 
     /**
      * Method that sets the homing acceleration
+     *
      * @param acceleration the acceleration to set
      * @throws DeviceCommunicationException if there is an error setting the homing acceleration
      */
@@ -359,6 +530,7 @@ public class iDM_RS {
 
     /**
      * Method that gets the homing acceleration
+     *
      * @return the homing acceleration
      * @throws DeviceCommunicationException if there is an error getting the homing acceleration
      */
@@ -368,6 +540,7 @@ public class iDM_RS {
 
     /**
      * Method that sets the homing deceleration
+     *
      * @param deceleration the deceleration to set
      * @throws DeviceCommunicationException if there is an error setting the homing deceleration
      */
@@ -377,6 +550,7 @@ public class iDM_RS {
 
     /**
      * Method that gets the homing deceleration
+     *
      * @return the homing deceleration
      * @throws DeviceCommunicationException if there is an error getting the homing deceleration
      */
@@ -385,24 +559,63 @@ public class iDM_RS {
     }
 
     /**
+     * Method that sets the homing stop position
+     *
+     * @param position the position to set
+     * @throws DeviceCommunicationException if there is an error setting the homing stop position
+     */
+    public void setHomingStopPosition(int position) throws DeviceCommunicationException {
+        int position_high = (int) (position >> 16);
+        int position_low = (int) (position & 0xFFFF);
+        writeRegister(HOMING_STOP_POSITION_HIGH, position_high);
+        writeRegister(HOMING_STOP_POSITION_LOW, position_low);
+    }
+
+    /**
+     * Method that gets the homing stop position
+     *
+     * @return the homing stop position
+     * @throws DeviceCommunicationException if there is an error getting the homing stop position
+     */
+    public int getHomingStopPosition() throws DeviceCommunicationException {
+        int position_high = readRegister(HOMING_STOP_POSITION_HIGH);
+        int position_low = readRegister(HOMING_STOP_POSITION_LOW);
+        return (position_high << 16) | position_low;
+    }
+
+    /**
      * Method that starts the homing
+     *
      * @param homingControl the homing method to set
      * @throws DeviceCommunicationException if there is an error setting the homing method
      */
-    @SneakyThrows
-    public void homing(HomingControl homingControl) {
-        logger.log("[iDM_RS] Starting homing");
-        writeRegister(HOMING_METHOD, homingControl.toInt());
-        writeRegister(STATUS_MODE, StatusMode.HOMING);
-        while (true){
-            StatusMode mode = getStatusMode();
-            if (mode.getSTATUS_CODE() == 0) break;
-            Thread.sleep(50);
-        }
+    public Future<Boolean> homing(HomingControl homingControl) {
+        return executorService.submit(() -> {
+            try{
+                logger.log("[iDM_RS] Starting homing");
+                writeRegister(HOMING_METHOD, homingControl.toInt());
+                writeRegister(STATUS_MODE, StatusMode.HOMING);
+                isMoving.set(true);
+                while (true) {
+                    if (!isMoving.get()) throw new DeviceCommunicationException("Device stopped");
+                    StatusMode mode = getStatusMode();
+                    if (mode.getSTATUS_CODE() == 0) break;
+                    Thread.sleep(50);
+                }
+                isMoving.set(false);
+                return true;
+            }catch (Exception e){
+                isMoving.set(false);
+                logger.error("[iDM_RS] Error starting homing");
+                logger.error(e.getMessage());
+                return false;
+            }
+        });
     }
 
     /**
      * Method that gets the homing method
+     *
      * @return the homing method
      * @throws DeviceCommunicationException if there is an error getting the homing method
      */
@@ -412,11 +625,12 @@ public class iDM_RS {
 
     /**
      * Method that waits for the device to reach the position
+     *
      * @throws DeviceCommunicationException if there is an error waiting for the position
      */
     @SneakyThrows
     public void waitReachedPosition() throws DeviceCommunicationException {
-        while (true){
+        while (true) {
             if (!isMoving.get()) throw new DeviceCommunicationException("Device stopped");
             StatusMode mode = getStatusMode();
             if (!mode.isRunning()) break;
@@ -426,10 +640,11 @@ public class iDM_RS {
 
     /**
      * Method that moves the device to a relative position and waits for the movement to end
+     *
      * @param position the position to move to
      * @return a future with the result of the operation
      */
-    public Future<Boolean> moveToPositionAndWait(int position){
+    public Future<Boolean> moveToPositionAndWait(int position) {
         return executorService.submit(() -> {
             logger.log("[iDM_RS] Moving to position " + position);
             try {
@@ -441,12 +656,10 @@ public class iDM_RS {
                 currentPos.set(targetPos.get());
                 stateFunction.notifyStateChange();
                 return true;
-            }catch (Exception e){
+            } catch (Exception e) {
                 logger.error("[iDM_RS] Error moving to position " + position);
                 return false;
             }
         });
     }
-
-
 }

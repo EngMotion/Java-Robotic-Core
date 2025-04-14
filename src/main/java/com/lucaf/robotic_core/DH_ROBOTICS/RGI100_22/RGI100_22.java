@@ -362,9 +362,12 @@ public class RGI100_22 {
     public Future<Boolean> initialize() {
         return executorServiceGrip.submit(() -> {
             logger.log("[RGI100_22] Initializing device");
+            is_moving_grip.set(true);
+            is_moving_rotator.set(true);
             try {
                 writeRegister(INITIALIZATION, 1);
                 do  {
+                    if (!is_moving_grip.get()) return false;
                     Thread.sleep(300);
                 } while (!hasGripInitialized() || !hasRotationInitialized());
                 logger.debug("[RGI100_22] Device initialized");
@@ -373,6 +376,8 @@ public class RGI100_22 {
                 target_position.set(0);
                 current_angle.set(0);
                 current_position.set(0);
+                is_moving_grip.set(false);
+                is_moving_rotator.set(false);
                 stateFunction.notifyStateChange();
                 setupErrorListener();
                 return true;

@@ -2,8 +2,10 @@ import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 import com.lucaf.robotic_core.Logger;
-import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.StatusMode;
-import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.iDM_RS;
+import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.DigitalInputs;
+import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.DigitalOutput;
+import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.DigitalOutputs;
+import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.IDM_RS;
 import com.lucaf.robotic_core.State;
 
 import java.util.HashMap;
@@ -33,8 +35,8 @@ public class StepperOnline {
         };
         try {
             SerialParameters params = new SerialParameters();
-            params.setPortName("COM5");
-            params.setBaudRate(57600);
+            params.setPortName("COM6");
+            params.setBaudRate(115200);
             params.setDatabits(8);
             params.setParity("None");
             params.setStopbits(1);
@@ -44,7 +46,7 @@ public class StepperOnline {
             );
             master.connect();
             System.out.println("Connected");
-            iDM_RS iDM_rs = new iDM_RS(master, (byte) 0x01, new HashMap<>(), new State() {
+            IDM_RS iDM_rs = new IDM_RS(master, (byte) 0x05, new HashMap<>(), new State() {
                 @Override
                 public void notifyStateChange() {
 
@@ -60,9 +62,18 @@ public class StepperOnline {
             //iDM_rs.setRelativePositioning(true);
             iDM_rs.setDeceleration(50);
             iDM_rs.setAcceleration(50);
-            iDM_rs.setSpeed(600);
-            Thread.sleep(5000);
-            iDM_rs.setSpeed(0);
+            //iDM_rs.setSpeed(100);
+            //Thread.sleep(1000);
+            //iDM_rs.setSpeed(0);
+            boolean status = false;
+            while (true){
+                status = !status;
+                DigitalOutput digitalOutput = iDM_rs.getDigitalOutput(1);
+                digitalOutput.setNormally_closed(status);
+                iDM_rs.setDigitalOutput(1, digitalOutput);
+                Thread.sleep(500);
+                if (false) break;
+            }
             long now = System.currentTimeMillis();
             //iDM_rs.moveToPositionAndWait(10000).get();
             System.out.println("Ci ho messo " + (System.currentTimeMillis()-now) + " ms");

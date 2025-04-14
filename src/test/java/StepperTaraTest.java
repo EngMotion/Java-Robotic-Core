@@ -2,9 +2,8 @@ import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
 import com.lucaf.robotic_core.KERN.PCB_3;
-import com.lucaf.robotic_core.KERN.PLJ_1200;
 import com.lucaf.robotic_core.Logger;
-import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.iDM_RS;
+import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.IDM_RS;
 import com.lucaf.robotic_core.State;
 
 import java.util.HashMap;
@@ -53,7 +52,7 @@ public class StepperTaraTest {
                     params
             );
             master.connect();
-            iDM_RS iDM_rs = new iDM_RS(master, (byte) 0x01, new HashMap<>(), new State() {
+            IDM_RS iDM_rs = new IDM_RS(master, (byte) 0x01, new HashMap<>(), new State() {
                 @Override
                 public void notifyStateChange() {
 

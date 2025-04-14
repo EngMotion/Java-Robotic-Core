@@ -7,6 +7,7 @@ import com.lucaf.robotic_core.TRINAMIC.utils.TMCLCommand;
 import com.lucaf.robotic_core.exception.ConfigurationException;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import static com.lucaf.robotic_core.TRINAMIC.TMCM_3351.Constants.*;
 /**
  * Class that represents the TMCM_3351 motor
  */
+@Slf4j
 public class TMCM_3351_MOTOR {
 
     /**
@@ -104,6 +106,13 @@ public class TMCM_3351_MOTOR {
     }
 
     /**
+     * Method that initializes the motor
+     */
+    public void start() {
+        //
+    }
+
+    /**
      * Method that initializes the state of the specific motor
      */
     void initState() {
@@ -130,6 +139,7 @@ public class TMCM_3351_MOTOR {
         state.put("target_position", targetPos);
         state.put("is_moving", isMoving);
         state.put("initialized", initialized);
+        initialized.set(true);
         stateFunction.notifyStateChange();
     }
 
@@ -281,14 +291,17 @@ public class TMCM_3351_MOTOR {
         return executorService.submit(() -> {
             logger.log("[TMCM_3351_MOTOR] Starting reference search");
             try {
+                isMoving.set(true);
                 startReferenceSearch();
                 while (!isReferenceSearchComplete()) {
+                    if (!isMoving.get()) throw new DeviceCommunicationException("Device is stopped.");
                     Thread.sleep(50);
                 }
+                isMoving.set(false);
                 return true;
             } catch (Exception e) {
-                System.out.println("Error starting reference search");
-                e.printStackTrace();
+                logger.error("[TMCM_3351_MOTOR] Error starting reference search");
+                logger.error(e.getMessage());
                 return false;
             }
         });
@@ -447,13 +460,14 @@ public class TMCM_3351_MOTOR {
     public void enableClosedLoop(int mode) throws DeviceCommunicationException {
         setParameter(PARAM_CL_MODE, mode);
         while (true) {
+            if (!isMoving.get()) throw new DeviceCommunicationException("Moving to position is cancelled");
             if (getParameter(PARAM_CLOSED_LOOP_INIT) == 1) {
                 break;
             }
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                throw new DeviceCommunicationException(e.getMessage());
             }
         }
     }

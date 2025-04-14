@@ -3,7 +3,7 @@ package com.lucaf.robotic_core.UI;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.iDM_RS;
+import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.IDM_RS;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 
 import javax.swing.*;
@@ -44,7 +44,7 @@ public class SV2Tuner {
         row++;
     }
 
-    public SV2Tuner(iDM_RS motor) throws DeviceCommunicationException {
+    public SV2Tuner(IDM_RS motor) throws DeviceCommunicationException {
         propsPanel.setLayout(new GridLayoutManager(100, 1, new Insets(0, 0, 0, 0), -1, -1));
         createPanelTemplate("Speed", 0, 10000, motor.getSpeed(), value -> {
             try {
