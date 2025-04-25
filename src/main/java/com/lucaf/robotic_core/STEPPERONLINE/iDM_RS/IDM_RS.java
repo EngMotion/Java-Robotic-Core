@@ -1,9 +1,7 @@
 package com.lucaf.robotic_core.STEPPERONLINE.iDM_RS;
 
-import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
-import com.ghgande.j2mod.modbus.procimg.Register;
-import com.ghgande.j2mod.modbus.procimg.SimpleInputRegister;
+import com.lucaf.robotic_core.COMMON.ModbusRTUDevice;
 import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
@@ -22,12 +20,7 @@ import static com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.Constants.*;
 /**
  * Class that represents the iDM_RS StepperOnline device
  */
-public class IDM_RS {
-
-    /**
-     * The Modbus master connection
-     */
-    final ModbusSerialMaster rs485;
+public class IDM_RS extends ModbusRTUDevice {
 
     /**
      * The state of the device
@@ -43,11 +36,6 @@ public class IDM_RS {
      * The state class
      */
     final State stateFunction;
-
-    /**
-     * The id of the device
-     */
-    final byte id;
 
     /**
      * The ramp acceleration mode
@@ -80,11 +68,6 @@ public class IDM_RS {
     AtomicBoolean isMoving = new AtomicBoolean(false);
 
     /**
-     * Global Logger
-     */
-    final Logger logger;
-
-    /**
      * Constructor of the class
      *
      * @param rs485             the Modbus master connection
@@ -94,11 +77,10 @@ public class IDM_RS {
      * @param logger            the logger
      */
     public IDM_RS(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
-        this.rs485 = rs485;
+        super( "iDM_RS", rs485, logger);
         this.state = state;
         this.stateFunction = notifyStateChange;
-        this.id = id;
-        this.logger = logger;
+        setId(id);
         initState();
     }
 
@@ -149,54 +131,12 @@ public class IDM_RS {
     }
 
     /**
-     * Internal method that reads a register
-     *
-     * @param register the register to read
-     * @return the response of the device
-     */
-    public synchronized int readRegister(byte[] register) throws DeviceCommunicationException {
-        try {
-            logger.debug("[iDM_RS] Reading register " + register[0] + " " + register[1]);
-            int startRegister = register[0] << 8 | register[1];
-            Register[] regs = rs485.readMultipleRegisters(id, startRegister, 1);
-            if (regs != null) {
-                logger.debug("[iDM_RS] Read register " + register[0] + " " + register[1] + " value " + regs[0].getValue());
-                return regs[0].getValue();
-            }
-            return -1;
-        } catch (ModbusException e) {
-            logger.error("[iDM_RS] Error reading register " + register[0] + " " + register[1]);
-            throw new DeviceCommunicationException(e.getMessage());
-        }
-    }
-
-    /**
-     * Internal method that writes a register
-     *
-     * @param register the register to write
-     * @param data     the data to write
-     * @return true if the write is successful, false otherwise
-     */
-    public synchronized boolean writeRegister(byte[] register, int data) throws DeviceCommunicationException {
-        try {
-            logger.debug("[iDM_RS] Writing register " + register[0] + " " + register[1] + " value " + data);
-            int startRegister = register[0] << 8 | register[1];
-            rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
-            return true;
-        } catch (ModbusException e) {
-            logger.error("[iDM_RS] Error writing register " + register[0] + " " + register[1] + " value " + data);
-            throw new DeviceCommunicationException(e.getMessage());
-        }
-    }
-
-    /**
      * Method that sets the speed of the device
      *
      * @param speed the speed to set
      * @throws DeviceCommunicationException if there is an error setting the speed
      */
     public void setSpeed(int speed) throws DeviceCommunicationException {
-        //if (speed < 0) speed = 0;
         writeRegister(VELOCITY, speed);
         if (controlMode.getCONTROL_MODE() == 2) {
             if (speed == 0) isMoving.set(false);
@@ -282,10 +222,7 @@ public class IDM_RS {
             targetPos.set(position);
         }
         stateFunction.notifyStateChange();
-        int position_high = (int) (position >> 16);
-        int position_low = (int) (position & 0xFFFF);
-        writeRegister(TARGET_POSITION_HIGH, position_high);
-        writeRegister(TARGET_POSITION_LOW, position_low);
+        writeLongRegister(TARGET_POSITION_HIGH, position, false);
         writeRegister(STATUS_MODE, StatusMode.getSegmentPositioning((byte) 0x00));
     }
 
@@ -499,11 +436,8 @@ public class IDM_RS {
      * @param speed the speed to set
      * @throws DeviceCommunicationException if there is an error setting the homing speed
      */
-    public void setHomingSpeed(int speed) throws DeviceCommunicationException {
-        int speed_high = (int) (speed >> 16);
-        int speed_low = (int) (speed & 0xFFFF);
-        writeRegister(HOMING_SPEED_HIGH, speed_high);
-        writeRegister(HOMING_SPEED_LOW, speed_low);
+    public void setHomingSpeed(long speed) throws DeviceCommunicationException {
+        writeLongRegister(HOMING_SPEED_HIGH, speed, false);
     }
 
     /**
@@ -512,10 +446,8 @@ public class IDM_RS {
      * @return the homing speed
      * @throws DeviceCommunicationException if there is an error getting the homing speed
      */
-    public int getHomingSpeed() throws DeviceCommunicationException {
-        int speed_high = readRegister(HOMING_SPEED_HIGH);
-        int speed_low = readRegister(HOMING_SPEED_LOW);
-        return (speed_high << 16) | speed_low;
+    public long getHomingSpeed() throws DeviceCommunicationException {
+        return readLongRegister(HOMING_SPEED_HIGH, false);
     }
 
     /**
@@ -564,11 +496,8 @@ public class IDM_RS {
      * @param position the position to set
      * @throws DeviceCommunicationException if there is an error setting the homing stop position
      */
-    public void setHomingStopPosition(int position) throws DeviceCommunicationException {
-        int position_high = (int) (position >> 16);
-        int position_low = (int) (position & 0xFFFF);
-        writeRegister(HOMING_STOP_POSITION_HIGH, position_high);
-        writeRegister(HOMING_STOP_POSITION_LOW, position_low);
+    public void setHomingStopPosition(long position) throws DeviceCommunicationException {
+        writeLongRegister(HOMING_STOP_POSITION_HIGH, position, false);
     }
 
     /**
@@ -577,10 +506,8 @@ public class IDM_RS {
      * @return the homing stop position
      * @throws DeviceCommunicationException if there is an error getting the homing stop position
      */
-    public int getHomingStopPosition() throws DeviceCommunicationException {
-        int position_high = readRegister(HOMING_STOP_POSITION_HIGH);
-        int position_low = readRegister(HOMING_STOP_POSITION_LOW);
-        return (position_high << 16) | position_low;
+    public long getHomingStopPosition() throws DeviceCommunicationException {
+        return readLongRegister(HOMING_STOP_POSITION_HIGH, false);
     }
 
     /**
