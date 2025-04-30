@@ -530,6 +530,7 @@ public class IDM_RS extends ModbusRTUDevice {
                     if (timeout > 0 && startTime + timeout < System.currentTimeMillis()) {
                         logger.error("[iDM_RS] Timeout reached while waiting for homing to finish");
                         isMoving.set(false);
+                        stop();
                         return false;
                     }
                     StatusMode mode = getStatusMode();
