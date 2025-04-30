@@ -77,7 +77,7 @@ public class IDM_RS extends ModbusRTUDevice {
      * @param logger            the logger
      */
     public IDM_RS(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
-        super( "iDM_RS", rs485, logger);
+        super("iDM_RS", rs485, logger);
         this.state = state;
         this.stateFunction = notifyStateChange;
         setId(id);
@@ -514,30 +514,47 @@ public class IDM_RS extends ModbusRTUDevice {
      * Method that starts the homing
      *
      * @param homingControl the homing method to set
+     * @param timeout       the timeout to wait for the homing to finish
      * @throws DeviceCommunicationException if there is an error setting the homing method
      */
-    public Future<Boolean> homing(HomingControl homingControl) {
+    public Future<Boolean> homing(HomingControl homingControl, long timeout) {
         return executorService.submit(() -> {
-            try{
+            try {
                 logger.log("[iDM_RS] Starting homing");
                 writeRegister(HOMING_METHOD, homingControl.toInt());
                 writeRegister(STATUS_MODE, StatusMode.HOMING);
                 isMoving.set(true);
+                long startTime = System.currentTimeMillis();
                 while (true) {
                     if (!isMoving.get()) throw new DeviceCommunicationException("Device stopped");
+                    if (timeout > 0 && startTime + timeout < System.currentTimeMillis()) {
+                        logger.error("[iDM_RS] Timeout reached while waiting for homing to finish");
+                        isMoving.set(false);
+                        return false;
+                    }
                     StatusMode mode = getStatusMode();
                     if (mode.getSTATUS_CODE() == 0) break;
                     Thread.sleep(50);
                 }
                 isMoving.set(false);
                 return true;
-            }catch (Exception e){
+            } catch (Exception e) {
                 isMoving.set(false);
                 logger.error("[iDM_RS] Error starting homing");
                 logger.error(e.getMessage());
                 return false;
             }
         });
+    }
+
+    /**
+     * Method that starts the homing
+     *
+     * @param homingControl the homing method to set
+     * @throws DeviceCommunicationException if there is an error setting the homing method
+     */
+    public Future<Boolean> homing(HomingControl homingControl) {
+        return homing(homingControl, 0);
     }
 
     /**
