@@ -27,7 +27,9 @@ public class ModBusSerialCache {
         params.setStopbits(1);
         params.setEncoding(Modbus.SERIAL_ENCODING_RTU);
         ModbusSerialMaster master = new ModbusSerialMaster(
-                params
+                params,
+                1000,
+                0
         );
         master.connect();
         modbusSerialMasterHashMap.put(com, master);

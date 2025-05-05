@@ -82,6 +82,21 @@ public class TMCM_3351_MOTOR {
     AtomicBoolean initialized = new AtomicBoolean(false);
 
     /**
+     * The speed of the motor
+     */
+    AtomicInteger speed = new AtomicInteger(0);
+
+    /**
+     * The acceleration of the motor
+     */
+    AtomicInteger acceleration = new AtomicInteger(0);
+
+    /**
+     * The deceleration of the motor
+     */
+    AtomicInteger deceleration = new AtomicInteger(0);
+
+    /**
      * Global Logger
      */
     final Logger logger;
@@ -116,23 +131,23 @@ public class TMCM_3351_MOTOR {
      * Method that initializes the state of the specific motor
      */
     void initState() {
-        if(state.containsKey("current_position")){
+        if (state.containsKey("current_position")) {
             if (state.get("current_position") instanceof AtomicInteger) {
                 currentPos = (AtomicInteger) state.get("current_position");
-            }else if (state.get("current_position") instanceof Integer) {
+            } else if (state.get("current_position") instanceof Integer) {
                 currentPos.set((Integer) state.get("current_position"));
-            }else if (state.get("current_position") instanceof Double) {
+            } else if (state.get("current_position") instanceof Double) {
                 currentPos.set(((Double) state.get("current_position")).intValue());
             }
         }
         state.put("current_position", currentPos);
 
-        if(state.containsKey("target_position")){
+        if (state.containsKey("target_position")) {
             if (state.get("target_position") instanceof AtomicInteger) {
                 targetPos = (AtomicInteger) state.get("target_position");
-            }else if (state.get("target_position") instanceof Integer) {
+            } else if (state.get("target_position") instanceof Integer) {
                 targetPos.set((Integer) state.get("target_position"));
-            }else if (state.get("target_position") instanceof Double) {
+            } else if (state.get("target_position") instanceof Double) {
                 targetPos.set(((Double) state.get("target_position")).intValue());
             }
         }
@@ -188,6 +203,14 @@ public class TMCM_3351_MOTOR {
         TMCLCommand response = usb.write(command);
         if (response == null) {
             throw new DeviceCommunicationException("Error setting parameter");
+        } else {
+            if (parameter == PARAM_MAX_SPEED) {
+                speed.set(value);
+            } else if (parameter == PARAM_MAX_ACCELERATION) {
+                acceleration.set(value);
+            } else if (parameter == PARAM_MAX_DECELERATION) {
+                deceleration.set(value);
+            }
         }
     }
 
@@ -198,7 +221,7 @@ public class TMCM_3351_MOTOR {
      * @throws DeviceCommunicationException if there is an error rotating the motor
      */
     public void rotateRight(int velocity) throws DeviceCommunicationException {
-        if (velocity < 0){
+        if (velocity < 0) {
             rotateLeft(-velocity);
             return;
         }
@@ -217,7 +240,7 @@ public class TMCM_3351_MOTOR {
      * @throws DeviceCommunicationException if there is an error rotating the motor
      */
     public void rotateLeft(int velocity) throws DeviceCommunicationException {
-        if (velocity < 0){
+        if (velocity < 0) {
             rotateRight(-velocity);
             return;
         }
@@ -258,6 +281,7 @@ public class TMCM_3351_MOTOR {
 
     /**
      * Method that starts the reference search
+     *
      * @throws DeviceCommunicationException if there is an error starting the reference search
      */
     private void startReferenceSearch() throws DeviceCommunicationException {
@@ -268,6 +292,7 @@ public class TMCM_3351_MOTOR {
 
     /**
      * Method that stops the reference search
+     *
      * @throws DeviceCommunicationException if there is an error stopping the reference search
      */
     public void stopReferenceSearch() throws DeviceCommunicationException {
@@ -276,6 +301,7 @@ public class TMCM_3351_MOTOR {
 
     /**
      * Method that checks if the reference search is complete
+     *
      * @return true if the reference search is complete, false otherwise
      * @throws DeviceCommunicationException if there is an error checking if the reference search is complete
      */
@@ -285,6 +311,7 @@ public class TMCM_3351_MOTOR {
 
     /**
      * Method that starts the reference search and waits for it to end
+     *
      * @return a future that represents the result of the operation
      */
     public Future<Boolean> startReferenceSearchAndWait() {
@@ -346,24 +373,31 @@ public class TMCM_3351_MOTOR {
      * @param mode     the mode of the movement
      * @param position the position to move to
      */
-    private void MVP_till_end(byte mode, int position) throws DeviceCommunicationException {
+    private void MVP_till_end(byte mode, int position, long timeout) throws DeviceCommunicationException {
         moveToPosition(mode, position);
-        waitTillPositionReached();
+        waitTillPositionReached(timeout);
     }
 
     /**
      * Method that waits for the position to be reached. It checkes the position flag wich is 1 if the position is reached
      */
-    @SneakyThrows
-    private void waitTillPositionReached() throws DeviceCommunicationException {
+    private void waitTillPositionReached(long timeout) throws DeviceCommunicationException {
+        long endTime = System.currentTimeMillis() + timeout;
         while (true) {
             if (!isMoving.get()) throw new DeviceCommunicationException("Moving to position is cancelled");
+            if (timeout > 0 && System.currentTimeMillis() > endTime) {
+                this.stopMotor();
+                throw new DeviceCommunicationException("Timeout waiting for position to be reached");
+            }
             int status = getParameter(PARAM_POSITION_FLAG);
             //1 = reached , 0 = not reached
             if (status == 1) {
                 break;
             }
-            Thread.sleep(50);
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException ignored) {
+            }
         }
     }
 
@@ -384,26 +418,67 @@ public class TMCM_3351_MOTOR {
      * Method that moves the motor to the given position and waits for the movement to end
      *
      * @param position the position to move to
+     * @param timeout  the timeout in milliseconds
+     * @return a future that represents the result of the operation
      */
-    public Future<Boolean> moveToRelativePositionAndWait(int position) {
+    public Future<DeviceCommunicationException> moveToRelativePositionAndWait(int position, long timeout) {
         return executorService.submit(() -> {
             logger.debug("[TMCM_3351_MOTOR] Moving to relative position: " + position);
             try {
                 waitStatusUnlock();
                 isMoving.set(true);
                 targetPos.set(currentPos.get() + position);
+                long computedTimeout = timeout;
+                if (timeout < 0) {
+                    computedTimeout = estimatedArrivalTime(position) * 2L;
+                }
                 stateFunction.notifyStateChange();
-                MVP_till_end(MVP_REL, position);
+                MVP_till_end(MVP_REL, position, computedTimeout);
                 isMoving.set(false);
                 currentPos.set(targetPos.get());
                 stateFunction.notifyStateChange();
-                return true;
+                return null;
             } catch (Exception e) {
                 logger.error("[TMCM_3351_MOTOR] Error moving to position: " + e.getMessage());
-                return false;
+                if (e instanceof DeviceCommunicationException) {
+                    return (DeviceCommunicationException) e;
+                } else {
+                    return new DeviceCommunicationException(e.getMessage());
+                }
             }
         });
+    }
 
+    /**
+     * Method that estimates the arrival time of the motor to the given position
+     *
+     * @param distance the distance to the position
+     * @return the estimated arrival time in milliseconds
+     * @throws DeviceCommunicationException if there is an error getting the speed
+     */
+    long estimatedArrivalTime(int distance) throws DeviceCommunicationException {
+        if (distance == 0) {
+            return 0;
+        }
+        if (speed.get() == 0) {
+            speed.set(getParameter(PARAM_MAX_SPEED));
+        }
+        if (acceleration.get() == 0) {
+            acceleration.set(getParameter(PARAM_MAX_ACCELERATION));
+        }
+        if (deceleration.get() == 0) {
+            deceleration.set(getParameter(PARAM_MAX_DECELERATION));
+        }
+        double speed_decimal = (double) speed.get();
+        double acceleration_decimal = (double) acceleration.get();
+        double deceleration_decimal = (double) deceleration.get();
+        double distance_decimal = (double) Math.abs(distance);
+        double time_speed = distance_decimal / speed_decimal;
+        double time_acceleration = speed_decimal / acceleration_decimal;
+        double time_deceleration = speed_decimal / deceleration_decimal;
+        long time = (long) ((time_speed + time_acceleration + time_deceleration) * 1000);
+        logger.debug("[TMCM_3351_MOTOR] Estimated arrival time: " + time + " ms for distance: " + distance_decimal + " at speed: " + speed_decimal + " with acceleration: " + acceleration_decimal + " and deceleration: " + deceleration_decimal);
+        return time;
     }
 
     /**
@@ -411,28 +486,58 @@ public class TMCM_3351_MOTOR {
      *
      * @param position the position to move to
      */
-    public Future<Boolean> moveToAbsolutePositionAndWait(int position) {
+    public Future<DeviceCommunicationException> moveToRelativePositionAndWait(int position) {
+        return moveToRelativePositionAndWait(position, 0);
+    }
+
+    /**
+     * Method that moves the motor to the given position and waits for the movement to end
+     *
+     * @param position the position to move to
+     * @param timeout  the timeout in milliseconds
+     * @return a future that represents the result of the operation
+     */
+    public Future<DeviceCommunicationException> moveToAbsolutePositionAndWait(int position, long timeout) {
         return executorService.submit(() -> {
             logger.debug("[TMCM_3351_MOTOR] Moving to absolute position: " + position);
             try {
                 waitStatusUnlock();
                 isMoving.set(true);
+                long computedTimeout = timeout;
+                if (timeout < 0) {
+                    computedTimeout = estimatedArrivalTime(position - currentPos.get()) * 2L;
+                }
                 targetPos.set(position);
                 stateFunction.notifyStateChange();
-                MVP_till_end(MVP_ABS, position);
+                MVP_till_end(MVP_ABS, position, computedTimeout);
                 isMoving.set(false);
                 currentPos.set(targetPos.get());
                 stateFunction.notifyStateChange();
-                return true;
+                return null;
             } catch (Exception e) {
                 logger.error("[TMCM_3351_MOTOR] Error moving to position: " + e.getMessage());
-                return false;
+                if (e instanceof DeviceCommunicationException) {
+                    return (DeviceCommunicationException) e;
+                } else {
+                    return new DeviceCommunicationException(e.getMessage());
+                }
             }
         });
     }
 
     /**
+     * Method that moves the motor to the given position and waits for the movement to end
+     *
+     * @param position the position to move to
+     */
+    public Future<DeviceCommunicationException> moveToAbsolutePositionAndWait(int position) {
+        return moveToAbsolutePositionAndWait(position, 0);
+    }
+
+
+    /**
      * Method to query the driver for alarms
+     *
      * @return the error flags
      * @throws DeviceCommunicationException if there is an error getting the error flags
      */
@@ -442,6 +547,7 @@ public class TMCM_3351_MOTOR {
 
     /**
      * Method that clears the errors
+     *
      * @throws DeviceCommunicationException if there is an error clearing the errors
      */
     public void clearErrors() throws DeviceCommunicationException {
@@ -454,6 +560,7 @@ public class TMCM_3351_MOTOR {
 
     /**
      * Method that enables the closed loop
+     *
      * @param mode the mode of the closed loop
      * @throws DeviceCommunicationException if there is an error enabling the closed loop
      */
@@ -474,6 +581,7 @@ public class TMCM_3351_MOTOR {
 
     /**
      * Method that disables the closed loop
+     *
      * @throws DeviceCommunicationException if there is an error disabling the closed loop
      */
     public void disableClosedLoop() throws DeviceCommunicationException {
