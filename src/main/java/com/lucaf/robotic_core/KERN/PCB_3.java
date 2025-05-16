@@ -10,8 +10,6 @@ import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.concurrent.CompletableFuture.runAsync;
-
 public class PCB_3 {
     private final SerialPort serialPort;
     private CountDownLatch latch = null;

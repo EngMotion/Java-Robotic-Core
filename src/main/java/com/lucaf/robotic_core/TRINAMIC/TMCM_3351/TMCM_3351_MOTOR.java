@@ -187,6 +187,23 @@ public class TMCM_3351_MOTOR {
         }
     }
 
+    private boolean verifyParameter(byte parameter, int value) throws DeviceCommunicationException {
+        int attempts = 5;
+        while (attempts > 0) {
+            attempts--;
+            try {
+                Thread.sleep(10);
+                int value_check = getParameter(parameter);
+                if (value_check == value) {
+                    return true;
+                }
+            } catch (InterruptedException e) {
+                throw new DeviceCommunicationException(e.getMessage());
+            }
+        }
+        return false;
+    }
+
     /**
      * Method that sets a parameter
      *
@@ -368,6 +385,21 @@ public class TMCM_3351_MOTOR {
     }
 
     /**
+     * Method that gets the value of a parameter
+     * @param parameter the parameter to get
+     * @throws ConfigurationException if there is an error getting the parameter
+     * @return the value of the parameter
+     */
+    public int getParameter(String parameter) throws ConfigurationException {
+        try {
+            Field field = constantsClass.getField(parameter);
+            return getParameter((byte) field.get(null));
+        } catch (NoSuchFieldException | IllegalAccessException | DeviceCommunicationException e) {
+            throw new ConfigurationException("Parameter not found: " + e.getMessage());
+        }
+    }
+
+    /**
      * Method that moves the motor to the given position but waits for the movement to end
      *
      * @param mode     the mode of the movement
@@ -478,7 +510,7 @@ public class TMCM_3351_MOTOR {
         double time_deceleration = speed_decimal / deceleration_decimal;
         long time = (long) ((time_speed + time_acceleration + time_deceleration) * 1000);
         logger.debug("[TMCM_3351_MOTOR] Estimated arrival time: " + time + " ms for distance: " + distance_decimal + " at speed: " + speed_decimal + " with acceleration: " + acceleration_decimal + " and deceleration: " + deceleration_decimal);
-        return time;
+        return Math.max(2000, time);
     }
 
     /**
