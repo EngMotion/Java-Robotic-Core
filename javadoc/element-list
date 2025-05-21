@@ -5,6 +5,8 @@ com.lucaf.robotic_core.DH_ROBOTICS.RGI100_22
 com.lucaf.robotic_core.DH_ROBOTICS.SAC_N_M2
 com.lucaf.robotic_core.exception
 com.lucaf.robotic_core.KERN
+com.lucaf.robotic_core.MOXMEC
+com.lucaf.robotic_core.MOXMEC.RG024A
 com.lucaf.robotic_core.NANOTEC
 com.lucaf.robotic_core.NANOTEC.PD4E_RTU
 com.lucaf.robotic_core.STEPPERONLINE.iDM_RS
