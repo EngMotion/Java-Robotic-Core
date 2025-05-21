@@ -1,24 +1,15 @@
-package com.lucaf.robotic_core.TRINAMIC;
+package com.lucaf.robotic_core.MOXMEC;
 
 import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.SerialParams;
-import com.lucaf.robotic_core.TRINAMIC.utils.TMCLCommand;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
-import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
-import jssc.SerialPortException;
+import jssc.*;
 import lombok.Setter;
-
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Class that represents the USB communication class for the Trinamic Drivers
- */
-public class USB implements SerialPortEventListener {
-
+public class Serial implements SerialPortEventListener {
     /**
      * The serial port of the USB
      */
@@ -36,7 +27,7 @@ public class USB implements SerialPortEventListener {
      * @param com the COM port of the USB. Will initialize the port
      * @throws SerialPortException if the port is not found
      */
-    public USB(String com, SerialParams params) throws SerialPortException {
+    public Serial(String com, SerialParams params) throws SerialPortException {
         serialPort = new SerialPort(com);
         if (serialPort.isOpened()) serialPort.closePort();
         serialPort.openPort();
@@ -46,17 +37,15 @@ public class USB implements SerialPortEventListener {
                 params.getStopbits(),
                 params.getParity()
         );
-        serialPort.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
-        //int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;
-        //int mask = SerialPort.MASK_RXCHAR;
-        //serialPort.setEventsMask(mask);
+        int mask = SerialPort.MASK_RXCHAR;
+        serialPort.setEventsMask(mask);
         serialPort.addEventListener(this);
     }
 
     /**
      * The default constructor
      */
-    public USB(String com) throws SerialPortException {
+    public Serial(String com) throws SerialPortException {
         this(com, new SerialParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE));
     }
 
@@ -68,12 +57,12 @@ public class USB implements SerialPortEventListener {
     /**
      * The expected response
      */
-    byte[] expected = new byte[0];
+    char[] expected = new char[0];
 
     /**
      * The last response
      */
-    TMCLCommand lastResponse = null;
+    MoxMecCommand lastResponse = null;
 
     /**
      * Method that writes a command to the USB
@@ -82,37 +71,43 @@ public class USB implements SerialPortEventListener {
      * @return the response of the command
      * @throws DeviceCommunicationException if there is an error writing the command
      */
-    public synchronized TMCLCommand write(TMCLCommand command) throws DeviceCommunicationException {
-        if (logger != null) {
-            logger.debug("[USB] Writing command: " + command.toString());
-        }
+    public synchronized MoxMecCommand write(MoxMecCommand command) throws DeviceCommunicationException {
+
         latch = new CountDownLatch(1);
         try {
-            //serialPort.purgePort(SerialPort.PURGE_RXCLEAR | SerialPort.PURGE_TXCLEAR | SerialPort.PURGE_RXABORT | SerialPort.PURGE_TXABORT);
-            //serialPort.purgePort(SerialPort.PURGE_RXCLEAR | SerialPort.PURGE_TXCLEAR);
-            expected = command.getFrame();
+            serialPort.purgePort(SerialPort.PURGE_RXCLEAR | SerialPort.PURGE_TXCLEAR);
+            expected = command.getRequestFrame();
+            if (logger != null) {
+                logger.debug("[Serial] Writing command: " + new String(expected));
+            }
             lastResponse = null;
-            serialPort.writeBytes(expected);
+            serialPort.writeString(new String(expected));
             latch.await(1000, TimeUnit.MILLISECONDS);
             if (lastResponse == null) {
-                //throw new DeviceCommunicationException("No response");
                 return null;
             }
-            if (!lastResponse.isOk()) {
-                throw new DeviceCommunicationException("Response is not OK: " + lastResponse.toString());
-            }
             if (logger != null) {
-                logger.debug("[USB] Response: " + lastResponse.toString());
+                logger.debug("[Serial] Response: " + lastResponse.toString());
             }
             return lastResponse;
-        } catch (SerialPortException | InterruptedException e) {
+        } catch (SerialPortException | InterruptedException e ) {
             if (logger != null) {
-                logger.error("[USB] Error writing command: " + e.getMessage());
+                logger.error("[Serial] Error writing command: " + e.getMessage());
             }
             throw new DeviceCommunicationException(e.getMessage());
         }
     }
 
+    byte[] extractResponse(byte[] data){
+        char[] response = new char[data.length];
+        for (int i = 0; i < data.length; i++) {
+            response[i] = (char) data[i];
+        }
+        logger.log(new String(response));
+        return null;
+    }
+
+    byte[] delay = new byte[0];
     /**
      * Method that hanles a serial frame event
      *
@@ -124,14 +119,15 @@ public class USB implements SerialPortEventListener {
         if (serialPortEvent.isRXCHAR()) {
             if (serialPortEvent.getEventValue() > 0) {
                 if (logger != null) {
-                    logger.debug("[USB] Serial response: " + serialPortEvent.getEventValue());
+                    logger.debug("[Serial] Serial response: " + serialPortEvent.getEventValue());
                 }
                 try {
-                    byte[] frames = serialPort.readBytes(9);
-                    lastResponse = new TMCLCommand(frames);
+                    String data = serialPort.readString(12, 1000);
+                    MoxMecCommand response = new MoxMecCommand(data);
+                    lastResponse = response;
                     latch.countDown();
-                } catch (SerialPortException e) {
-                    e.printStackTrace();
+                } catch (SerialPortException|SerialPortTimeoutException e) {
+                    logger.error("[Serial] Error reading serial port: " + e.toString());
                 }
             }
         }

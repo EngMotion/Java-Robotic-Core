@@ -1,25 +1,25 @@
 package com.lucaf.robotic_core.utils.serials;
 
+import com.lucaf.robotic_core.MOXMEC.Serial;
 import com.lucaf.robotic_core.SerialParams;
-import com.lucaf.robotic_core.TRINAMIC.USB;
 import jssc.SerialPortException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class USBCache {
-    static Map<String, USB> usbHashMap = new HashMap<>();
+public class MoxMecSerialCache {
+    static Map<String, Serial> usbHashMap = new HashMap<>();
 
     /**
      * Get the USB object from the cache or create a new one
      * @param portName the port name
      * @return the USB object
      */
-    public static USB getUSB(String portName, SerialParams params) throws SerialPortException {
+    public static Serial getSerial(String portName, SerialParams params) throws SerialPortException {
         if (usbHashMap.containsKey(portName)) {
             return usbHashMap.get(portName);
         }
-        USB usb = new USB(portName, params);
+        Serial usb = new Serial(portName, params);
         usbHashMap.put(portName, usb);
         return usb;
     }
@@ -28,7 +28,7 @@ public class USBCache {
      * Close all the USB objects
      */
     public static void closeALL() {
-        for (Map.Entry<String, USB> entry : usbHashMap.entrySet()) {
+        for (Map.Entry<String, Serial> entry : usbHashMap.entrySet()) {
             try {
                 entry.getValue().close();
                 usbHashMap.remove(entry.getKey());
@@ -37,5 +37,4 @@ public class USBCache {
             }
         }
     }
-
 }
