@@ -148,7 +148,7 @@ public class RG024ATuner {
     }
 
 
-    void show() {
+    public void show() {
         JFrame frame = new JFrame("RG024ATuner");
         frame.setContentPane(new RG024ATuner().panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

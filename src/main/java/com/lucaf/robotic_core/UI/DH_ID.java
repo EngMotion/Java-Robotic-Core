@@ -28,6 +28,7 @@ public class DH_ID {
     private JButton SETButton;
     private JComboBox selectID;
     private JButton disconnectButton;
+    private JLabel idCheck;
 
 
     JFrame frame = new JFrame("DH ROBOTICS");
@@ -51,11 +52,12 @@ public class DH_ID {
                 selectID.setModel(new DefaultComboBoxModel<>());
                 master.setTimeout(20);
                 for (int i = 0; i <= 255; i++) {
-                    System.out.println("Checking motor " + i);
+                    selectID.addItem(i);
+                }
+                for (int i = 0; i <= 255; i++) {
+                    idCheck.setText(String.valueOf(i));
                     if (RGI100_22.ping(master, i)) {
                         selectMotor.addItem(i);
-                    } else {
-                        selectID.addItem(i);
                     }
                 }
                 refreshMotor.setEnabled(true);
@@ -210,7 +212,7 @@ public class DH_ID {
         app = new JPanel();
         app.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(8, 3, new Insets(10, 10, 10, 10), -1, -1));
+        panel1.setLayout(new GridLayoutManager(9, 3, new Insets(10, 10, 10, 10), -1, -1));
         app.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1, false));
         comList = new JComboBox();
         panel1.add(comList, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(200, -1), null, 0, false));
@@ -238,18 +240,24 @@ public class DH_ID {
         SETButton = new JButton();
         SETButton.setEnabled(false);
         SETButton.setText("SET");
-        panel1.add(SETButton, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel1.add(SETButton, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         selectID = new JComboBox();
         selectID.setEnabled(false);
-        panel1.add(selectID, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel1.add(selectID, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label3 = new JLabel();
         label3.setEnabled(true);
         label3.setText("Set new ID");
-        panel1.add(label3, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel1.add(label3, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         disconnectButton = new JButton();
         disconnectButton.setEnabled(false);
         disconnectButton.setText("Disconnect");
         panel1.add(disconnectButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label4 = new JLabel();
+        label4.setText("Checking id:");
+        panel1.add(label4, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        idCheck = new JLabel();
+        idCheck.setText("XX");
+        panel1.add(idCheck, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

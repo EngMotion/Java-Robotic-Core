@@ -437,7 +437,8 @@ public class IDM_RS extends ModbusRTUDevice {
      * @throws DeviceCommunicationException if there is an error setting the homing speed
      */
     public void setHomingSpeed(long speed) throws DeviceCommunicationException {
-        writeLongRegister(HOMING_SPEED_HIGH, speed, false);
+        writeRegister(HOMING_SPEED_LOW, (int) speed);
+        //writeLongRegister(HOMING_SPEED_HIGH, speed, false);
     }
 
     /**

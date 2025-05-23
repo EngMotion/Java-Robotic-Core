@@ -30,12 +30,12 @@ public class StepperOnline {
 
             @Override
             public void debug(String message) {
-                System.out.println(message);
+                //System.out.println(message);
             }
         };
         try {
             SerialParameters params = new SerialParameters();
-            params.setPortName("COM6");
+            params.setPortName("COM8");
             params.setBaudRate(115200);
             params.setDatabits(8);
             params.setParity("None");
@@ -65,13 +65,15 @@ public class StepperOnline {
             //iDM_rs.setSpeed(100);
             //Thread.sleep(1000);
             //iDM_rs.setSpeed(0);
-            boolean status = false;
+            boolean status = true;
             while (true){
                 status = !status;
                 DigitalOutput digitalOutput = iDM_rs.getDigitalOutput(1);
                 digitalOutput.setNormally_closed(status);
                 iDM_rs.setDigitalOutput(1, digitalOutput);
-                Thread.sleep(500);
+                Thread.sleep(!status ? 10000 : 100);
+                DigitalInputs inputs = iDM_rs.getDigitalInputs();
+                System.out.println(inputs);
                 if (false) break;
             }
             long now = System.currentTimeMillis();

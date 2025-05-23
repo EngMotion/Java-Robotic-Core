@@ -419,6 +419,7 @@ public class TMCM_3351_MOTOR {
             if (!isMoving.get()) throw new DeviceCommunicationException("Moving to position is cancelled");
             if (timeout > 0 && System.currentTimeMillis() > endTime) {
                 this.stopMotor();
+                this.setParameter(PARAM_CL_MODE, 0);
                 throw new DeviceCommunicationException("Timeout waiting for position to be reached");
             }
             int status = getParameter(PARAM_POSITION_FLAG);
