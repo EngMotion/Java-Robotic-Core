@@ -6,6 +6,7 @@ import com.lucaf.robotic_core.TRINAMIC.USB;
 import com.lucaf.robotic_core.TRINAMIC.utils.TMCLCommand;
 import com.lucaf.robotic_core.exception.ConfigurationException;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -95,6 +96,12 @@ public class TMCM_3351_MOTOR {
      * The deceleration of the motor
      */
     AtomicInteger deceleration = new AtomicInteger(0);
+
+    /**
+     * Flag to indicate if the motor has a fault
+     */
+    @Getter
+    AtomicBoolean hasFault = new AtomicBoolean(false);
 
     /**
      * Global Logger
@@ -187,6 +194,13 @@ public class TMCM_3351_MOTOR {
         }
     }
 
+    /**
+     * Method that verifies if a parameter is set to a specific value
+     * @param parameter the parameter to verify
+     * @param value the value to verify
+     * @return true if the parameter is set to the value, false otherwise
+     * @throws DeviceCommunicationException if there is an error communicating with the device
+     */
     private boolean verifyParameter(byte parameter, int value) throws DeviceCommunicationException {
         int attempts = 5;
         while (attempts > 0) {
@@ -379,6 +393,7 @@ public class TMCM_3351_MOTOR {
         command.setType(parameter);
         TMCLCommand response = usb.write(command);
         if (response == null) {
+            hasFault.set(true);
             throw new DeviceCommunicationException("Error getting parameter");
         }
         return response.getValue();
@@ -415,11 +430,14 @@ public class TMCM_3351_MOTOR {
      */
     private void waitTillPositionReached(long timeout) throws DeviceCommunicationException {
         long endTime = System.currentTimeMillis() + timeout;
+        logger.debug("[TMCM_3351_MOTOR] Waiting for position to be reached, timeout: " + timeout + " ms, end time: " + endTime);
         while (true) {
             if (!isMoving.get()) throw new DeviceCommunicationException("Moving to position is cancelled");
             if (timeout > 0 && System.currentTimeMillis() > endTime) {
-                this.stopMotor();
                 this.setParameter(PARAM_CL_MODE, 0);
+                this.stopMotor();
+                this.hasFault.set(true);
+                logger.error("[TMCM_3351_MOTOR] Moving to position out of time");
                 throw new DeviceCommunicationException("Timeout waiting for position to be reached");
             }
             int status = getParameter(PARAM_POSITION_FLAG);
@@ -511,7 +529,7 @@ public class TMCM_3351_MOTOR {
         double time_deceleration = speed_decimal / deceleration_decimal;
         long time = (long) ((time_speed + time_acceleration + time_deceleration) * 1000);
         logger.debug("[TMCM_3351_MOTOR] Estimated arrival time: " + time + " ms for distance: " + distance_decimal + " at speed: " + speed_decimal + " with acceleration: " + acceleration_decimal + " and deceleration: " + deceleration_decimal);
-        return Math.max(2000, time);
+        return Math.max(1000, time);
     }
 
     /**

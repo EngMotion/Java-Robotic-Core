@@ -220,7 +220,7 @@ public class RGI100_22 extends ModbusRTUDevice {
         logger.debug("[RGI100_22] Setting up new error listener");
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleAtFixedRate(() -> {
-            if (scheduledExecutorService == null || scheduledExecutorService.isShutdown()) return;
+            if (scheduledExecutorService == null || scheduledExecutorService.isShutdown() || has_fault.get()) return;
             try {
                 logger.debug("[RGI100_22] Checking for errors");
                 ErrorFlags errorFlags = getErrorFlags();

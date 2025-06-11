@@ -46,7 +46,7 @@ public class StepperOnline {
             );
             master.connect();
             System.out.println("Connected");
-            IDM_RS iDM_rs = new IDM_RS(master, (byte) 0x05, new HashMap<>(), new State() {
+            IDM_RS iDM_rs = new IDM_RS(master, (byte) 0x04, new HashMap<>(), new State() {
                 @Override
                 public void notifyStateChange() {
 
@@ -62,19 +62,23 @@ public class StepperOnline {
             //iDM_rs.setRelativePositioning(true);
             iDM_rs.setDeceleration(50);
             iDM_rs.setAcceleration(50);
-            //iDM_rs.setSpeed(100);
             //Thread.sleep(1000);
             //iDM_rs.setSpeed(0);
             boolean status = true;
-            while (true){
-                status = !status;
-                DigitalOutput digitalOutput = iDM_rs.getDigitalOutput(1);
-                digitalOutput.setNormally_closed(status);
-                iDM_rs.setDigitalOutput(1, digitalOutput);
-                Thread.sleep(!status ? 10000 : 100);
-                DigitalInputs inputs = iDM_rs.getDigitalInputs();
-                System.out.println(inputs);
-                if (false) break;
+            main: while (true){
+                iDM_rs.setSpeed(30);
+                long start = System.currentTimeMillis();
+                Thread.sleep(300);
+                check: while (true){
+                    DigitalInputs inputs = iDM_rs.getDigitalInputs();
+                    System.out.println(inputs);
+                    if (inputs.isDI3()) break check;
+                    Thread.sleep(30);
+                }
+                System.out.println((System.currentTimeMillis() - start));
+                iDM_rs.setSpeed(0);
+                Thread.sleep(1000);
+                if (false) break main;
             }
             long now = System.currentTimeMillis();
             //iDM_rs.moveToPositionAndWait(10000).get();
