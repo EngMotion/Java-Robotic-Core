@@ -353,7 +353,7 @@ public class TMCM_3351_MOTOR {
                 startReferenceSearch();
                 while (!isReferenceSearchComplete()) {
                     if (!isMoving.get()) throw new DeviceCommunicationException("Device is stopped.");
-                    Thread.sleep(50);
+                    Thread.sleep(200);
                 }
                 isMoving.set(false);
                 return true;

@@ -46,7 +46,12 @@ public class ModbusRTUDevice {
      */
     protected synchronized boolean writeRegister(byte[] register, int data) throws DeviceCommunicationException {
         try {
-            logger.debug("[%s] Writing register: " + Integer.toHexString(register[0] << 8 | register[1]) + " with data: " + data);
+            logger.debug(String.format("[%s] Writing register: 0x%02X - 0x%02X with data: %s",
+                    model,
+                    register[0] & 0xFF,
+                    register[1] & 0xFF,
+                    data
+            ));
             int startRegister = register[0] << 8 | register[1];
             int fb = rs485.writeSingleRegister(id, startRegister, new SimpleInputRegister(data));
             logger.debug("[%s] Write response: " + fb);
@@ -66,9 +71,10 @@ public class ModbusRTUDevice {
      */
     protected synchronized int readRegister(byte[] register) throws DeviceCommunicationException {
         try {
-            logger.debug(String.format("[%s] Reading register: %s",
+            logger.debug(String.format("[%s] Reading register: 0x%02X - 0x%02X",
                     model,
-                    Integer.toHexString(register[0] << 8 | register[1])
+                    register[0] & 0xFF,
+                    register[1] & 0xFF
             ));
             int startRegister = register[0] << 8 | register[1];
             Register[] regs = rs485.readMultipleRegisters(id, startRegister, 1);
@@ -95,9 +101,10 @@ public class ModbusRTUDevice {
      */
     protected synchronized long readLongRegister(byte[] register_high, boolean invert) throws DeviceCommunicationException {
         try {
-            logger.debug(String.format("[%s] Reading long register: %s",
+            logger.debug(String.format("[%s] Reading long register: 0x%02X - 0x%02X",
                     model,
-                    Integer.toHexString(register_high[0] << 8 | register_high[1])
+                    register_high[0] & 0xFF,
+                    register_high[1] & 0xFF
             ));
             int startRegister = register_high[0] << 8 | register_high[1];
             Register[] regs = rs485.readMultipleRegisters(id, startRegister, 2);
@@ -127,9 +134,10 @@ public class ModbusRTUDevice {
      */
     protected synchronized boolean writeLongRegister(byte[] register_high, long data, boolean inverted) throws DeviceCommunicationException {
         try {
-            logger.debug(String.format("[%s] Writing long register: %s with data: %d",
+            logger.debug(String.format("[%s] Writing long register: 0x%02X - 0x%02X with data: %d",
                     model,
-                    Integer.toHexString(register_high[0] << 8 | register_high[1]),
+                    register_high[0] & 0xFF,
+                    register_high[1] & 0xFF,
                     data
             ));
             int data_high = (int) (0xFFFF & data >> 16);
