@@ -130,6 +130,8 @@ public class IDM_RS extends ModbusRTUDevice {
         stateFunction.notifyStateChange();
     }
 
+    AtomicInteger speed = new AtomicInteger(0);
+
     /**
      * Method that sets the speed of the device
      *
@@ -137,10 +139,10 @@ public class IDM_RS extends ModbusRTUDevice {
      * @throws DeviceCommunicationException if there is an error setting the speed
      */
     public void setSpeed(int speed) throws DeviceCommunicationException {
+        this.speed.set(speed);
         writeRegister(VELOCITY, speed);
         if (controlMode.getCONTROL_MODE() == 2) {
-            if (speed == 0) isMoving.set(false);
-            else isMoving.set(true);
+            isMoving.set(speed != 0);
             stateFunction.notifyStateChange();
             writeRegister(STATUS_MODE, StatusMode.getSegmentPositioning((byte) 0x00));
         }
@@ -169,6 +171,8 @@ public class IDM_RS extends ModbusRTUDevice {
         stateFunction.notifyStateChange();
     }
 
+    AtomicInteger acceleration = new AtomicInteger(0);
+
     /**
      * Method that sets the acceleration of the device
      *
@@ -176,6 +180,7 @@ public class IDM_RS extends ModbusRTUDevice {
      * @throws DeviceCommunicationException if there is an error setting the acceleration
      */
     public void setAcceleration(int acceleration) throws DeviceCommunicationException {
+        this.acceleration.set(acceleration);
         writeRegister(ACCELERATION, acceleration);
     }
 
@@ -189,6 +194,8 @@ public class IDM_RS extends ModbusRTUDevice {
         return readRegister(ACCELERATION);
     }
 
+    AtomicInteger deceleration = new AtomicInteger(0);
+
     /**
      * Method that sets the deceleration of the device
      *
@@ -196,6 +203,7 @@ public class IDM_RS extends ModbusRTUDevice {
      * @throws DeviceCommunicationException if there is an error setting the deceleration
      */
     public void setDeceleration(int deceleration) throws DeviceCommunicationException {
+        this.deceleration.set(deceleration);
         writeRegister(DECELERATION, deceleration);
     }
 
@@ -575,12 +583,62 @@ public class IDM_RS extends ModbusRTUDevice {
      * @throws DeviceCommunicationException if there is an error waiting for the position
      */
     @SneakyThrows
-    public void waitReachedPosition() throws DeviceCommunicationException {
+    public void waitReachedPosition(int timeout) throws DeviceCommunicationException {
+        long startTime = System.currentTimeMillis();
         while (true) {
+            if (timeout > 0 && startTime + timeout < System.currentTimeMillis()) {
+                logger.error("[iDM_RS] Timeout reached while waiting for position to be reached");
+                stop();
+                throw new DeviceCommunicationException("Timeout reached while waiting for position to be reached");
+            }
             if (!isMoving.get()) throw new DeviceCommunicationException("Device stopped");
             StatusMode mode = getStatusMode();
             if (!mode.isRunning()) break;
             Thread.sleep(50);
+        }
+    }
+
+    /**
+     * Method that estimates the arrival time to a distance
+     * @param distance the distance to cover in steps
+     * @return the estimated time in seconds, or -1 if not available
+     * @throws DeviceCommunicationException if there is an error estimating the arrival time
+     */
+    int estimateArrivalTime(int distance) throws DeviceCommunicationException {
+        distance = Math.abs(distance);
+        if (controlMode.getCONTROL_MODE() == 2){
+            return -1; // Not available in velocity mode
+        }
+        int speed = this.speed.get();
+        if (speed == 0){
+            this.speed.set(getSpeed());
+            speed = this.speed.get();
+        }
+        int acceleration = this.acceleration.get();
+        if (acceleration == 0){
+            this.acceleration.set(getAcceleration());
+            acceleration = this.acceleration.get();
+        }
+        int deceleration = this.deceleration.get();
+        if (deceleration == 0){
+            this.deceleration.set(getDeceleration());
+            deceleration = this.deceleration.get();
+        }
+        if (speed == 0 || acceleration == 0 || deceleration == 0) {
+            return -1;
+        }
+        int timeToReachSpeed = speed / acceleration;
+        int timeToStop = speed / deceleration;
+        int distanceToReachSpeed = (speed * timeToReachSpeed) / 2;
+        int distanceToStop = (speed * timeToStop) / 2;
+        int distanceToCover = distance - distanceToReachSpeed - distanceToStop;
+        if (distanceToCover < 0) {
+            // If the distance is less than the distance to reach speed and stop, we can calculate the time directly
+            return (int) Math.ceil(Math.sqrt((2.0 * distance) / acceleration));
+        } else {
+            // Calculate the time to cover the remaining distance at constant speed
+            int timeAtConstantSpeed = distanceToCover / speed;
+            return timeToReachSpeed + timeAtConstantSpeed + timeToStop;
         }
     }
 
@@ -590,14 +648,18 @@ public class IDM_RS extends ModbusRTUDevice {
      * @param position the position to move to
      * @return a future with the result of the operation
      */
-    public Future<Boolean> moveToPositionAndWait(int position) {
+    public Future<Boolean> moveToPositionAndWait(int position, int timeout) {
+        AtomicInteger finalTimeout = new AtomicInteger(timeout);
         return executorService.submit(() -> {
             logger.log("[iDM_RS] Moving to position " + position);
             try {
                 isMoving.set(true);
                 setPosition(position);
                 stateFunction.notifyStateChange();
-                waitReachedPosition();
+                if (finalTimeout.get() < 0){
+                    finalTimeout.set(estimateArrivalTime((int) (position - currentPos.get())));
+                }
+                waitReachedPosition(finalTimeout.get());
                 isMoving.set(false);
                 currentPos.set(targetPos.get());
                 stateFunction.notifyStateChange();
@@ -607,5 +669,9 @@ public class IDM_RS extends ModbusRTUDevice {
                 return false;
             }
         });
+    }
+
+    public Future<Boolean> moveToPositionAndWait(int position) {
+        return moveToPositionAndWait(position, 0);
     }
 }
