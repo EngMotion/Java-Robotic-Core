@@ -657,7 +657,7 @@ public class IDM_RS extends ModbusRTUDevice {
                 setPosition(position);
                 stateFunction.notifyStateChange();
                 if (finalTimeout.get() < 0){
-                    finalTimeout.set(estimateArrivalTime((int) (position - currentPos.get())));
+                    finalTimeout.set(estimateArrivalTime((int) (position - currentPos.get())) * 2);
                 }
                 waitReachedPosition(finalTimeout.get());
                 isMoving.set(false);
