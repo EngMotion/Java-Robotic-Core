@@ -75,6 +75,20 @@ public class USB implements SerialPortEventListener {
      */
     TMCLCommand lastResponse = null;
 
+    public synchronized void writeAsync(TMCLCommand command) throws DeviceCommunicationException {
+        if (logger != null) {
+            logger.debug("[USB] Writing command async: " + command.toString());
+        }
+        try {
+            serialPort.writeBytes(command.getFrame());
+        } catch (SerialPortException e) {
+            if (logger != null) {
+                logger.error("[USB] Error writing command async: " + e.getMessage());
+            }
+            throw new DeviceCommunicationException(e.getMessage());
+        }
+    }
+
     /**
      * Method that writes a command to the USB
      *

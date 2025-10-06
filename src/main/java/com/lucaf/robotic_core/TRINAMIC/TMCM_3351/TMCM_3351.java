@@ -192,10 +192,12 @@ public class TMCM_3351 {
      */
     public void restart() throws DeviceCommunicationException {
         TMCLCommand command = new TMCLCommand(address, (byte) 0);
-        command.setCommand(RST);
+        command.setCommand(RESTART);
         command.setType((byte) 0);
-        command.setValue(0);
-        usb.write(command);
+        command.setValue(1234);
+        usb.writeAsync(command);
     }
+
+
 }
 

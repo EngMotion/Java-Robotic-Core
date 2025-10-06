@@ -352,7 +352,10 @@ public class TMCM_3351_MOTOR {
                 isMoving.set(true);
                 startReferenceSearch();
                 while (!isReferenceSearchComplete()) {
-                    if (!isMoving.get()) throw new DeviceCommunicationException("Device is stopped.");
+                    if (!isMoving.get()) {
+                        stopReferenceSearch();
+                        throw new DeviceCommunicationException("Device is stopped.");
+                    }
                     Thread.sleep(200);
                 }
                 isMoving.set(false);
@@ -425,6 +428,14 @@ public class TMCM_3351_MOTOR {
         waitTillPositionReached(timeout);
     }
 
+    private void fixCurrentPosition() throws DeviceCommunicationException {
+        int actual_position = getParameter(PARAM_ACTUAL_POSITION);
+        currentPos.set(actual_position);
+        targetPos.set(actual_position);
+        setParameter(PARAM_TARGET_POSITION, actual_position);
+        stateFunction.notifyStateChange();
+    }
+
     /**
      * Method that waits for the position to be reached. It checkes the position flag wich is 1 if the position is reached
      */
@@ -432,7 +443,10 @@ public class TMCM_3351_MOTOR {
         long endTime = System.currentTimeMillis() + timeout;
         logger.debug("[TMCM_3351_MOTOR] Waiting for position to be reached, timeout: " + timeout + " ms, end time: " + endTime);
         while (true) {
-            if (!isMoving.get()) throw new DeviceCommunicationException("Moving to position is cancelled");
+            if (!isMoving.get()) {
+                fixCurrentPosition();
+                throw new DeviceCommunicationException("Moving to position is cancelled");
+            }
             if (timeout > 0 && System.currentTimeMillis() > endTime) {
                 this.setParameter(PARAM_CL_MODE, 0);
                 this.stopMotor();

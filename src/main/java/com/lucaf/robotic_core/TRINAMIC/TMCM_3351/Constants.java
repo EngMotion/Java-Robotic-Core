@@ -458,5 +458,5 @@ public class Constants {
     /**
      * Restart: 48
      */
-    public static final byte RST = 48;
+    public static final byte RESTART = (byte) 255;
 }
