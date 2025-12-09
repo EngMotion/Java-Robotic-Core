@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.MOXMEC;
+package com.lucaf.robotic_core.moxMec;
 
 import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.SerialParams;
@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+@Deprecated
 public class Serial implements SerialPortEventListener {
     /**
      * The serial port of the USB

@@ -92,7 +92,7 @@ public class MockedRegisterInterface extends RegisterInterface {
     }
 
     @Override
-    protected boolean send(byte[] request) throws IOException {
+    public boolean send(byte[] request) throws IOException {
         return false;
     }
 

@@ -56,7 +56,7 @@ public abstract class IOInterface {
 
     protected abstract void onData(byte[] data);
 
-    protected abstract boolean send(byte[] request) throws IOException;
+    public abstract boolean send(byte[] request) throws IOException;
 
     public abstract boolean isConnected();
 }

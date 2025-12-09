@@ -1,6 +1,6 @@
 package com.lucaf.robotic_core.utils.serials;
 
-import com.lucaf.robotic_core.MOXMEC.Serial;
+import com.lucaf.robotic_core.moxMec.Serial;
 import com.lucaf.robotic_core.SerialParams;
 import jssc.SerialPortException;
 

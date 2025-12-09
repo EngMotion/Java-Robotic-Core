@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.MOXMEC;
+package com.lucaf.robotic_core.moxMec;
 
 import lombok.Getter;
 
@@ -8,6 +8,9 @@ public class MoxMecCommand {
      */
     private boolean IS_REPLY = false;
 
+    /**
+     * If the command was successful
+     */
     @Getter
     private boolean SUCCESS = false;
 

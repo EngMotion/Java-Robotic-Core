@@ -4,9 +4,8 @@ import com.fazecast.jSerialComm.SerialPort;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.lucaf.robotic_core.Logger;
-import com.lucaf.robotic_core.MOXMEC.RG024A.RG024A;
+import com.lucaf.robotic_core.moxMec.rg024a.RG024A;
 import com.lucaf.robotic_core.SerialParams;
-import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import com.lucaf.robotic_core.utils.serials.MoxMecSerialCache;
 import jssc.SerialPortException;
 
@@ -14,6 +13,7 @@ import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.io.IOException;
 import java.util.Locale;
 
 public class RG024ATuner {
@@ -61,7 +61,7 @@ public class RG024ATuner {
         }
     };
 
-    public void setupData() throws DeviceCommunicationException {
+    public void setupData() throws IOException {
         rampSlider.setMaximum(99);
         rampSlider.setMinimum(0);
         rampSlider.setValue(rg024A.getRamp());
@@ -70,7 +70,7 @@ public class RG024ATuner {
             try {
                 rg024A.setRamp(rampSlider.getValue());
                 rampLabel.setText(String.valueOf(rg024A.getRamp()));
-            } catch (DeviceCommunicationException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
@@ -82,7 +82,7 @@ public class RG024ATuner {
             try {
                 rg024A.setAmplitude(amplitudeSlider.getValue());
                 amplitudeLabel.setText(String.valueOf(rg024A.getAmplitude()));
-            } catch (DeviceCommunicationException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
@@ -94,35 +94,35 @@ public class RG024ATuner {
             try {
                 rg024A.setFrequency(frequencySlider.getValue());
                 frequencyLabel.setText(String.valueOf(rg024A.getFrequency()));
-            } catch (DeviceCommunicationException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
         SAVEButton.addActionListener(e -> {
             try {
                 rg024A.save();
-            } catch (DeviceCommunicationException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
         ONButton.addActionListener(e -> {
             try {
                 rg024A.enable();
-            } catch (DeviceCommunicationException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
         OFFButton.addActionListener(e -> {
             try {
                 rg024A.disable();
-            } catch (DeviceCommunicationException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
         TOGGLEButton.addActionListener(e -> {
             try {
                 rg024A.toggle();
-            } catch (DeviceCommunicationException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });
@@ -141,7 +141,7 @@ public class RG024ATuner {
                 setupData();
             } catch (SerialPortException ex) {
                 ex.printStackTrace();
-            } catch (DeviceCommunicationException ex) {
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         });

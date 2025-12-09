@@ -231,7 +231,7 @@ public class ModbusRS485Interface extends RegisterInterface {
     }
 
     @Override
-    protected boolean send(byte[] request) throws IOException {
+    public boolean send(byte[] request) throws IOException {
         // Not implemented for Modbus RS485
         return false;
     }
