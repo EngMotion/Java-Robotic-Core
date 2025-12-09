@@ -7,13 +7,12 @@ import com.ghgande.j2mod.modbus.util.SerialParameters;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.lucaf.robotic_core.DH_ROBOTICS.RGI100_22.RGI100_22;
-import com.lucaf.robotic_core.Logger;
-import com.lucaf.robotic_core.State;
-import com.lucaf.robotic_core.exception.DeviceCommunicationException;
+import com.lucaf.robotic_core.DH_ROBOTICS.RGI100.RGI100;
+import com.lucaf.robotic_core.DataInterfaces.modbus.ModbusRS485Interface;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,7 +55,7 @@ public class DH_ID {
                 }
                 for (int i = 0; i <= 255; i++) {
                     idCheck.setText(String.valueOf(i));
-                    if (RGI100_22.ping(master, i)) {
+                    if (ModbusRS485Interface.ping(master, i)) {
                         selectMotor.addItem(i);
                     }
                 }
@@ -87,41 +86,10 @@ public class DH_ID {
         }
     }
 
-    void startUpdate() throws DeviceCommunicationException {
+    void startUpdate() throws IOException {
         byte id = Byte.parseByte(selectMotor.getSelectedItem().toString());
         int newId = Integer.parseInt(selectID.getSelectedItem().toString());
-        RGI100_22 rgi100_22 = new RGI100_22(master, new HashMap<>(), new State() {
-            @Override
-            public void notifyStateChange() {
-
-            }
-
-            @Override
-            public void notifyError() {
-
-            }
-        }, new Logger() {
-            @Override
-            public void log(String message) {
-
-            }
-
-            @Override
-            public void error(String message) {
-
-            }
-
-            @Override
-            public void warn(String message) {
-
-            }
-
-            @Override
-            public void debug(String message) {
-
-            }
-        });
-        rgi100_22.setId(id);
+        RGI100 rgi100_22 = new RGI100(new ModbusRS485Interface(master, id, ""), new HashMap<>());
         if (rgi100_22.changeAddress(newId)) {
             if (rgi100_22.saveConfig()) {
                 JOptionPane.showMessageDialog(null, "ID cambiato con successo. Riavviare il dispositivo", "Successo", JOptionPane.INFORMATION_MESSAGE);
@@ -171,7 +139,7 @@ public class DH_ID {
         SETButton.addActionListener(e -> {
             try {
                 startUpdate();
-            } catch (DeviceCommunicationException deviceCommunicationException) {
+            } catch (IOException deviceCommunicationException) {
                 JOptionPane.showMessageDialog(frame, "Error updating the device: " + deviceCommunicationException.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });

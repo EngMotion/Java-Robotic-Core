@@ -141,7 +141,7 @@ public class IDM_RS extends ModbusRTUDevice {
     public void setSpeed(int speed) throws DeviceCommunicationException {
         this.speed.set(speed);
         writeRegister(VELOCITY, speed);
-        if (controlMode.getCONTROL_MODE() == 2) {
+        if (controlMode.getCONTROL_MODE() == ControlMode.ControlType.VELOCITY_MODE.getValue()) {
             isMoving.set(speed != 0);
             stateFunction.notifyStateChange();
             writeRegister(STATUS_MODE, StatusMode.getSegmentPositioning((byte) 0x00));
@@ -249,7 +249,7 @@ public class IDM_RS extends ModbusRTUDevice {
      * @throws DeviceCommunicationException if there is an error setting the mode
      */
     public void setPositioningMode() throws DeviceCommunicationException {
-        controlMode.setCONTROL_MODE(1);
+        controlMode.setCONTROL_MODE(ControlMode.ControlType.POSITION_MODE.getValue());
         writeControlMode();
     }
 
@@ -259,7 +259,7 @@ public class IDM_RS extends ModbusRTUDevice {
      * @throws DeviceCommunicationException if there is an error setting the mode
      */
     public void setVelocityMode() throws DeviceCommunicationException {
-        controlMode.setCONTROL_MODE(2);
+        controlMode.setCONTROL_MODE(ControlMode.ControlType.VELOCITY_MODE.getValue());
         writeControlMode();
     }
 
@@ -606,7 +606,7 @@ public class IDM_RS extends ModbusRTUDevice {
      */
     int estimateArrivalTime(int distance) throws DeviceCommunicationException {
         distance = Math.abs(distance);
-        if (controlMode.getCONTROL_MODE() == 2){
+        if (controlMode.getCONTROL_MODE() == ControlMode.ControlType.VELOCITY_MODE.getValue()){
             return -1; // Not available in velocity mode
         }
         int speed = this.speed.get();

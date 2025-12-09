@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.DH_ROBOTICS.RGI100_22;
+package com.lucaf.robotic_core.DH_ROBOTICS.RGI100;
 
 import lombok.Getter;
 

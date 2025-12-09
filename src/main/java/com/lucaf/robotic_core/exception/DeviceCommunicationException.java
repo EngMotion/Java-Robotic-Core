@@ -1,9 +1,11 @@
 package com.lucaf.robotic_core.exception;
 
+import java.io.IOException;
+
 /**
  * Exception thrown when a communication error occurs.
  */
-public class DeviceCommunicationException extends Exception {
+public class DeviceCommunicationException extends IOException {
 
     /**
      * Constructor of the DeviceCommunicationException class.

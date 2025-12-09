@@ -11,10 +11,26 @@ import java.util.Arrays;
 @Getter
 @Setter
 public class ControlMode {
+    public enum ControlType {
+        NO_MODE(0),
+        VELOCITY_MODE(2),
+        POSITION_MODE(1);
+
+        private final int value;
+
+        ControlType(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
     /**
      * BIT 0-3: Control Mode
      */
-    public int CONTROL_MODE = 0;
+    public int CONTROL_MODE = ControlType.NO_MODE.getValue();
 
     /**
      * BIT 4: Interrupt
