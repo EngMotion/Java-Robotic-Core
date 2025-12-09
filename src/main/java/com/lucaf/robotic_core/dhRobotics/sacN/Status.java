@@ -12,14 +12,14 @@ public class Status {
      * 0: normal
      * 1: emergency stop
      */
-    private boolean emergency_stop_state = false;
+    private boolean emergencyStopState = false;
 
     /**
      * The state of the device
      * 0: not prepared
      * 1: ready
      */
-    private boolean power_supply_state = false;
+    private boolean powerSupplyState = false;
 
     /**
      * The state of the device
@@ -31,28 +31,28 @@ public class Status {
      * 0: disabled
      * 1: enabled
      */
-    private boolean is_enabled = false;
+    private boolean isEnabled = false;
 
     /**
      * The state of the device
      * 0: normal
      * 1: error
      */
-    private boolean has_alarm = false;
+    private boolean hasAlarm = false;
 
     /**
      * The state of the device
      * 0: not in motion
      * 1: in motion
      */
-    private boolean is_in_motion = false;
+    private boolean isInMotion = false;
 
     /**
      * The state of the device
      * 0: no zero
      * 1: compleated zero
      */
-    private boolean is_back_home = false;
+    private boolean isBackHome = false;
 
 
     /**
@@ -60,37 +60,58 @@ public class Status {
      * 0: not in place
      * 1: in place
      */
-    private boolean is_in_place = false;
+    private boolean isInPlace = false;
 
 
-    public Status() {
-    }
+    /**
+     * Default constructor
+     */
+    public Status() {}
 
+    /**
+     * Constructor from code
+     * @param code the status code
+     */
     public Status(int code){
-        //int to 16 bit binary
-        String binary = Integer.toBinaryString(code);
-        while (binary.length() < 16) {
-            binary = "0" + binary;
-        }
-        emergency_stop_state = binary.charAt(0) == '1';
-        power_supply_state = binary.charAt(1) == '1';
-        thrust = binary.charAt(2) == '1';
-        is_enabled = binary.charAt(5) == '1';
-        has_alarm = binary.charAt(6) == '1';
-        is_in_motion = binary.charAt(7) == '1';
-        is_back_home = binary.charAt(9) == '1';
-        is_in_place = binary.charAt(10) == '1';
+        emergencyStopState = ((code >> 15) & 1) == 1;
+        powerSupplyState = ((code >> 14) & 1) == 1;
+        thrust = ((code >> 13) & 1) == 1;
+        isEnabled = ((code >> 10) & 1) == 1;
+        hasAlarm = ((code >> 9) & 1) == 1;
+        isInMotion = ((code >> 8) & 1) == 1;
+        isBackHome = ((code >> 6) & 1) == 1;
+        isInPlace = ((code >> 5) & 1) == 1;
     }
 
+    /**
+     * Convert the status to code
+     * @return the status code
+     */
+    public int toCode(){
+        int code = 0;
+        code |= (emergencyStopState ? 1 : 0) << 15;
+        code |= (powerSupplyState ? 1 : 0) << 14;
+        code |= (thrust ? 1 : 0) << 13;
+        code |= (isEnabled ? 1 : 0) << 10;
+        code |= (hasAlarm ? 1 : 0) << 9;
+        code |= (isInMotion ? 1 : 0) << 8;
+        code |= (isBackHome ? 1 : 0) << 6;
+        code |= (isInPlace ? 1 : 0) << 5;
+        return code;
+    }
+
+    /**
+     * String representation of the status
+     * @return the string representation
+     */
     public String toString(){
-        return "Emergency Stop: " + emergency_stop_state + "\n" +
-                "Power Supply: " + power_supply_state + "\n" +
+        return "Emergency Stop: " + emergencyStopState + "\n" +
+                "Power Supply: " + powerSupplyState + "\n" +
                 "Thrust: " + thrust + "\n" +
-                "Enabled: " + is_enabled + "\n" +
-                "Alarm: " + has_alarm + "\n" +
-                "In Motion: " + is_in_motion + "\n" +
-                "Back Home: " + is_back_home + "\n" +
-                "In Place: " + is_in_place + "\n";
+                "Enabled: " + isEnabled + "\n" +
+                "Alarm: " + hasAlarm + "\n" +
+                "In Motion: " + isInMotion + "\n" +
+                "Back Home: " + isBackHome + "\n" +
+                "In Place: " + isInPlace + "\n";
     }
-
 }

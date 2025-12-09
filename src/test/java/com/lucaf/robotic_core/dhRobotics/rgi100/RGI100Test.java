@@ -13,8 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.lucaf.robotic_core.dhRobotics.rgi100.Constants.*;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RGI100Test {
     final HashMap<String, Object> state = new HashMap<>();
@@ -26,17 +25,16 @@ public class RGI100Test {
 
     @Test
     public void testState() {
-        assert (state.containsKey("is_moving_grip"));
-        assert (state.containsKey("is_moving_rotator"));
-        assert (state.containsKey("is_moving"));
-        assert (state.containsKey("is_moving"));
-        assert (state.containsKey("current_position"));
-        assert (state.containsKey("target_position"));
-        assert (state.containsKey("current_angle"));
-        assert (state.containsKey("target_angle"));
-        assert (state.containsKey("is_initialized"));
-        assert (state.containsKey("has_fault"));
-        assert (state.containsKey("fault"));
+        assertTrue(state.containsKey("is_moving_grip"));
+        assertTrue(state.containsKey("is_moving_rotator"));
+        assertTrue(state.containsKey("is_moving"));
+        assertTrue(state.containsKey("current_position"));
+        assertTrue(state.containsKey("target_position"));
+        assertTrue(state.containsKey("current_angle"));
+        assertTrue(state.containsKey("target_angle"));
+        assertTrue(state.containsKey("is_initialized"));
+        assertTrue(state.containsKey("has_fault"));
+        assertTrue(state.containsKey("fault"));
     }
 
     void initializeMotor() throws Exception {
@@ -48,97 +46,86 @@ public class RGI100Test {
 
     @Test
     public void testInitialization() throws Exception {
-        assertThrows(IOException.class, () -> {
-            motor.moveToAbsoluteAngle(10);
-        });
-        assertThrows(IOException.class, () -> {
-            motor.moveToRelativeAngle(10);
-        });
-        assertThrows(IOException.class, () -> {
-            motor.setGripPosition(10);
-        });
+        assertThrows(IOException.class, () -> motor.moveToAbsoluteAngle(10));
+        assertThrows(IOException.class, () -> motor.moveToRelativeAngle(10));
+        assertThrows(IOException.class, () -> motor.setGripPosition(10));
+
         Pair<Boolean, PositionFeedback> feedback = motor.setGripPositionAndWait(10).get();
-        assert (!feedback.first);
+        assertFalse(feedback.first);
+
         feedback = motor.moveToRelativeAngleAndWait(10).get();
-        assert (!feedback.first);
+        assertFalse(feedback.first);
+
         feedback = motor.setGripPositionAndWait(10).get();
-        assert (!feedback.first);
+        assertFalse(feedback.first);
+
         //Post initialization
         initializeMotor();
-        assert (motor.isInitialized());
+        assertTrue(motor.isInitialized());
     }
 
     @Test
     public void testErrorHandling() throws Exception {
         initializeMotor();
-        connection.writeInteger(FEEDBACK_GRIP_ERROR_CODE, 4); //Overheat
+        connection.writeInteger(FEEDBACK_GRIP_ERROR_CODE, 4); // Overheat
         Thread.sleep(2000);
-        assert (motor.hasError());
-        assert (state.get("fault").equals("Overheat"));
-        assertThrows(IOException.class, () -> {
-            motor.setGripPosition(10);
-        });
-        connection.writeInteger(FEEDBACK_GRIP_ERROR_CODE, 0); //No error
+        assertTrue(motor.hasError());
+        assertEquals("Overheat", state.get("fault"));
+
+        assertThrows(IOException.class, () -> motor.setGripPosition(10));
+
+        connection.writeInteger(FEEDBACK_GRIP_ERROR_CODE, 0); // No error
         Thread.sleep(2000);
-        assert (!motor.hasError());
-        assert (state.get("fault").equals(""));
+        assertFalse(motor.hasError());
+        assertEquals("", state.get("fault"));
     }
 
     @Test
     public void testStop() throws Exception {
         initializeMotor();
-        assertDoesNotThrow(() -> {
-            motor.setGripPosition(50);
-        });
+        assertDoesNotThrow(() -> motor.setGripPosition(50));
         motor.stop();
-        assert (motor.isStopped());
-        assertThrows(IOException.class, () -> {
-            motor.setGripPosition(10);
-        });
+        assertTrue(motor.isStopped());
+        assertThrows(IOException.class, () -> motor.setGripPosition(10));
+
         initializeMotor();
-        assertDoesNotThrow(() -> {
-            motor.setGripPosition(10);
-        });
+        assertDoesNotThrow(() -> motor.setGripPosition(10));
     }
 
     @Test
     public void testShutdown() throws Exception {
         initializeMotor();
-        assertDoesNotThrow(() -> {
-            motor.setGripPosition(50);
-        });
+        assertDoesNotThrow(() -> motor.setGripPosition(50));
         motor.shutdown();
-        assert (motor.isShutdown());
-        assertThrows(IOException.class, () -> {
-            motor.setGripPosition(10);
-        });
-        assertThrows(RejectedExecutionException.class, () -> {
-            motor.initialize().get();
-        });
+        assertTrue(motor.isShutdown());
+        assertThrows(IOException.class, () -> motor.setGripPosition(10));
+        assertThrows(RejectedExecutionException.class, () -> motor.initialize().get());
     }
 
     @Test
     public void testRotationPositionFeedback() throws Exception {
         initializeMotor();
         connection.writeInteger(FEEDBACK_ROTATION_STATE, 0);
-        assert (motor.isRotationMoving().equals(PositionFeedback.MOVING));
+        assertEquals(PositionFeedback.MOVING, motor.isRotationMoving());
+
         connection.writeInteger(FEEDBACK_ROTATION_STATE, 1);
-        assert (motor.isRotationMoving().equals(PositionFeedback.REACHED));
+        assertEquals(PositionFeedback.REACHED, motor.isRotationMoving());
+
         connection.writeInteger(FEEDBACK_ROTATION_STATE, 2);
-        assert (motor.isRotationMoving().equals(PositionFeedback.BLOCKED));
+        assertEquals(PositionFeedback.BLOCKED, motor.isRotationMoving());
     }
 
     @Test
     public void testGripPositionFeedback() throws Exception {
         initializeMotor();
         connection.writeInteger(FEEDBACK_GRIP_STATE, 0);
-        assert (motor.isGripMoving().equals(PositionFeedback.MOVING));
+        assertEquals(PositionFeedback.MOVING, motor.isGripMoving());
         connection.writeInteger(FEEDBACK_GRIP_STATE, 1);
-        assert (motor.isGripMoving().equals(PositionFeedback.REACHED_WITHOUT_OBJ));
+        assertEquals(PositionFeedback.REACHED_WITHOUT_OBJ, motor.isGripMoving());
         connection.writeInteger(FEEDBACK_GRIP_STATE, 2);
-        assert (motor.isGripMoving().equals(PositionFeedback.REACHED_WITH_OBJ));
+        assertEquals(PositionFeedback.REACHED_WITH_OBJ, motor.isGripMoving());
         connection.writeInteger(FEEDBACK_GRIP_STATE, 3);
-        assert (motor.isGripMoving().equals(PositionFeedback.FALL));
+        assertEquals(PositionFeedback.FALL, motor.isGripMoving());
     }
 
     @Test
@@ -258,11 +245,11 @@ public class RGI100Test {
         assertDoesNotThrow(() -> {
             motor.moveToRelativeAngle(90);
         });
-        assert (connection.readShort(RELATIVE_ROTATION) == 90);
+        assertEquals(90, connection.readShort(RELATIVE_ROTATION));
         assertDoesNotThrow(() -> {
             motor.moveToRelativeAngle(-450);
         });
-        assert (connection.readShort(RELATIVE_ROTATION) == -450);
+        assertEquals(-450, connection.readShort(RELATIVE_ROTATION));
         assertThrows(IOException.class, () -> {
             motor.moveToRelativeAngle(40000);
         });
@@ -356,77 +343,51 @@ public class RGI100Test {
     @Test
     public void testRotationForce() throws Exception {
         initializeMotor();
-        assertDoesNotThrow(() -> {
-            motor.setRotationForce(50);
-        });
-        assert (motor.getRotationForce() == 50);
-        assertDoesNotThrow(() -> {
-            motor.setRotationForce(-10);
-        });
-        assert (motor.getRotationForce() == 20);
-        assertDoesNotThrow(() -> {
-            motor.setRotationForce(110);
-        });
-        assert (motor.getRotationForce() == 100);
+        assertDoesNotThrow(() -> motor.setRotationForce(50));
+        assertEquals(50, motor.getRotationForce());
+        assertDoesNotThrow(() -> motor.setRotationForce(-10));
+        assertEquals(20, motor.getRotationForce());
+        assertDoesNotThrow(() -> motor.setRotationForce(110));
+        assertEquals(100, motor.getRotationForce());
     }
 
     @Test
     public void testRotationSpeed() throws Exception {
         initializeMotor();
-        assertDoesNotThrow(() -> {
-            motor.setRotationSpeed(50);
-        });
-        assert (motor.getRotationSpeed() == 50);
-        assertDoesNotThrow(() -> {
-            motor.setRotationSpeed(-10);
-        });
-        assert (motor.getRotationSpeed() == 1);
-        assertDoesNotThrow(() -> {
-            motor.setRotationSpeed(110);
-        });
-        assert (motor.getRotationSpeed() == 100);
+        assertDoesNotThrow(() -> motor.setRotationSpeed(50));
+        assertEquals(50, motor.getRotationSpeed());
+        assertDoesNotThrow(() -> motor.setRotationSpeed(-10));
+        assertEquals(1, motor.getRotationSpeed());
+        assertDoesNotThrow(() -> motor.setRotationSpeed(110));
+        assertEquals(100, motor.getRotationSpeed());
     }
 
     @Test
     public void testGripForce() throws Exception {
         initializeMotor();
-        assertDoesNotThrow(() -> {
-            motor.setGripForce(50);
-        });
-        assert (motor.getGripForce() == 50);
-        assertDoesNotThrow(() -> {
-            motor.setGripForce(-10);
-        });
-        assert (motor.getGripForce() == 20);
-        assertDoesNotThrow(() -> {
-            motor.setGripForce(110);
-        });
-        assert (motor.getGripForce() == 100);
+        assertDoesNotThrow(() -> motor.setGripForce(50));
+        assertEquals(50, motor.getGripForce());
+        assertDoesNotThrow(() -> motor.setGripForce(-10));
+        assertEquals(20, motor.getGripForce());
+        assertDoesNotThrow(() -> motor.setGripForce(110));
+        assertEquals(100, motor.getGripForce());
     }
 
     @Test
     public void testGripSpeed() throws Exception {
         initializeMotor();
-        assertDoesNotThrow(() -> {
-            motor.setGripSpeed(50);
-        });
-        assert (motor.getGripSpeed() == 50);
-        assertDoesNotThrow(() -> {
-            motor.setGripSpeed(-10);
-        });
-        assert (motor.getGripSpeed() == 1);
-        assertDoesNotThrow(() -> {
-            motor.setGripSpeed(110);
-        });
-        assert (motor.getGripSpeed() == 100);
+        assertDoesNotThrow(() -> motor.setGripSpeed(50));
+        assertEquals(50, motor.getGripSpeed());
+        assertDoesNotThrow(() -> motor.setGripSpeed(-10));
+        assertEquals(1, motor.getGripSpeed());
+        assertDoesNotThrow(() -> motor.setGripSpeed(110));
+        assertEquals(100, motor.getGripSpeed());
     }
 
     @Test
     public void testChangeAddress() throws Exception {
         initializeMotor();
-        assertDoesNotThrow(() -> {
-            assert (motor.changeAddress(2));
-        });
-        assert (motor.getAddress() == 2);
+        assertDoesNotThrow(() -> assertTrue(motor.changeAddress(2)));
+        assertEquals(2, motor.getAddress());
     }
 }

@@ -184,7 +184,7 @@ public class RGI100 extends MotorInterface {
         connection.logDebug("Setting up error listener");
         if (scheduledExecutorService != null) {
             connection.logDebug("Shutting down previous error listener");
-            scheduledExecutorService.shutdown();
+            scheduledExecutorService.shutdownNow();
         }
         connection.logDebug("Setting up new error listener");
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
@@ -207,7 +207,7 @@ public class RGI100 extends MotorInterface {
                 state.put("fault", e.getMessage());
                 hasError.set(true);
             }
-        }, 1000, 1000, java.util.concurrent.TimeUnit.MILLISECONDS);
+        }, 1000, 1000, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -284,10 +284,13 @@ public class RGI100 extends MotorInterface {
             isMovingGrip.set(true);
             isMovingRotator.set(true);
             try {
-                connection.writeInteger(INITIALIZATION, 1);
+                connection.writeInteger(INITIALIZATION, initializationMode.getCode());
+                long homingTimeout = 12000;
                 do {
-                    if (!isMovingGrip.get()) return false;
+                    if (!isMovingGrip.get() || !isMovingRotator.get()) return false;
                     Thread.sleep(300);
+                    homingTimeout -= 300;
+                    if (homingTimeout <= 0) return false;
                 } while (!hasGripInitialized() || !hasRotationInitialized());
                 connection.logDebug("Device initialized");
                 isInitialized.set(true);

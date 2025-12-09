@@ -58,40 +58,40 @@ public class Control {
      * @return the control byte
      */
     public byte[] getByte() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(action ? "1" : "0");
-        sb.append(toZero ? "1" : "0");
-        sb.append("0");
-        sb.append(suspend ? "1" : "0");
-        sb.append(reset ? "1" : "0");
-        sb.append(enable ? "1" : "0");
-        sb.append("000000");
-        sb.append(thurst ? "1" : "0");
-        sb.append(direction ? "1" : "0");
-        sb.append(relative ? "1" : "0");
-        sb.append(lock ? "1" : "0");
-        sb.reverse();
-        byte[] bytes = new byte[2];
-        bytes[0] = (byte) Integer.parseInt(sb.substring(0, 8), 2);
-        bytes[1] = (byte) Integer.parseInt(sb.substring(8), 2);
-        return bytes;
+        int high = 0;
+        int low = 0;
+
+        // High byte
+        high |= (action ? 1 : 0) << 7;
+        high |= (toZero ? 1 : 0) << 6;
+        // Bit 5 is unused (always 0)
+        high |= (suspend ? 1 : 0) << 4;
+        high |= (reset ? 1 : 0) << 3;
+        high |= (enable ? 1 : 0) << 2;
+        // Bits 1 and 0 are unused (always 0)
+
+        // Low byte
+        low |= (thurst ? 1 : 0) << 7;
+        low |= (direction ? 1 : 0) << 6;
+        low |= (relative ? 1 : 0) << 5;
+        low |= (lock ? 1 : 0) << 4;
+        // Bits 3-0 are unused (always 0)
+
+        return new byte[] { (byte) high, (byte) low };
     }
 
     public Control() {
     }
 
     public Control(byte high, byte low) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%8s", Integer.toBinaryString(high & 0xFF)).replace(' ', '0'));
-        sb.append(String.format("%8s", Integer.toBinaryString(low & 0xFF)).replace(' ', '0'));
-        action = sb.charAt(0) == '1';
-        toZero = sb.charAt(1) == '1';
-        suspend = sb.charAt(3) == '1';
-        reset = sb.charAt(4) == '1';
-        enable = sb.charAt(5) == '1';
-        thurst = sb.charAt(8) == '1';
-        direction = sb.charAt(9) == '1';
-        relative = sb.charAt(10) == '1';
-        lock = sb.charAt(11) == '1';
+        action    = ((high >> 7) & 0x01) == 1;
+        toZero    = ((high >> 6) & 0x01) == 1;
+        suspend   = ((high >> 4) & 0x01) == 1;
+        reset     = ((high >> 3) & 0x01) == 1;
+        enable    = ((high >> 2) & 0x01) == 1;
+        thurst    = ((low  >> 7) & 0x01) == 1;
+        direction = ((low  >> 6) & 0x01) == 1;
+        relative  = ((low  >> 5) & 0x01) == 1;
+        lock      = ((low  >> 4) & 0x01) == 1;
     }
 }
