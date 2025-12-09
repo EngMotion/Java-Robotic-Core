@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.DH_ROBOTICS.RGI100;
+package com.lucaf.robotic_core.dhRobotics.rgi100;
 
 public enum InitializationMode {
     CLAMPING_UNIDIRECTIONAL(0x01, "Clamping unidirectional return to zero (related to return to zero direction setting), rotating return to zero"),

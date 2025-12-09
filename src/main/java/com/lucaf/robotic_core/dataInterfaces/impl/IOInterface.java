@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.DataInterfaces.impl;
+package com.lucaf.robotic_core.dataInterfaces.impl;
 
 import com.lucaf.robotic_core.Logger;
 import lombok.Getter;

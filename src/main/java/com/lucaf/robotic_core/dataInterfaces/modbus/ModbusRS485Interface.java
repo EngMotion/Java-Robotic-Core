@@ -1,10 +1,10 @@
-package com.lucaf.robotic_core.DataInterfaces.modbus;
+package com.lucaf.robotic_core.dataInterfaces.modbus;
 
 import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.AbstractModbusMaster;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
-import com.lucaf.robotic_core.DataInterfaces.impl.Register;
-import com.lucaf.robotic_core.DataInterfaces.impl.RegisterInterface;
+import com.lucaf.robotic_core.dataInterfaces.impl.Register;
+import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
 import com.lucaf.robotic_core.Logger;
 
 import java.io.IOException;

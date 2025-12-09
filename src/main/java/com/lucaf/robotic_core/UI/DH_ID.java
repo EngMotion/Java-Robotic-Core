@@ -7,8 +7,8 @@ import com.ghgande.j2mod.modbus.util.SerialParameters;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.lucaf.robotic_core.DH_ROBOTICS.RGI100.RGI100;
-import com.lucaf.robotic_core.DataInterfaces.modbus.ModbusRS485Interface;
+import com.lucaf.robotic_core.dhRobotics.rgi100.RGI100;
+import com.lucaf.robotic_core.dataInterfaces.modbus.ModbusRS485Interface;
 
 import javax.swing.*;
 import java.awt.*;

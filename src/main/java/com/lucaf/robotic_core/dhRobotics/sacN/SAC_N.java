@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.DH_ROBOTICS.SAC_N_M2;
+package com.lucaf.robotic_core.dhRobotics.sacN;
 
 import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
@@ -17,7 +17,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.lucaf.robotic_core.DH_ROBOTICS.SAC_N_M2.Constants.*;
+import static com.lucaf.robotic_core.dhRobotics.sacN.Constants.*;
 
 public class SAC_N {
 

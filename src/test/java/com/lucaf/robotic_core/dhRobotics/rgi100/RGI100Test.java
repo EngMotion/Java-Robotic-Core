@@ -1,6 +1,6 @@
-package com.lucaf.robotic_core.DH_ROBOTICS.RGI100;
+package com.lucaf.robotic_core.dhRobotics.rgi100;
 
-import com.lucaf.robotic_core.DataInterfaces.impl.Register;
+import com.lucaf.robotic_core.dataInterfaces.impl.Register;
 import com.lucaf.robotic_core.Pair;
 import com.lucaf.robotic_core.mock.dataInterface.impl.MockedRegisterInterface;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.lucaf.robotic_core.DH_ROBOTICS.RGI100.Constants.*;
+import static com.lucaf.robotic_core.dhRobotics.rgi100.Constants.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

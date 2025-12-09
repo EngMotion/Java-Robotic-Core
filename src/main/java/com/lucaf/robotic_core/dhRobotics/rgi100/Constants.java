@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.DH_ROBOTICS.RGI100;
+package com.lucaf.robotic_core.dhRobotics.rgi100;
 
 /**
  * Class that contains the constants of the RG100-22.

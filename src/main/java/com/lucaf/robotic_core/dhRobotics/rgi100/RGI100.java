@@ -1,7 +1,7 @@
-package com.lucaf.robotic_core.DH_ROBOTICS.RGI100;
+package com.lucaf.robotic_core.dhRobotics.rgi100;
 
-import com.lucaf.robotic_core.DataInterfaces.impl.RegisterInterface;
-import com.lucaf.robotic_core.Motors.impl.MotorInterface;
+import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
+import com.lucaf.robotic_core.motors.impl.MotorInterface;
 import com.lucaf.robotic_core.Pair;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
@@ -15,7 +15,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.lucaf.robotic_core.DH_ROBOTICS.RGI100.Constants.*;
+import static com.lucaf.robotic_core.dhRobotics.rgi100.Constants.*;
 
 /**
  * Class that manages the RGI100_22 device (Gripper and Rotation)

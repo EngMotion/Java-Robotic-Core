@@ -1,7 +1,7 @@
 package com.lucaf.robotic_core.mock.dataInterface.impl;
 
-import com.lucaf.robotic_core.DataInterfaces.impl.Register;
-import com.lucaf.robotic_core.DataInterfaces.impl.RegisterInterface;
+import com.lucaf.robotic_core.dataInterfaces.impl.Register;
+import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
 import com.lucaf.robotic_core.Logger;
 
 import java.io.IOException;

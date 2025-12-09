@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.DH_ROBOTICS.SAC_N_M2;
+package com.lucaf.robotic_core.dhRobotics.sacN;
 
 /**
  * Class that contains the constants of the SAC-N device

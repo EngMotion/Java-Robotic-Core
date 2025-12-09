@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.Motors.impl;
+package com.lucaf.robotic_core.motors.impl;
 
 import java.io.IOException;
 import java.util.concurrent.Future;

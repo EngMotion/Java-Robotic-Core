@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.DH_ROBOTICS.RGI100;
+package com.lucaf.robotic_core.dhRobotics.rgi100;
 
 /**
  * Enum that defines the possible position feedback states returned by the device.
