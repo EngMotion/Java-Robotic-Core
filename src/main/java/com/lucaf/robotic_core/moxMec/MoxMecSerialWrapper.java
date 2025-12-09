@@ -49,6 +49,11 @@ public class MoxMecSerialWrapper implements Consumer<SerialEvent> {
         serialInterface.addDataListener(this);
     }
 
+    /**
+     * Method that converts a char array to a byte array
+     * @param chars the char array
+     * @return the byte array
+     */
     byte[] fromString(char[] chars) {
         byte[] bytes = new byte[chars.length];
         for (int i = 0; i < chars.length; i++) {
@@ -57,6 +62,12 @@ public class MoxMecSerialWrapper implements Consumer<SerialEvent> {
         return bytes;
     }
 
+    /**
+     * Method that compares two char arrays
+     * @param a first array
+     * @param b second array
+     * @return true if they are equal, false otherwise
+     */
     boolean equals(char[] a, char[] b) {
         if (a.length != b.length) return false;
         for (int i = 0; i < a.length; i++) {
@@ -65,6 +76,12 @@ public class MoxMecSerialWrapper implements Consumer<SerialEvent> {
         return true;
     }
 
+    /**
+     * Method that sends a command waiting for a response
+     * @param request the command to send
+     * @return the response received
+     * @throws IOException if there is an error sending the command
+     */
     public synchronized MoxMecCommand sendForResult(MoxMecCommand request) throws IOException {
         latch = new CountDownLatch(1);
         try {
@@ -90,6 +107,12 @@ public class MoxMecSerialWrapper implements Consumer<SerialEvent> {
         }
     }
 
+    /**
+     * Method that sends a command without waiting for a response
+     * @param request the command to send
+     * @return true if the command was sent successfully, false otherwise
+     * @throws IOException if there is an error sending the command
+     */
     protected synchronized boolean send(MoxMecCommand request) throws IOException {
         try {
             serialInterface.purge();
@@ -101,6 +124,10 @@ public class MoxMecSerialWrapper implements Consumer<SerialEvent> {
             serialInterface.logError(String.format("Error sending command: %s - %s", new String(expected), e.getMessage()));
             throw e;
         }
+    }
+
+    public void shutdown() {
+        serialInterface.shutdown();
     }
 
     /**

@@ -4,9 +4,9 @@ import com.fazecast.jSerialComm.SerialPort;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.lucaf.robotic_core.Logger;
+import com.lucaf.robotic_core.dataInterfaces.serial.SerialPortCache;
+import com.lucaf.robotic_core.dataInterfaces.serial.SimpleSerialConnector;
 import com.lucaf.robotic_core.moxMec.rg024a.RG024A;
-import com.lucaf.robotic_core.SerialParams;
-import com.lucaf.robotic_core.utils.serials.MoxMecSerialCache;
 import jssc.SerialPortException;
 
 import javax.swing.*;
@@ -30,6 +30,7 @@ public class RG024ATuner {
     private JLabel rampLabel;
     private JLabel amplitudeLabel;
     private JLabel frequencyLabel;
+    private JSpinner address;
 
     private RG024A rg024A = null;
 
@@ -136,12 +137,15 @@ public class RG024ATuner {
         CONNECTButton.addActionListener(e -> {
             try {
                 String portName = coms.getSelectedItem().toString();
-                rg024A = new RG024A(MoxMecSerialCache.getSerial(portName, new SerialParams()), logger);
+                jssc.SerialPort serialPort = SerialPortCache.getSerialPort(portName, RG024A.defaultParams);
+                rg024A = new RG024A(new SimpleSerialConnector(serialPort, ""), (Integer) address.getValue());
                 CONNECTButton.setEnabled(false);
                 setupData();
             } catch (SerialPortException ex) {
                 ex.printStackTrace();
             } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
@@ -201,13 +205,21 @@ public class RG024ATuner {
         label4.setText("RG024A Tuner");
         panel2.add(label4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel3.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
         panel2.add(panel3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         coms = new JComboBox();
-        panel3.add(coms, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel3.add(coms, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         CONNECTButton = new JButton();
         CONNECTButton.setText("CONNECT");
-        panel3.add(CONNECTButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel3.add(CONNECTButton, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        address = new JSpinner();
+        panel3.add(address, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, new Dimension(60, -1), 0, false));
+        final JLabel label5 = new JLabel();
+        label5.setText("Address");
+        panel3.add(label5, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label6 = new JLabel();
+        label6.setText("Port");
+        panel3.add(label6, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         rampLabel = new JLabel();
         rampLabel.setText("xx");
         panel2.add(rampLabel, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

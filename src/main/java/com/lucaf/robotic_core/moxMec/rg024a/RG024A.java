@@ -1,22 +1,53 @@
 package com.lucaf.robotic_core.moxMec.rg024a;
 
+import com.lucaf.robotic_core.SerialParams;
+import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface;
+import com.lucaf.robotic_core.motors.impl.MotorInterface;
 import com.lucaf.robotic_core.moxMec.MoxMecCommand;
 import com.lucaf.robotic_core.moxMec.MoxMecSerialWrapper;
+import com.lucaf.robotic_core.utils.StateUtils;
+import jssc.SerialPort;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import static com.lucaf.robotic_core.moxMec.rg024a.Constants.*;
 
 /**
  * This class represents the RG024A device, providing methods to interact with it via a serial interface.
  */
-public class RG024A {
+public class RG024A extends MotorInterface {
+
+    public static SerialParams defaultParams = new SerialParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
     /**
      * The low-level serial communication interface to talk with the device.
      */
     final MoxMecSerialWrapper serial;
+
+    /**
+     * Shared state map exposed to callers (may contain Atomic* values).
+     */
+    private final HashMap<String, Object> state;
+
+    /**
+     * Optional callback object used to notify state changes and errors.
+     */
+    private final State stateFunction;
+
+    /**
+     * Constructs an RG024A instance with the specified serial interface and address.
+     *
+     * @param serial  The serial interface used for communication.
+     * @param address The address of the RG024A device.
+     */
+    public RG024A(SerialInterface serial, int address, HashMap<String, Object> state, State stateFunction) {
+        this.serial = new MoxMecSerialWrapper(serial, address);
+        this.state = state;
+        this.stateFunction = stateFunction;
+        initState();
+    }
 
     /**
      * Constructs an RG024A instance with the specified serial interface and address.
@@ -25,7 +56,27 @@ public class RG024A {
      * @param address The address of the RG024A device.
      */
     public RG024A(SerialInterface serial, int address) {
-        this.serial = new MoxMecSerialWrapper(serial, address);
+        this(serial, address, new HashMap<>(), null);
+    }
+
+    /**
+     * Notifies the registered State callback (if any) about a state change.
+     */
+    void notifyStateChange() {
+        if (stateFunction != null)
+            notifyStateChange();
+    }
+
+    /**
+     * Initializes and populates the internal and shared state map.
+     * Existing values present in the provided state map are respected when possible.
+     */
+    void initState() {
+        state.put("is_moving", isMoving);
+        state.put("is_initialized", isInitialized);
+        state.put("has_fault", hasError);
+        state.put("fault", "");
+        notifyStateChange();
     }
 
     /**
@@ -35,6 +86,7 @@ public class RG024A {
      * @throws IOException if there is a communication error.
      */
     public boolean enable() throws IOException {
+        isMoving.set(true);
         MoxMecCommand response = serial.sendForResult(new MoxMecCommand(serial.getAddress(), COMMAND_SWITCH, SWITCH_ON));
         return response.isSUCCESS();
     }
@@ -46,6 +98,7 @@ public class RG024A {
      * @throws IOException if there is a communication error.
      */
     public boolean disable() throws IOException {
+        isMoving.set(false);
         MoxMecCommand response = serial.sendForResult(new MoxMecCommand(serial.getAddress(), COMMAND_SWITCH, SWITCH_OFF));
         return response.isSUCCESS();
     }
@@ -174,4 +227,16 @@ public class RG024A {
         }
     }
 
+    @Override
+    public void stop() throws IOException {
+        disable();
+        isStopped.set(true);
+    }
+
+    @Override
+    public void shutdown() throws IOException {
+        stop();
+        isShutdown.set(true);
+        serial.shutdown();
+    }
 }

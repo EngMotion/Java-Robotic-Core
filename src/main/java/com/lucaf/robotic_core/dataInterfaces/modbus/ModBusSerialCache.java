@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.utils.serials;
+package com.lucaf.robotic_core.dataInterfaces.modbus;
 
 import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
@@ -12,24 +12,18 @@ public class ModBusSerialCache {
 
     /**
      * Get the ModBus master for the specified COM port
-     * @param com the COM port
-     * @param baudrate the baudrate
+     *
+     * @param com        the COM port
+     * @param parameters the serial parameters
      * @return the ModBus master
      * @throws Exception if the connection fails
      */
-    public static ModbusSerialMaster getModBusMasterCom(String com, int baudrate) throws Exception {
+    public static ModbusSerialMaster getModBusMasterCom(String com, SerialParameters parameters) throws Exception {
         if (modbusSerialMasterHashMap.containsKey(com)) return modbusSerialMasterHashMap.get(com);
-        SerialParameters params = new SerialParameters();
-        params.setPortName(com);
-        params.setBaudRate(baudrate);
-        params.setDatabits(8);
-        params.setParity("None");
-        params.setStopbits(1);
-        params.setEncoding(Modbus.SERIAL_ENCODING_RTU);
         ModbusSerialMaster master = new ModbusSerialMaster(
-                params,
+                parameters,
                 1000,
-                0
+                2
         );
         master.connect();
         modbusSerialMasterHashMap.put(com, master);
@@ -41,7 +35,7 @@ public class ModBusSerialCache {
      */
     public static void closeAll() {
         for (Map.Entry<String, ModbusSerialMaster> entry : modbusSerialMasterHashMap.entrySet()) {
-            if (entry.getValue().isConnected()){
+            if (entry.getValue().isConnected()) {
                 entry.getValue().disconnect();
             }
             modbusSerialMasterHashMap.remove(entry.getKey());

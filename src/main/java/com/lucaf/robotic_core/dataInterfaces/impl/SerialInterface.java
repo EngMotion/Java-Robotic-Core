@@ -29,5 +29,15 @@ public abstract class SerialInterface extends IOInterface {
         dataListeners.remove(listener);
     }
 
+    protected void emitDataEvent(SerialEvent event) {
+        for (Consumer<SerialEvent> listener : dataListeners) {
+            listener.accept(event);
+        }
+    }
+
     public abstract void purge() throws IOException;
+
+    public void shutdown() {
+        dataListeners.clear();
+    }
 }

@@ -9,19 +9,19 @@ import com.lucaf.robotic_core.Logger;
 
 import java.io.IOException;
 
-public class ModbusRS485Interface extends RegisterInterface {
+public class ModbusRS485 extends RegisterInterface {
 
     /**
      * The RS485 modbus connection object
      */
     private final AbstractModbusMaster rs485;
 
-    public ModbusRS485Interface(AbstractModbusMaster rs485, int unitId, String name) {
+    public ModbusRS485(AbstractModbusMaster rs485, int unitId, String name) {
         super(unitId, name);
         this.rs485 = rs485;
     }
 
-    public ModbusRS485Interface(AbstractModbusMaster rs485, int unitId, String name, Logger logger) {
+    public ModbusRS485(AbstractModbusMaster rs485, int unitId, String name, Logger logger) {
         super(unitId, name, logger);
         this.rs485 = rs485;
     }

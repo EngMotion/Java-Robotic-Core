@@ -8,7 +8,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import com.lucaf.robotic_core.dhRobotics.rgi100.RGI100;
-import com.lucaf.robotic_core.dataInterfaces.modbus.ModbusRS485Interface;
+import com.lucaf.robotic_core.dataInterfaces.modbus.ModbusRS485;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +55,7 @@ public class DH_ID {
                 }
                 for (int i = 0; i <= 255; i++) {
                     idCheck.setText(String.valueOf(i));
-                    if (ModbusRS485Interface.ping(master, i)) {
+                    if (ModbusRS485.ping(master, i)) {
                         selectMotor.addItem(i);
                     }
                 }
@@ -89,7 +89,7 @@ public class DH_ID {
     void startUpdate() throws IOException {
         byte id = Byte.parseByte(selectMotor.getSelectedItem().toString());
         int newId = Integer.parseInt(selectID.getSelectedItem().toString());
-        RGI100 rgi100_22 = new RGI100(new ModbusRS485Interface(master, id, ""), new HashMap<>());
+        RGI100 rgi100_22 = new RGI100(new ModbusRS485(master, id, ""), new HashMap<>());
         if (rgi100_22.changeAddress(newId)) {
             if (rgi100_22.saveConfig()) {
                 JOptionPane.showMessageDialog(null, "ID cambiato con successo. Riavviare il dispositivo", "Successo", JOptionPane.INFORMATION_MESSAGE);
