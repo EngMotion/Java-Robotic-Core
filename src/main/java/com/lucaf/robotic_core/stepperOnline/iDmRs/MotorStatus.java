@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.STEPPERONLINE.iDM_RS;
+package com.lucaf.robotic_core.stepperOnline.iDmRs;
 
 import lombok.Getter;
 
@@ -40,12 +40,12 @@ public class MotorStatus {
 
     /**
      * Constructor of the MotorStatus class.
-     * @param fault
-     * @param enabled
-     * @param running
-     * @param completed
-     * @param pathCompleted
-     * @param homingCompleted
+     * @param fault if the motor is in fault
+     * @param enabled if the motor is enabled
+     * @param running if the motor is running
+     * @param completed if the motor has completed its command
+     * @param pathCompleted if the motor has completed its path
+     * @param homingCompleted if the motor has completed its homing
      */
     public MotorStatus(boolean fault, boolean enabled, boolean running, boolean completed, boolean pathCompleted, boolean homingCompleted) {
         this.fault = fault;

@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.STEPPERONLINE.iDM_RS;
+package com.lucaf.robotic_core.stepperOnline.iDmRs;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ public class DigitalOutput {
     @Getter
     public enum Mode {
         INVALID(0x00),
-        COMMMAND_COMPLETED(0x20),
+        COMMAND_COMPLETED(0x20),
         PATH_COMPLETED(0x21),
         HOMING_COMPLETED(0x22),
         IN_POSITION(0x23),

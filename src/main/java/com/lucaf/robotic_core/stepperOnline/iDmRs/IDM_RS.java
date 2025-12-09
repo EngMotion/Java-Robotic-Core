@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.STEPPERONLINE.iDM_RS;
+package com.lucaf.robotic_core.stepperOnline.iDmRs;
 
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.lucaf.robotic_core.COMMON.ModbusRTUDevice;
@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.Constants.*;
+import static com.lucaf.robotic_core.stepperOnline.iDmRs.Constants.*;
 
 /**
  * Class that represents the iDM_RS StepperOnline device
@@ -141,7 +141,7 @@ public class IDM_RS extends ModbusRTUDevice {
     public void setSpeed(int speed) throws DeviceCommunicationException {
         this.speed.set(speed);
         writeRegister(VELOCITY, speed);
-        if (controlMode.getCONTROL_MODE() == ControlMode.ControlType.VELOCITY_MODE.getValue()) {
+        if (controlMode.getCONTROL_MODE() == ControlType.VELOCITY_MODE.getValue()) {
             isMoving.set(speed != 0);
             stateFunction.notifyStateChange();
             writeRegister(STATUS_MODE, StatusMode.getSegmentPositioning((byte) 0x00));
@@ -240,7 +240,7 @@ public class IDM_RS extends ModbusRTUDevice {
      * @throws DeviceCommunicationException if there is an error setting the control mode
      */
     public void writeControlMode() throws DeviceCommunicationException {
-        writeRegister(CONTROL_MODE, controlMode.toInt());
+        writeRegister(CONTROL_MODE, controlMode.toCode());
     }
 
     /**
@@ -249,7 +249,7 @@ public class IDM_RS extends ModbusRTUDevice {
      * @throws DeviceCommunicationException if there is an error setting the mode
      */
     public void setPositioningMode() throws DeviceCommunicationException {
-        controlMode.setCONTROL_MODE(ControlMode.ControlType.POSITION_MODE.getValue());
+        controlMode.setCONTROL_MODE(ControlType.POSITION_MODE.getValue());
         writeControlMode();
     }
 
@@ -259,7 +259,7 @@ public class IDM_RS extends ModbusRTUDevice {
      * @throws DeviceCommunicationException if there is an error setting the mode
      */
     public void setVelocityMode() throws DeviceCommunicationException {
-        controlMode.setCONTROL_MODE(ControlMode.ControlType.VELOCITY_MODE.getValue());
+        controlMode.setCONTROL_MODE(ControlType.VELOCITY_MODE.getValue());
         writeControlMode();
     }
 
@@ -606,7 +606,7 @@ public class IDM_RS extends ModbusRTUDevice {
      */
     int estimateArrivalTime(int distance) throws DeviceCommunicationException {
         distance = Math.abs(distance);
-        if (controlMode.getCONTROL_MODE() == ControlMode.ControlType.VELOCITY_MODE.getValue()){
+        if (controlMode.getCONTROL_MODE() == ControlType.VELOCITY_MODE.getValue()){
             return -1; // Not available in velocity mode
         }
         int speed = this.speed.get();

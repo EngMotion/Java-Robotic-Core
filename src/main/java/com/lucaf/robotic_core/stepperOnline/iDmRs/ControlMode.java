@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.STEPPERONLINE.iDM_RS;
+package com.lucaf.robotic_core.stepperOnline.iDmRs;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,22 +11,6 @@ import java.util.Arrays;
 @Getter
 @Setter
 public class ControlMode {
-    public enum ControlType {
-        NO_MODE(0),
-        VELOCITY_MODE(2),
-        POSITION_MODE(1);
-
-        private final int value;
-
-        ControlType(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
     /**
      * BIT 0-3: Control Mode
      */
@@ -56,7 +40,11 @@ public class ControlMode {
      * BIT 14: Jump
      */
     public boolean JUMP = false;
-    
+
+    /**
+     * Constructor of the class
+     * @param mode the mode as integer
+     */
     public ControlMode(int mode) {
         CONTROL_MODE = mode & 0x0F;
         INTERRUPT = (mode & 0x10) != 0;
@@ -68,11 +56,13 @@ public class ControlMode {
         JUMP = (mode & 0x4000) != 0;
     }
 
-
-
     public ControlMode(){}
 
-    public int toInt(){
+    /**
+     * Method that converts the control mode to an integer
+     * @return the control mode as integer
+     */
+    public int toCode(){
         int mode = CONTROL_MODE;
         if(INTERRUPT) mode |= 0x10;
         if(OVERLAP) mode |= 0x20;

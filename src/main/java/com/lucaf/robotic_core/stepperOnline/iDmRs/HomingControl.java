@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.STEPPERONLINE.iDM_RS;
+package com.lucaf.robotic_core.stepperOnline.iDmRs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,15 +28,7 @@ public class HomingControl {
      * 3： homing with torque detect
      * 8： set current position as homing position
      */
-    int homingMethod = 0;
-
-    public static class HomingMethod {
-        public static final int LIMIT_SWITCH = 0;
-        public static final int HOMING_SWITCH = 1;
-        public static final int SINGLE_TURN_Z_SIGNAL = 2;
-        public static final int TORQUE_DETECT = 3;
-        public static final int SET_CURRENT_POSITION = 8;
-    }
+    HomingMethod homingMethod = HomingMethod.LIMIT_SWITCH;
 
     /**
      * BIT8: Use Z signal
@@ -55,9 +47,7 @@ public class HomingControl {
         if (goToSetPosition) {
             value |= 2;
         }
-
-        value |= homingMethod << 2;
-
+        value |= homingMethod.getValue() << 2;
         if (useZSignal) {
             value |= 256;
         }
@@ -72,7 +62,7 @@ public class HomingControl {
     public HomingControl(int value) {
         positiveDirection = (value & 1) != 0;
         goToSetPosition = (value & 2) != 0;
-        homingMethod = (value >> 2) & 0x3F;
+        homingMethod = HomingMethod.fromValue((value >> 2) & 0x3F);
         useZSignal = (value & 256) != 0;
     }
 }

@@ -3,7 +3,7 @@ package com.lucaf.robotic_core.UI;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.lucaf.robotic_core.STEPPERONLINE.iDM_RS.IDM_RS;
+import com.lucaf.robotic_core.stepperOnline.iDmRs.IDM_RS;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 
 import javax.swing.*;
