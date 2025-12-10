@@ -185,10 +185,10 @@ public class RGI100 extends MotorInterface {
      * @throws IOException if communication with the device fails while setting parameters
      */
     public void setParameters(GripParameters parameters) throws IOException{
-        setGripForce(parameters.getGrip_force());
-        setGripSpeed(parameters.getGrip_speed());
-        setRotationForce(parameters.getTurn_force());
-        setRotationSpeed(parameters.getTurn_speed());
+        setGripForce(parameters.getGripForce());
+        setGripSpeed(parameters.getGripSpeed());
+        setRotationForce(parameters.getTurnForce());
+        setRotationSpeed(parameters.getTurnSpeed());
     }
 
     /**

@@ -4,9 +4,7 @@ import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
 import com.lucaf.robotic_core.motors.impl.MotorInterface;
 import com.lucaf.robotic_core.utils.StateUtils;
-import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -150,6 +148,65 @@ public class IDMRS extends MotorInterface {
         state.put("fault", "");
         state.put("stopped", isStopped);
         notifyStateChange();
+    }
+
+    /**
+     * Applies the given configuration to the device.
+     *
+     * @param config the configuration to apply
+     * @throws IOException if there is an error applying the configuration
+     */
+    public void applyConfig(IDMRSConfig config) throws IOException{
+        applyTravelParameters(config.getTravelParameters());
+        applyHomingConfig(config.getHoming());
+        if (config.isPositioningMode()){
+            setPositioningMode();
+            setRelativePositioning(config.isRelativePositioning());
+        } else {
+            setVelocityMode();
+        }
+    }
+
+    /**
+     * Applies the given travel parameters to the device.
+     *
+     * @param params the travel parameters to apply
+     * @throws IOException if there is an error applying the parameters
+     */
+    public void applyTravelParameters(TravelParameters params) throws IOException {
+        setSpeed(params.getSpeed());
+        setAcceleration(params.getAcceleration());
+        setDeceleration(params.getDeceleration());
+        setRampMode((byte) params.getRampMode());
+    }
+
+    /**
+     * Applies the given homing configuration to the device.
+     *
+     * @param config the homing configuration to apply
+     * @throws IOException if there is an error applying the configuration
+     */
+    public void applyHomingConfig(HomingConfig config) throws IOException {
+        if (!config.isEnabled()){
+            HomingControl homing = new HomingControl();
+            homing.setHomingMethod(HomingMethod.NO_HOMING);
+            this.homingControl = homing;
+            return;
+        }
+        setHomingAcceleration(config.getAcceleration());
+        setHomingDeceleration(config.getDeceleration());
+        setHomingSpeed(config.getSpeed());
+        HomingControl homing = new HomingControl();
+        homing.setHomingMethod(config.getMethod());
+        homing.setHomingTimeout(config.getTimeout());
+        if (config.getStartPosition() > 0){
+            homing.setGoToSetPosition(true);
+            setHomingStopPosition(config.getStartPosition());
+        } else {
+            homing.setGoToSetPosition(false);
+        }
+        homing.setPositiveDirection(config.isPositiveDirection());
+        this.homingControl = homing;
     }
 
     /**

@@ -42,6 +42,11 @@ public abstract class BaseConfig implements Cloneable {
         }
     }
 
+    public static <T extends BaseConfig> T fromString(String json, Class<T> clazz) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, clazz);
+    }
+
     @SuppressWarnings("unchecked")
     public <T extends BaseConfig> T cloneConfig() {
         return (T) this.clone();
