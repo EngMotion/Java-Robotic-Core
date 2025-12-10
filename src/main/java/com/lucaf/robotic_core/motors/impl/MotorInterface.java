@@ -47,6 +47,10 @@ public abstract class MotorInterface {
         return isMoving.get();
     }
 
+    public boolean setMoving(boolean moving) {
+        return isMoving.getAndSet(moving);
+    }
+
     public boolean hasError() {
         return hasError.get();
     }

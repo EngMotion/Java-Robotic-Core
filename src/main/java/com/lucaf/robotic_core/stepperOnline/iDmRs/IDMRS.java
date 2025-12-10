@@ -321,6 +321,7 @@ public class IDMRS extends MotorInterface {
      * @throws IOException if there is an error moving the device
      */
     public void setPosition(long position) throws IOException {
+        if (!canMove()) throw new IOException("Device not initialized");
         if (controlMode.isRELATIVE_POSITIONING()) {
             targetPosition.set(targetPosition.get() + position);
         } else {
@@ -648,13 +649,22 @@ public class IDMRS extends MotorInterface {
     }
 
     /**
+     * Method that waits for the device to reach the position
+     *
+     * @throws IOException if there is an error waiting for the position
+     */
+    public void waitReachedPosition() throws IOException {
+        waitReachedPosition(0);
+    }
+
+    /**
      * Estimates the time required for the device to reach a specified distance.
      *
      * @param distance the distance to cover (in steps)
      * @return the estimated time (in seconds), or -1 if the estimation is not available
      * @throws IOException if there is an error during the estimation
      */
-    int estimateArrivalTime(int distance) throws IOException {
+    public int estimateArrivalTime(int distance) throws IOException {
         distance = Math.abs(distance);
         if (controlMode.getCONTROL_MODE() == ControlType.VELOCITY_MODE.getValue()) {
             return -1; // Not available in velocity mode

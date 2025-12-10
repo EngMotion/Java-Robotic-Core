@@ -53,7 +53,6 @@ public class SACNTest {
         Thread.sleep(2000);
         assertTrue(motor.hasError());
         assertEquals("Unknown error: 4", state.get("fault"));
-
         connection.writeInteger(FEEDBACK_ERROR_CODE, 0); // Clear error
         Thread.sleep(2000);
         assertFalse(motor.hasError());
@@ -67,7 +66,6 @@ public class SACNTest {
         motor.stop();
         assertTrue(motor.isStopped());
         assertThrows(IOException.class, () -> motor.moveRelativePosition(10));
-
         initializeMotor();
         assertDoesNotThrow(() -> motor.moveRelativePosition(10));
     }
