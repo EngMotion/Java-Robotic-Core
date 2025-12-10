@@ -129,7 +129,7 @@ public class RGI100 extends MotorInterface {
      */
     void notifyStateChange() {
         if (stateFunction != null)
-            notifyStateChange();
+            stateFunction.notifyStateChange();
     }
 
     /**
@@ -138,18 +138,6 @@ public class RGI100 extends MotorInterface {
      */
     void initState() {
         // Check if the state already contains the moving grip and rotator states
-        if (state.containsKey("is_moving_grip")) {
-            isMovingGrip.set(StateUtils.getBoolean(state.get("is_moving_grip")));
-        }
-        state.put("is_moving_grip", isMovingGrip);
-        if (state.containsKey("is_moving_rotator")) {
-            isMovingRotator.set(StateUtils.getBoolean(state.get("is_moving_rotator")));
-        }
-        state.put("is_moving_rotator", isMovingRotator);
-        if (state.containsKey("is_moving")) {
-            isMoving.set(StateUtils.getBoolean(state.get("is_moving")));
-        }
-        state.put("is_moving", isMoving);
         if (state.containsKey("current_position")) {
             currentPosition.set(StateUtils.getInt(state.get("current_position")));
         }
@@ -170,6 +158,10 @@ public class RGI100 extends MotorInterface {
         state.put("is_initialized", isInitialized);
         state.put("has_fault", hasError);
         state.put("fault", "");
+        state.put("stopped", isStopped);
+        state.put("is_moving_grip", isMovingGrip);
+        state.put("is_moving_rotator", isMovingRotator);
+        state.put("is_moving", isMoving);
 
         notifyStateChange();
     }

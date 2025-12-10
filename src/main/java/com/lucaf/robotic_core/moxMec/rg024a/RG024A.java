@@ -64,7 +64,7 @@ public class RG024A extends MotorInterface {
      */
     void notifyStateChange() {
         if (stateFunction != null)
-            notifyStateChange();
+            stateFunction.notifyStateChange();
     }
 
     /**

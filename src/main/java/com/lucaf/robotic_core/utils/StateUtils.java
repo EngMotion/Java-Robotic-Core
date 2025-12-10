@@ -16,6 +16,20 @@ public class StateUtils {
         }
     }
 
+    public static long getLong(Object state) {
+        if (state instanceof AtomicInteger) {
+            return ((AtomicInteger) state).get();
+        } else if (state instanceof Integer) {
+            return (Integer) state;
+        } else if (state instanceof Long) {
+            return (Long) state;
+        } else if (state instanceof Double) {
+            return ((Double) state).longValue();
+        } else {
+            throw new IllegalArgumentException("Unsupported state type: " + state.getClass().getName());
+        }
+    }
+
     public static boolean getBoolean(Object state) {
         if (state instanceof AtomicBoolean){
             return ((AtomicBoolean) state).get();

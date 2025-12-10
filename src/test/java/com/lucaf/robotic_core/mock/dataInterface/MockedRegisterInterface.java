@@ -1,8 +1,9 @@
-package com.lucaf.robotic_core.mock.dataInterface.impl;
+package com.lucaf.robotic_core.mock.dataInterface;
 
 import com.lucaf.robotic_core.dataInterfaces.impl.Register;
 import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
 import com.lucaf.robotic_core.Logger;
+import com.lucaf.robotic_core.dataInterfaces.modbus.ModbusRS485;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -56,9 +57,9 @@ public class MockedRegisterInterface extends RegisterInterface {
 
     @Override
     public boolean writeSignedLong(byte[] register, long data, boolean invert) throws IOException {
-        final long LIMIT = 32768L;
-        int data_high = Math.abs((int) (data / LIMIT));
-        int data_low = (int) (data % LIMIT);
+        int data_low = Math.toIntExact(data & 0xFFFF);
+        int data_high = Math.toIntExact((data >> 16) & 0xFFFF);
+        System.out.println("Writing long to register " + registerToInt(register) + ": high=" + data_high + ", low=" + data_low + ", invert=" + invert);
         if (invert) {
             int temp = data_high;
             data_high = data_low;
@@ -82,8 +83,10 @@ public class MockedRegisterInterface extends RegisterInterface {
         Register[] regs = readMultipleRegisters(registerToInt(register), 2);
         int response_high = invert ? regs[1].getValue() : regs[0].getValue();
         int response_low = invert ? regs[0].toShort() : regs[1].toShort();
-        final long LIMIT = 32768L;
-        return response_high * LIMIT + response_low;
+
+        System.out.println("Reading long from register " + registerToInt(register) + ": high=" + response_high + ", low=" + response_low + ", invert=" + invert);
+
+        return ModbusRS485.reconstructSigned32Bit(response_high, response_low);
     }
 
     @Override

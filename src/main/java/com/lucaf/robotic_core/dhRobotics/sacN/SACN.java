@@ -12,6 +12,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.lucaf.robotic_core.dhRobotics.sacN.Constants.*;
 
+/**
+ * Class representing a SAC_N motor controller device.
+ */
 public class SACN extends MotorInterface {
 
     /**
@@ -26,17 +29,17 @@ public class SACN extends MotorInterface {
     /**
      * Internal state holding the current position
      */
-    private AtomicInteger currentPosition = new AtomicInteger(0);
+    private final AtomicInteger currentPosition = new AtomicInteger(0);
 
     /**
      * Internal state holding the target position
      */
-    private AtomicInteger targetPosition = new AtomicInteger(0);
+    private final AtomicInteger targetPosition = new AtomicInteger(0);
 
     /**
      * The executor service used to run movement-related tasks in a separate thread
      */
-    private ExecutorService executorService = Executors.newFixedThreadPool(1);
+    private final ExecutorService executorService = Executors.newFixedThreadPool(1);
 
     /**
      * Scheduled executor service used to poll device fault/status periodically
@@ -47,29 +50,6 @@ public class SACN extends MotorInterface {
      * Optional callback to notify external code about state changes
      */
     private final State stateFunction;
-
-    /**
-     * Initialize the internal state map by linking atomic objects and flags.
-     * This routine keeps backward compatibility if the provided state map
-     * already contains existing values.
-     */
-    void initState() {
-        if (state.containsKey("is_moving")) {
-            isMoving.set(StateUtils.getBoolean(state.get("is_moving")));
-        }
-        state.put("is_moving", isMoving);
-        if (state.containsKey("current_position")) {
-            currentPosition.set(StateUtils.getInt(state.get("current_position")));
-        }
-        state.put("current_position", currentPosition);
-        if (state.containsKey("target_position")) {
-            targetPosition.set(StateUtils.getInt(state.get("target_position")));
-        }
-        state.put("target_position", targetPosition);
-        state.put("is_initialized", isInitialized);
-        state.put("has_fault", hasError);
-        state.put("fault", "");
-    }
 
     /**
      * Primary constructor that initializes the SAC_N instance with an existing register interface
@@ -106,6 +86,27 @@ public class SACN extends MotorInterface {
      */
     public SACN(RegisterInterface registerInterface) {
         this(registerInterface, new HashMap<>(), null);
+    }
+
+    /**
+     * Initialize the internal state map by linking atomic objects and flags.
+     * This routine keeps backward compatibility if the provided state map
+     * already contains existing values.
+     */
+    void initState() {
+        if (state.containsKey("current_position")) {
+            currentPosition.set(StateUtils.getInt(state.get("current_position")));
+        }
+        state.put("current_position", currentPosition);
+        if (state.containsKey("target_position")) {
+            targetPosition.set(StateUtils.getInt(state.get("target_position")));
+        }
+        state.put("target_position", targetPosition);
+        state.put("is_initialized", isInitialized);
+        state.put("has_fault", hasError);
+        state.put("fault", "");
+        state.put("stopped", isStopped);
+        state.put("is_moving", isMoving);
     }
 
     /**

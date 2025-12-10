@@ -28,7 +28,12 @@ public class HomingControl {
      * 3： homing with torque detect
      * 8： set current position as homing position
      */
-    HomingMethod homingMethod = HomingMethod.LIMIT_SWITCH;
+    HomingMethod homingMethod = HomingMethod.NO_HOMING;
+
+    /**
+     * Timeout in milliseconds for the homing operation (0 = no timeout)
+     */
+    int homingTimeout = 0;
 
     /**
      * BIT8: Use Z signal

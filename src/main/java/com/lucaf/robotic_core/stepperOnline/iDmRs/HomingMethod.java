@@ -1,6 +1,7 @@
 package com.lucaf.robotic_core.stepperOnline.iDmRs;
 
 public enum HomingMethod {
+    NO_HOMING(-1),
     LIMIT_SWITCH(0),
     HOMING_SWITCH(1),
     SINGLE_TURN_Z_SIGNAL(2),

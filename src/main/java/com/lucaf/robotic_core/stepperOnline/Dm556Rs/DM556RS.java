@@ -3,21 +3,22 @@ package com.lucaf.robotic_core.stepperOnline.Dm556Rs;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.State;
-import com.lucaf.robotic_core.stepperOnline.iDmRs.IDM_RS;
+import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
+import com.lucaf.robotic_core.stepperOnline.iDmRs.IDMRS;
 
 import java.util.HashMap;
 
-public class DM556RS extends IDM_RS {
-    /**
-     * Constructor of the class
-     *
-     * @param rs485             the Modbus master connection
-     * @param id                the id of the device
-     * @param state             the state of the device
-     * @param notifyStateChange the state class with the onStateChange method
-     * @param logger            the logger
-     */
-    public DM556RS(ModbusSerialMaster rs485, byte id, HashMap<String, Object> state, State notifyStateChange, Logger logger) {
-        super(rs485, id, state, notifyStateChange, logger);
+public class DM556RS extends IDMRS {
+
+    public DM556RS(RegisterInterface registerInterface, HashMap<String, Object> state, State notifyStateChange) {
+        super(registerInterface, state, notifyStateChange);
+    }
+
+    public DM556RS(RegisterInterface registerInterface, HashMap<String, Object> state) {
+        super(registerInterface, state);
+    }
+
+    public DM556RS(RegisterInterface registerInterface) {
+        super(registerInterface);
     }
 }

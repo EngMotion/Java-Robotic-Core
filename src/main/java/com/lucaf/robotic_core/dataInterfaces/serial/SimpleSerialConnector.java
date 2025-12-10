@@ -27,7 +27,15 @@ public class SimpleSerialConnector extends SerialInterface implements SerialPort
 
     @Override
     public byte[] sendForResult(byte[] request) throws IOException {
-        return new byte[0];
+        send(request);
+        try {
+            while (serialPort.getInputBufferBytesCount() == 0) {
+                Thread.sleep(10);
+            }
+            return serialPort.readBytes();
+        } catch (SerialPortException | InterruptedException e) {
+            throw new IOException("Failed to read response from serial port", e);
+        }
     }
 
     @Override

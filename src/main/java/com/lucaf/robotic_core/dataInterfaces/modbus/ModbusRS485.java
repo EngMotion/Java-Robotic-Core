@@ -108,9 +108,8 @@ public class ModbusRS485 extends RegisterInterface {
                     data,
                     inverted
             ));
-            final long LIMIT = 32768L;
-            int data_high = Math.abs((int) (data / LIMIT));
-            int data_low = (int) (data % LIMIT);
+            int data_low = Math.toIntExact(data & 0xFFFF);
+            int data_high = Math.toIntExact((data >> 16) & 0xFFFF);
             if (inverted) {
                 int temp = data_high;
                 data_high = data_low;
@@ -196,6 +195,13 @@ public class ModbusRS485 extends RegisterInterface {
         }
     }
 
+    public static long reconstructSigned32Bit(int highPart, int lowPart) {
+        long highUnsigned = highPart & 0xFFFF;
+        long lowUnsigned = lowPart & 0xFFFF;
+        long reconstructedValue = (highUnsigned << 16) | lowUnsigned;
+        return (int) reconstructedValue;
+    }
+
     @Override
     public long readSignedLong(byte[] register, boolean invert) throws IOException {
         try {
@@ -207,8 +213,7 @@ public class ModbusRS485 extends RegisterInterface {
             Register[] regs = readMultipleRegisters(startRegister, 2);
             int response_high = invert ? regs[1].getValue() : regs[0].getValue();
             int response_low = invert ? regs[0].toShort() : regs[1].toShort();
-            final long LIMIT = 32768L;
-            long response = response_high * LIMIT + response_low;
+            long response = ModbusRS485.reconstructSigned32Bit(response_high, response_low);
             logDebug(String.format("Read response: 0x%02X - 0x%02X = %d",
                     register[0] & 0xFF,
                     register[1] & 0xFF,

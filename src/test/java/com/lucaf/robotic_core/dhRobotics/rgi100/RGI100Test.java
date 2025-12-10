@@ -2,7 +2,7 @@ package com.lucaf.robotic_core.dhRobotics.rgi100;
 
 import com.lucaf.robotic_core.dataInterfaces.impl.Register;
 import com.lucaf.robotic_core.Pair;
-import com.lucaf.robotic_core.mock.dataInterface.impl.MockedRegisterInterface;
+import com.lucaf.robotic_core.mock.dataInterface.MockedRegisterInterface;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -261,20 +261,20 @@ public class RGI100Test {
         assertDoesNotThrow(() -> {
             motor.moveToAbsoluteAngle(90);
         });
-        assert (connection.readSignedLong(ABSOLUTE_ROTATION, true) == 90);
+        assertEquals(90, connection.readSignedLong(ABSOLUTE_ROTATION, true));
         assertDoesNotThrow(() -> {
             motor.moveToAbsoluteAngle(-450);
         });
-        assert (connection.readSignedLong(ABSOLUTE_ROTATION, true) == -450);
+        assertEquals(-450, connection.readSignedLong(ABSOLUTE_ROTATION, true));
         assertDoesNotThrow(() -> {
             motor.moveToAbsoluteAngle(400000);
         });
-        assert (connection.readSignedLong(ABSOLUTE_ROTATION, true) == 400000);
+        assertEquals(400000L, connection.readSignedLong(ABSOLUTE_ROTATION, true));
         Register[] regs = connection.readMultipleRegisters(ABSOLUTE_ROTATION[0] << 8 | ABSOLUTE_ROTATION[1], 2);
         int high = regs[0].getValue();
         int low = regs[1].toShort();
-        assert (high == 6784);
-        assert (low == 12);
+        assertEquals(6784, high);
+        assertEquals(6, low);
     }
 
     @Test
@@ -288,12 +288,12 @@ public class RGI100Test {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } , 1, java.util.concurrent.TimeUnit.SECONDS);
+        }, 1, java.util.concurrent.TimeUnit.SECONDS);
         Pair<Boolean, PositionFeedback> feedback = motor.moveToAbsoluteAngleAndWait(90).get();
-        assert (feedback.first);
-        assert (feedback.second == PositionFeedback.REACHED);
-        assert (((AtomicInteger)state.get("current_angle")).get() == 90);
-        assert (!motor.isMoving());
+        assertEquals(true, feedback.first);
+        assertEquals(PositionFeedback.REACHED, feedback.second);
+        assertEquals(90, ((AtomicInteger) state.get("current_angle")).get());
+        assertEquals(false, motor.isMoving());
     }
 
     @Test
@@ -307,17 +307,18 @@ public class RGI100Test {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } , 1, java.util.concurrent.TimeUnit.SECONDS);
-        Pair<Boolean, PositionFeedback> feedback = motor.moveToRelativeAngleAndWait(90).get();
-        assert (feedback.first);
-        assert (feedback.second == PositionFeedback.REACHED);
-        assert (((AtomicInteger)state.get("current_angle")).get() == 90);
-        assert (!motor.isMoving());
+        }, 1, java.util.concurrent.TimeUnit.SECONDS);
+        Pair<Boolean, PositionFeedback> feedback = motor.moveToAbsoluteAngleAndWait(90).get();
+        assertEquals(true, feedback.first);
+        assertEquals(PositionFeedback.REACHED, feedback.second);
+        assertEquals(90, ((AtomicInteger) state.get("current_angle")).get());
+        assertEquals(false, motor.isMoving());
+
         feedback = motor.moveToRelativeAngleAndWait(-45).get();
-        assert (feedback.first);
-        assert (feedback.second == PositionFeedback.REACHED);
-        assert (((AtomicInteger)state.get("current_angle")).get() == 45);
-        assert (!motor.isMoving());
+        assertEquals(true, feedback.first);
+        assertEquals(PositionFeedback.REACHED, feedback.second);
+        assertEquals(45, ((AtomicInteger) state.get("current_angle")).get());
+        assertEquals(false, motor.isMoving());
     }
 
     @Test
@@ -331,12 +332,12 @@ public class RGI100Test {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } , 1, java.util.concurrent.TimeUnit.SECONDS);
+        }, 1, java.util.concurrent.TimeUnit.SECONDS);
         Pair<Boolean, PositionFeedback> feedback = motor.setGripPositionAndWait(500).get();
-        assert (feedback.first);
-        assert (feedback.second == PositionFeedback.REACHED_WITHOUT_OBJ);
-        assert (((AtomicInteger)state.get("current_position")).get() == 500);
-        assert (!motor.isMoving());
+        assertTrue(feedback.first);
+        assertEquals(PositionFeedback.REACHED_WITHOUT_OBJ, feedback.second);
+        assertEquals(500, ((AtomicInteger) state.get("current_position")).get());
+        assertFalse(motor.isMoving());
     }
 
 
