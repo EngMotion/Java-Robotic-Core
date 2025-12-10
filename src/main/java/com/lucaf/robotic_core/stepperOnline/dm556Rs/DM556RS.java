@@ -1,7 +1,5 @@
-package com.lucaf.robotic_core.stepperOnline.Dm556Rs;
+package com.lucaf.robotic_core.stepperOnline.dm556Rs;
 
-import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
-import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
 import com.lucaf.robotic_core.stepperOnline.iDmRs.IDMRS;

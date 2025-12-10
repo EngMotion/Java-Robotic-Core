@@ -167,6 +167,31 @@ public class RGI100 extends MotorInterface {
     }
 
     /**
+     * Applies the provided configuration to the device by setting grip and rotation
+     * speed and force parameters.
+     *
+     * @param config the RGI100Config instance containing desired parameters
+     * @throws IOException if communication with the device fails while setting parameters
+     */
+    public void applyConfig(RGI100Config config) throws IOException {
+        setParameters(config.getTravelParameters());
+    }
+
+    /**
+     * Applies the provided grip parameters to the device by setting grip and rotation
+     * speed and force.
+     *
+     * @param parameters the GripParameters instance containing desired parameters
+     * @throws IOException if communication with the device fails while setting parameters
+     */
+    public void setParameters(GripParameters parameters) throws IOException{
+        setGripForce(parameters.getGrip_force());
+        setGripSpeed(parameters.getGrip_speed());
+        setRotationForce(parameters.getTurn_force());
+        setRotationSpeed(parameters.getTurn_speed());
+    }
+
+    /**
      * Internal method that periodically polls the device for error flags and notifies the
      * provided State callback when an error is detected.
      * <p>

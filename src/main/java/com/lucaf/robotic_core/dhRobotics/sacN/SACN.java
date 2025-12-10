@@ -110,6 +110,29 @@ public class SACN extends MotorInterface {
     }
 
     /**
+     * Apply the provided SACNConfig configuration to the device by setting
+     * acceleration and maximum speed.
+     *
+     * @param configuration the SACNConfig object containing desired parameters
+     * @throws IOException if communication with the device fails
+     */
+    public void applyConfiguration(SACNConfig configuration) throws IOException {
+        applyActuatorParameters(configuration.getTravelParameters());
+    }
+
+    /**
+     * Apply the provided actuator parameters (acceleration and speed)
+     * to the device by writing the appropriate registers.
+     *
+     * @param parameters the ActuatorParameters object containing desired values
+     * @throws IOException if communication with the device fails
+     */
+    public void applyActuatorParameters(ActuatorParameters parameters) throws IOException {
+        setAcceleration(parameters.getAcceleration());
+        setSpeed(parameters.getSpeed());
+    }
+
+    /**
      * Notify the registered state callback (if present) when the internal state changes.
      * This method invokes the callback method on `stateFunction`.
      */
