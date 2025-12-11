@@ -26,6 +26,7 @@ dependencies {
     implementation "de.exlll:configlib-yaml:4.5.0"
     implementation "com.formdev:flatlaf:3.6.2"
     implementation 'com.github.Dansoftowner:jSystemThemeDetector:3.6'
+    implementation 'com.digitalpetri.enip:cip-client:1.6.0'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
