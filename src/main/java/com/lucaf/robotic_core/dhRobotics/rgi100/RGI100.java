@@ -90,6 +90,26 @@ public class RGI100 extends MotorInterface {
     private final AtomicInteger currentAngle = new AtomicInteger(0);
 
     /**
+     * Current setting grip force (0-100)
+     */
+    private final AtomicInteger gripForce = new AtomicInteger(0);
+
+    /**
+     * Current setting grip speed (0-100)
+     */
+    private final AtomicInteger gripSpeed = new AtomicInteger(0);
+
+    /**
+     * Current setting rotation force (0-100)
+     */
+    private final AtomicInteger rotationForce = new AtomicInteger(0);
+
+    /**
+     * Current setting rotation speed (0-100)
+     */
+    private final AtomicInteger rotationSpeed = new AtomicInteger(0);
+
+    /**
      * Constructor that initializes the RGI100_22 object with an existing RS485 connection
      * and optional external state map and state callback.
      *
@@ -155,6 +175,10 @@ public class RGI100 extends MotorInterface {
         }
         state.put("target_angle", targetAngle);
         // Create the initialized state
+        state.put("grip_force", gripForce);
+        state.put("grip_speed", gripSpeed);
+        state.put("rotation_force", rotationForce);
+        state.put("rotation_speed", rotationSpeed);
         state.put("is_initialized", isInitialized);
         state.put("has_fault", hasError);
         state.put("fault", "");
@@ -174,7 +198,7 @@ public class RGI100 extends MotorInterface {
      * @throws IOException if communication with the device fails while setting parameters
      */
     public void applyConfig(RGI100Config config) throws IOException {
-        setParameters(config.getTravelParameters());
+        applyTravelParameters(config.getTravelParameters());
     }
 
     /**
@@ -184,11 +208,19 @@ public class RGI100 extends MotorInterface {
      * @param parameters the GripParameters instance containing desired parameters
      * @throws IOException if communication with the device fails while setting parameters
      */
-    public void setParameters(GripParameters parameters) throws IOException{
-        setGripForce(parameters.getGripForce());
-        setGripSpeed(parameters.getGripSpeed());
-        setRotationForce(parameters.getTurnForce());
-        setRotationSpeed(parameters.getTurnSpeed());
+    public void applyTravelParameters(GripParameters parameters) throws IOException{
+        if (rotationForce.get() != parameters.getTurnForce()){
+            setRotationForce(parameters.getTurnForce());
+        }
+        if (rotationSpeed.get() != parameters.getTurnSpeed()){
+            setRotationSpeed(parameters.getTurnSpeed());
+        }
+        if (gripForce.get() != parameters.getGripForce()){
+            setGripForce(parameters.getGripForce());
+        }
+        if (gripSpeed.get() != parameters.getGripSpeed()){
+            setGripSpeed(parameters.getGripSpeed());
+        }
     }
 
     /**
@@ -238,7 +270,6 @@ public class RGI100 extends MotorInterface {
         connection.logInfo("Stopping device");
         isMovingGrip.set(false);
         isMovingRotator.set(false);
-        isStopped.set(true);
         connection.writeInteger(STOP, 1);
     }
 
@@ -257,6 +288,7 @@ public class RGI100 extends MotorInterface {
         executorServiceGrip.shutdownNow();
         executorServiceRotator.shutdownNow();
         isShutdown.set(true);
+        isStopped.set(true);
         stop();
     }
 
@@ -629,6 +661,7 @@ public class RGI100 extends MotorInterface {
         force = Math.max(20, force);
         force = Math.min(100, force);
         connection.writeInteger(FORCE, force);
+        gripForce.set(force);
     }
 
     /**
@@ -651,6 +684,7 @@ public class RGI100 extends MotorInterface {
         speed = Math.min(100, speed);
         speed = Math.max(1, speed);
         connection.writeInteger(SPEED, speed);
+        gripSpeed.set(speed);
     }
 
     /**
@@ -694,6 +728,7 @@ public class RGI100 extends MotorInterface {
         speed = Math.max(1, speed);
         speed = Math.min(100, speed);
         connection.writeInteger(ROTATION_SPEED, speed);
+        rotationSpeed.set(speed);
     }
 
     /**
@@ -716,6 +751,7 @@ public class RGI100 extends MotorInterface {
         force = Math.max(20, force);
         force = Math.min(100, force);
         connection.writeInteger(ROTATION_FORCE, force);
+        rotationForce.set(force);
     }
 
     /**

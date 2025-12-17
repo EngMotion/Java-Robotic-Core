@@ -4,6 +4,7 @@ import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
 import com.lucaf.robotic_core.motors.impl.MotorInterface;
 import com.lucaf.robotic_core.utils.StateUtils;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
@@ -50,6 +51,7 @@ public class IDMRS extends MotorInterface {
     /**
      * The executor service for async operations
      */
+    @Getter
     final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
@@ -174,10 +176,18 @@ public class IDMRS extends MotorInterface {
      * @throws IOException if there is an error applying the parameters
      */
     public void applyTravelParameters(TravelParameters params) throws IOException {
-        setSpeed(params.getSpeed());
-        setAcceleration(params.getAcceleration());
-        setDeceleration(params.getDeceleration());
-        setRampMode((byte) params.getRampMode());
+        if (params.getDeceleration() != deceleration.get()){
+            setDeceleration(params.getDeceleration());
+        }
+        if (params.getAcceleration() != acceleration.get()){
+            setAcceleration(params.getAcceleration());
+        }
+        if (params.getSpeed() != speed.get()){
+            setSpeed(params.getSpeed());
+        }
+        if (rampMode.get() != params.getRampMode()){
+            setRampMode((byte) params.getRampMode());
+        }
     }
 
     /**
@@ -278,7 +288,6 @@ public class IDMRS extends MotorInterface {
     public void stop() throws IOException {
         connection.logInfo("Stopping device");
         isMoving.set(false);
-        isStopped.set(true);
         connection.writeInteger(STATUS_MODE, StatusMode.getEMERGENCY_STOP());
     }
 
@@ -293,6 +302,7 @@ public class IDMRS extends MotorInterface {
         connection.logDebug("Shutting down device");
         executorService.shutdownNow();
         isShutdown.set(true);
+        isStopped.set(true);
         stop();
     }
 

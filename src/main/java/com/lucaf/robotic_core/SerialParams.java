@@ -1,5 +1,6 @@
 package com.lucaf.robotic_core;
 
+import de.exlll.configlib.Configuration;
 import jssc.SerialPort;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Configuration
 public class SerialParams {
     String comPort = "COM1";
     int unitId = 1;

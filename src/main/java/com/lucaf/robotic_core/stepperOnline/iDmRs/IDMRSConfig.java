@@ -1,5 +1,6 @@
 package com.lucaf.robotic_core.stepperOnline.iDmRs;
 
+import com.lucaf.robotic_core.SerialParams;
 import com.lucaf.robotic_core.config.impl.BaseConfig;
 import de.exlll.configlib.Configuration;
 import lombok.Getter;
@@ -9,8 +10,7 @@ import lombok.Setter;
 @Setter
 @Configuration
 public class IDMRSConfig extends BaseConfig {
-    String serial = "COMX";
-    int id = 1;
+    SerialParams connection = new SerialParams();
     int turnResolution = 10000;
     int ratio = 1;
     boolean positioningMode = true;
