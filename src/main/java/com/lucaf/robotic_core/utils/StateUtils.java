@@ -2,6 +2,7 @@ package com.lucaf.robotic_core.utils;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class StateUtils {
     public static int getInt(Object state) {
@@ -17,8 +18,8 @@ public class StateUtils {
     }
 
     public static long getLong(Object state) {
-        if (state instanceof AtomicInteger) {
-            return ((AtomicInteger) state).get();
+        if (state instanceof AtomicLong) {
+            return ((AtomicLong) state).get();
         } else if (state instanceof Integer) {
             return (Integer) state;
         } else if (state instanceof Long) {

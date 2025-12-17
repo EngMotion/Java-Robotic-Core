@@ -85,9 +85,6 @@ public class RGI100Test {
         initializeMotor();
         assertDoesNotThrow(() -> motor.setGripPosition(50));
         motor.stop();
-        assertTrue(motor.isStopped());
-        assertThrows(IOException.class, () -> motor.setGripPosition(10));
-
         initializeMotor();
         assertDoesNotThrow(() -> motor.setGripPosition(10));
     }

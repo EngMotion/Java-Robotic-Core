@@ -354,7 +354,7 @@ public class RGI100 extends MotorInterface {
                 setupErrorListener();
                 return true;
             } catch (Exception e) {
-                connection.logError("[RGI100_22] Error initializing device: " + e.getMessage());
+                connection.logError("Error initializing device: " + e.getMessage());
                 return false;
             }
         });

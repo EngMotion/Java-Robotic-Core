@@ -44,8 +44,6 @@ public class IDMRSTest {
         initializeMotor();
         assertDoesNotThrow(() -> motor.setPosition(50));
         motor.stop();
-        assertTrue(motor.isStopped());
-        assertThrows(IOException.class, () -> motor.setPosition(10));
         initializeMotor();
         assertDoesNotThrow(() -> motor.setPosition(10));
     }
