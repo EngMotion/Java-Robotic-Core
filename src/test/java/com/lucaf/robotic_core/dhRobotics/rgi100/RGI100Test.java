@@ -1,6 +1,6 @@
 package com.lucaf.robotic_core.dhRobotics.rgi100;
 
-import com.lucaf.robotic_core.dataInterfaces.impl.Register;
+import com.ghgande.j2mod.modbus.procimg.Register;
 import com.lucaf.robotic_core.Pair;
 import com.lucaf.robotic_core.mock.dataInterface.MockedRegisterInterface;
 import org.junit.jupiter.api.Test;

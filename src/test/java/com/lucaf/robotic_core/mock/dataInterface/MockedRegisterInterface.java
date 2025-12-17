@@ -1,6 +1,7 @@
 package com.lucaf.robotic_core.mock.dataInterface;
 
-import com.lucaf.robotic_core.dataInterfaces.impl.Register;
+import com.ghgande.j2mod.modbus.procimg.Register;
+import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
 import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
 import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.dataInterfaces.modbus.ModbusRS485;
@@ -52,7 +53,7 @@ public class MockedRegisterInterface extends RegisterInterface {
 
     @Override
     public boolean writeInteger(byte[] register, int data) throws IOException {
-        return writeSingleRegister(registerToInt(register), new Register(data));
+        return writeSingleRegister(registerToInt(register), new SimpleRegister(data));
     }
 
     @Override
@@ -65,7 +66,7 @@ public class MockedRegisterInterface extends RegisterInterface {
             data_high = data_low;
             data_low = temp;
         }
-        return writeMultipleRegisters(registerToInt(register), new Register[]{new Register(data_high), new Register(data_low)});
+        return writeMultipleRegisters(registerToInt(register), new Register[]{new SimpleRegister(data_high), new SimpleRegister(data_low)});
     }
 
     @Override

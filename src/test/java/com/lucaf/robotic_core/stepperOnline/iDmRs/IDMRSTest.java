@@ -1,6 +1,6 @@
 package com.lucaf.robotic_core.stepperOnline.iDmRs;
 
-import com.lucaf.robotic_core.dataInterfaces.impl.Register;
+import com.ghgande.j2mod.modbus.procimg.Register;
 import com.lucaf.robotic_core.mock.dataInterface.MockedRegisterInterface;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.lucaf.robotic_core.stepperOnline.iDmRs.Constants.*;

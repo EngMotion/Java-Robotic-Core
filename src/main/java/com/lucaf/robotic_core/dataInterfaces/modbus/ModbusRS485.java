@@ -3,7 +3,8 @@ package com.lucaf.robotic_core.dataInterfaces.modbus;
 import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.AbstractModbusMaster;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
-import com.lucaf.robotic_core.dataInterfaces.impl.Register;
+import com.ghgande.j2mod.modbus.procimg.Register;
+import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
 import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
 import com.lucaf.robotic_core.Logger;
 
@@ -29,7 +30,7 @@ public class ModbusRS485 extends RegisterInterface {
     @Override
     public Register[] readMultipleRegisters(int ref, int count) throws IOException {
         try {
-            Register[] registers = (Register[]) rs485.readMultipleRegisters(getUnitId(), ref, count);
+            Register[] registers = rs485.readMultipleRegisters(getUnitId(), ref, count);
             if (registers.length == count) {
                 return registers;
             } else {
@@ -43,7 +44,7 @@ public class ModbusRS485 extends RegisterInterface {
     @Override
     public Register readSingleRegister(int ref) throws IOException {
         try {
-            Register[] registers = (Register[]) rs485.readMultipleRegisters(getUnitId(), ref, 1);
+            Register[] registers = rs485.readMultipleRegisters(getUnitId(), ref, 1);
             if (registers.length > 0) {
                 return registers[0];
             } else {
@@ -81,7 +82,7 @@ public class ModbusRS485 extends RegisterInterface {
                     data
             ));
             int startRegister = register[0] << 8 | register[1];
-            boolean fb = writeSingleRegister(startRegister, new Register(data));
+            boolean fb = writeSingleRegister(startRegister, new SimpleRegister(data));
             logDebug(String.format("Write response: 0x%02X - 0x%02X = %s",
                     register[0] & 0xFF,
                     register[1] & 0xFF,
@@ -117,8 +118,8 @@ public class ModbusRS485 extends RegisterInterface {
             }
             int start_register = register[0] << 8 | register[1];
             boolean success = writeMultipleRegisters(start_register, new Register[]{
-                    new Register(data_high),
-                    new Register(data_low)
+                    new SimpleRegister(data_high),
+                    new SimpleRegister(data_low)
             });
             if (success) {
                 logDebug(String.format("Write response success: 0x%02X - 0x%02X",

@@ -7,8 +7,8 @@ import lombok.Getter;
 @Configuration
 @Getter
 public class GripParameters extends BaseConfig {
-    int turnSpeed = 100;
-    int turnForce = 100;
-    int gripSpeed = 100;
-    int gripForce = 100;
+    protected int turnSpeed = 100;
+    protected int turnForce = 100;
+    protected int gripSpeed = 100;
+    protected int gripForce = 100;
 }

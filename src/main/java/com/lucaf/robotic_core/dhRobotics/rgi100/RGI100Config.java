@@ -10,6 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RGI100Config extends BaseConfig {
-    SerialParams connection = new SerialParams();
-    GripParameters travelParameters = new GripParameters();
+    protected SerialParams connection = new SerialParams();
+    protected GripParameters travelParameters = new GripParameters();
 }

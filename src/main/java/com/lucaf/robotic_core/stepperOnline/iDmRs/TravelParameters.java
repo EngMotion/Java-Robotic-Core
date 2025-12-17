@@ -13,8 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TravelParameters extends BaseConfig {
-    int speed = 100;
-    int acceleration = 100;
-    int deceleration = 100;
-    int rampMode = 1;
+    protected int speed = 100;
+    protected int acceleration = 100;
+    protected int deceleration = 100;
+    protected int rampMode = 1;
 }

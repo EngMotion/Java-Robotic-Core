@@ -7,6 +7,6 @@ import lombok.Getter;
 @Configuration
 @Getter
 public class ActuatorParameters extends BaseConfig {
-    int speed = 100;
-    int acceleration = 100;
+    protected int speed = 100;
+    protected int acceleration = 100;
 }

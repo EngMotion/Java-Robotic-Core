@@ -1,5 +1,6 @@
 package com.lucaf.robotic_core.dataInterfaces.impl;
 
+import com.ghgande.j2mod.modbus.procimg.Register;
 import com.lucaf.robotic_core.Logger;
 import lombok.Getter;
 import lombok.Setter;
