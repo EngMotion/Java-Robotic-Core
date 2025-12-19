@@ -16,5 +16,5 @@ public class TravelParameters extends BaseConfig {
     protected int speed = 100;
     protected int acceleration = 100;
     protected int deceleration = 100;
-    protected int rampMode = 1;
+    protected int path = 0;
 }

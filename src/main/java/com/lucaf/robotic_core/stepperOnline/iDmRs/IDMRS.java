@@ -46,7 +46,7 @@ public class IDMRS extends MotorInterface {
     /**
      * The ramp acceleration mode
      */
-    final AtomicInteger rampMode = new AtomicInteger(0x00);
+    final AtomicInteger path = new AtomicInteger(0x00);
 
     /**
      * The executor service for async operations
@@ -138,10 +138,10 @@ public class IDMRS extends MotorInterface {
         if (state.containsKey("deceleration")) {
             deceleration.set(StateUtils.getInt(state.get("deceleration")));
         }
-        if (state.containsKey("ramp_mode")) {
-            rampMode.set(StateUtils.getInt(state.get("ramp_mode")));
+        if (state.containsKey("path_mode")) {
+            path.set(StateUtils.getInt(state.get("path_mode")));
         }
-        state.put("ramp_mode", rampMode);
+        state.put("path_mode", path);
 
         state.put("deceleration", deceleration);
         state.put("is_moving", isMoving);
@@ -185,8 +185,8 @@ public class IDMRS extends MotorInterface {
         if (params.getSpeed() != speed.get()){
             setSpeed(params.getSpeed());
         }
-        if (rampMode.get() != params.getRampMode()){
-            setRampMode((byte) params.getRampMode());
+        if (path.get() != params.getPath()){
+            setPathMode((byte) params.getPath());
         }
     }
 
@@ -231,10 +231,10 @@ public class IDMRS extends MotorInterface {
     /**
      * Sets the ramp mode for the device. The ramp mode determines the acceleration profile.
      *
-     * @param rampMode the ramp mode number to set
+     * @param path the ramp mode number to set
      */
-    public void setRampMode(byte rampMode) {
-        this.rampMode.set(rampMode);
+    public void setPathMode(byte path) {
+        this.path.set(path);
         notifyStateChange();
     }
 
@@ -318,7 +318,7 @@ public class IDMRS extends MotorInterface {
         if (controlMode.getCONTROL_MODE() == ControlType.VELOCITY_MODE.getValue()) {
             isMoving.set(speed != 0);
             notifyStateChange();
-            connection.writeInteger(STATUS_MODE, StatusMode.getSegmentPositioning((byte) rampMode.get()));
+            connection.writeInteger(STATUS_MODE, StatusMode.getSegmentPositioning((byte) path.get()));
         }
 
     }
@@ -395,7 +395,7 @@ public class IDMRS extends MotorInterface {
             targetPosition.set(position);
         }
         connection.writeSignedLong(TARGET_POSITION_HIGH, position, false);
-        connection.writeInteger(STATUS_MODE, StatusMode.getSegmentPositioning((byte) rampMode.get()));
+        connection.writeInteger(STATUS_MODE, StatusMode.getSegmentPositioning((byte) path.get()));
     }
 
     /**

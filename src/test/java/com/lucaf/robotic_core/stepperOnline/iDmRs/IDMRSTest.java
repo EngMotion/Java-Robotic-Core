@@ -182,6 +182,21 @@ public class IDMRSTest {
     }
 
     @Test
+    void setVelocityMode() throws Exception {
+        initializeMotor();
+        motor.setVelocityMode();
+        assertEquals(2, connection.readInteger(CONTROL_MODE));
+        motor.setSpeed(2000);
+        assertEquals(0x10, connection.readInteger(STATUS_MODE));
+    }
+
+    @Test
+    void testVelocityModeRegister() throws Exception {
+        ControlMode mode = new ControlMode(66);
+        assertEquals(ControlType.VELOCITY_MODE.getValue(), mode.getCONTROL_MODE());
+    }
+
+    @Test
     void testAcceleration() throws Exception {
         initializeMotor();
         motor.setAcceleration(5000);
