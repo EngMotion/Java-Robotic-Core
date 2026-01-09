@@ -318,7 +318,8 @@ public class IDMRS extends MotorInterface {
         if (controlMode.getCONTROL_MODE() == ControlType.VELOCITY_MODE.getValue()) {
             isMoving.set(speed != 0);
             notifyStateChange();
-            connection.writeInteger(STATUS_MODE, StatusMode.getSegmentPositioning((byte) path.get()));
+            connection.writeInteger(STATUS_MODE, StatusMode.getSegmentPositioning((byte) 0x0));
+            //connection.writeInteger(STATUS_MODE, StatusMode.getSegmentPositioning((byte) path.get()));
         }
 
     }
@@ -395,7 +396,8 @@ public class IDMRS extends MotorInterface {
             targetPosition.set(position);
         }
         connection.writeSignedLong(TARGET_POSITION_HIGH, position, false);
-        connection.writeInteger(STATUS_MODE, StatusMode.getSegmentPositioning((byte) path.get()));
+        //        connection.writeInteger(STATUS_MODE, StatusMode.getSegmentPositioning((byte) path.get()));
+        connection.writeInteger(STATUS_MODE, StatusMode.getSegmentPositioning((byte) 0x0));
     }
 
     /**
