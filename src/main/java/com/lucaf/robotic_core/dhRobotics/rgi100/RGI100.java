@@ -1,7 +1,7 @@
 package com.lucaf.robotic_core.dhRobotics.rgi100;
 
 import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
-import com.lucaf.robotic_core.motors.impl.MotorInterface;
+import com.lucaf.robotic_core.impl.MotorInterface;
 import com.lucaf.robotic_core.Pair;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;

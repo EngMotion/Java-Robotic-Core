@@ -2,7 +2,7 @@ package com.lucaf.robotic_core.stepperOnline.iDmRs;
 
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface;
-import com.lucaf.robotic_core.motors.impl.MotorInterface;
+import com.lucaf.robotic_core.impl.MotorInterface;
 import com.lucaf.robotic_core.utils.StateUtils;
 import lombok.Getter;
 import lombok.Setter;

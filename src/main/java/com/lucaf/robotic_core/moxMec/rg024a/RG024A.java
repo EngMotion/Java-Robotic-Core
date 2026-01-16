@@ -3,10 +3,9 @@ package com.lucaf.robotic_core.moxMec.rg024a;
 import com.lucaf.robotic_core.SerialParams;
 import com.lucaf.robotic_core.State;
 import com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface;
-import com.lucaf.robotic_core.motors.impl.MotorInterface;
+import com.lucaf.robotic_core.impl.MotorInterface;
 import com.lucaf.robotic_core.moxMec.MoxMecCommand;
 import com.lucaf.robotic_core.moxMec.MoxMecSerialWrapper;
-import com.lucaf.robotic_core.utils.StateUtils;
 import jssc.SerialPort;
 
 import java.io.IOException;
