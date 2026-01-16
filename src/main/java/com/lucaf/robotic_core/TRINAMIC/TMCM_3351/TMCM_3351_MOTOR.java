@@ -438,20 +438,26 @@ public class TMCM_3351_MOTOR {
 
     /**
      * Method that waits for the position to be reached. It checkes the position flag wich is 1 if the position is reached
-     */
+     * KNOWN ISSUE: If we set and use the CL_MODE as 2, the PARAM_POSITION_FLAG flag is not updated correctly by the driver.
+     * Even if the position is not reached, the flag is set to 1.
+     * */
     private void waitTillPositionReached(long timeout) throws DeviceCommunicationException {
         long endTime = System.currentTimeMillis() + timeout;
+        long startTime = System.currentTimeMillis();
         logger.debug("[TMCM_3351_MOTOR] Waiting for position to be reached, timeout: " + timeout + " ms, end time: " + endTime);
         while (true) {
             if (!isMoving.get()) {
+                logger.debug("[TMCM_3351_MOTOR] Movement cancelled, fixing current position");
                 fixCurrentPosition();
                 throw new DeviceCommunicationException("Moving to position is cancelled");
             }
-            if (timeout > 0 && System.currentTimeMillis() > endTime) {
+            if (timeout > 0L && (System.currentTimeMillis() - startTime) > timeout) {
+                logger.debug("[TMCM_3351_MOTOR] Timeout waiting for position to be reached starting to shut down");
                 this.setParameter(PARAM_CL_MODE, 0);
                 this.stopMotor();
                 this.hasFault.set(true);
                 logger.error("[TMCM_3351_MOTOR] Moving to position out of time");
+                logger.debug("[TMCM_3351_MOTOR] Shutdown complete");
                 throw new DeviceCommunicationException("Timeout waiting for position to be reached");
             }
             int status = getParameter(PARAM_POSITION_FLAG);
