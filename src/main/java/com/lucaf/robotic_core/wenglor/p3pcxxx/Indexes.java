@@ -127,5 +127,5 @@ public class Indexes {
     public static final int SIMULATION_TEMP_WARNING_LOW = 0x032F; 
     public static final int SIMULATION_UNDERVOLTAGE = 0x0327; 
     public static final int SIMULATION_SHORT_CIRCUIT = 0x0328; 
-    public static final int SIMULATION_LASER_ERROR = 0x032D; 
+    public static final int SIMULATION_LASER_ERROR = 0x032D;
 }

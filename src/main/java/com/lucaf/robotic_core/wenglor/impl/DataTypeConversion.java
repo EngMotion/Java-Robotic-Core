@@ -1,7 +1,7 @@
 package com.lucaf.robotic_core.wenglor.impl;
 
 public class DataTypeConversion {
-    protected String byteArrayToString(byte[] data) {
+    public String byteArrayToString(byte[] data) {
         StringBuilder sb = new StringBuilder();
         for (byte b : data) {
             if (b == 0) break;
@@ -10,15 +10,21 @@ public class DataTypeConversion {
         return sb.toString();
     }
 
-    protected int byteArrayToInt(byte[] data) {
-        int value = 0;
-        for (int i = 0; i < data.length; i++) {
-            value |= (data[i] & 0xFF) << (8 * i);
+    public int byteArrayToInt(byte[] data) {
+        if (data == null || data.length < 4) {
+            throw new IllegalArgumentException("L'array deve contenere almeno 4 byte");
         }
-        return value;
+
+        // Logica BIG-ENDIAN:
+        // data[0] è il MSB (Most Significant Byte) -> shift 24
+        // data[3] è il LSB (Least Significant Byte) -> shift 0
+        return ((data[0] & 0xFF) << 24) |
+                ((data[1] & 0xFF) << 16) |
+                ((data[2] & 0xFF) << 8)  |
+                ((data[3] & 0xFF));
     }
 
-    protected long byteArrayToLong(byte[] data) {
+    public long byteArrayToLong(byte[] data) {
         long value = 0;
         for (int i = 0; i < data.length; i++) {
             value |= (long)(data[i] & 0xFF) << (8 * i);
@@ -26,7 +32,7 @@ public class DataTypeConversion {
         return value;
     }
 
-    protected byte[] stringToByteArray(String value, int length) {
+    public byte[] stringToByteArray(String value, int length) {
         byte[] data = new byte[length];
         byte[] strBytes = value.getBytes();
         for (int i = 0; i < length; i++) {
@@ -39,7 +45,7 @@ public class DataTypeConversion {
         return data;
     }
 
-    protected byte[] intToByteArray(int value, int length) {
+    public byte[] intToByteArray(int value, int length) {
         byte[] data = new byte[length];
         for (int i = 0; i < length; i++) {
             data[i] = (byte) ((value >> (8 * i)) & 0xFF);
@@ -47,7 +53,7 @@ public class DataTypeConversion {
         return data;
     }
 
-    protected byte[] longToByteArray(long value, int length) {
+    public byte[] longToByteArray(long value, int length) {
         byte[] data = new byte[length];
         for (int i = 0; i < length; i++) {
             data[i] = (byte) ((value >> (8 * i)) & 0xFF);

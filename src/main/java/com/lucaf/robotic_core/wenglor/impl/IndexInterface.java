@@ -1,8 +1,11 @@
 package com.lucaf.robotic_core.wenglor.impl;
 
+import com.lucaf.robotic_core.dataInterfaces.impl.RoutableInterface;
+
 import java.io.IOException;
 
 public interface IndexInterface {
+    RoutableInterface getClient();
     int    getMasterID() throws IOException;
     byte[] getProcessGetData(String device) throws IOException;
     byte[] getProcessSetData(String device) throws IOException;
