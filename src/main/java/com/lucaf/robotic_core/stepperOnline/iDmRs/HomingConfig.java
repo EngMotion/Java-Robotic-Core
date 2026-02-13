@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @Configuration
 public class HomingConfig extends TravelParameters {
+    protected int speedLow = 100;
     protected boolean enabled = false;
     protected int position = 0;
     protected int sensor = 1;

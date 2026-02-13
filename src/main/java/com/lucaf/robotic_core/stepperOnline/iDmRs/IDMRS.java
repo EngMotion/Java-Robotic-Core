@@ -206,6 +206,7 @@ public class IDMRS extends MotorInterface {
         setHomingAcceleration(config.getAcceleration());
         setHomingDeceleration(config.getDeceleration());
         setHomingSpeed(config.getSpeed());
+        setHomingSpeedLow(config.getSpeedLow());
         HomingControl homing = new HomingControl();
         homing.setHomingMethod(config.getMethod());
         homing.setHomingTimeout(config.getTimeout());
@@ -610,9 +611,18 @@ public class IDMRS extends MotorInterface {
      * @param speed the homing speed to set
      * @throws IOException if there is an error setting the speed
      */
-    public void setHomingSpeed(long speed) throws IOException {
-        //connection.writeInteger(HOMING_SPEED_LOW, (int) speed);
-        connection.writeSignedLong(HOMING_SPEED_HIGH, speed, false);
+    public void setHomingSpeed(int speed) throws IOException {
+        connection.writeInteger(HOMING_SPEED_HIGH, speed);
+    }
+
+    /**
+     * Sets the low homing speed for the device.
+     *
+     * @param speed the low homing speed to set
+     * @throws IOException if there is an error setting the speed
+     */
+    public void setHomingSpeedLow(int speed) throws IOException {
+        connection.writeInteger(HOMING_SPEED_LOW, speed);
     }
 
     /**
@@ -621,8 +631,18 @@ public class IDMRS extends MotorInterface {
      * @return the current homing speed
      * @throws IOException if there is an error retrieving the speed
      */
-    public long getHomingSpeed() throws IOException {
-        return connection.readSignedLong(HOMING_SPEED_HIGH, false);
+    public int getHomingSpeed() throws IOException {
+        return connection.readInteger(HOMING_SPEED_HIGH);
+    }
+
+    /**
+     * Retrieves the current low homing speed of the device.
+     *
+     * @return the current low homing speed
+     * @throws IOException if there is an error retrieving the speed
+     */
+    public int getHomingSpeedLow() throws IOException {
+        return connection.readInteger(HOMING_SPEED_LOW);
     }
 
     /**
@@ -793,6 +813,7 @@ public class IDMRS extends MotorInterface {
                 return true;
             } catch (Exception e) {
                 connection.logError("Error moving to position " + position);
+                connection.logError(e.getMessage());
                 return false;
             }
         });
