@@ -182,7 +182,7 @@ public class IDMRS extends MotorInterface {
         if (params.getAcceleration() != acceleration.get()){
             setAcceleration(params.getAcceleration());
         }
-        if (params.getSpeed() != speed.get()){
+        if (params.getSpeed() != speed.get() && controlMode.getCONTROL_MODE() != ControlType.VELOCITY_MODE.getValue()){
             setSpeed(params.getSpeed());
         }
         if (path.get() != params.getPath()){
