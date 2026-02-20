@@ -12,7 +12,7 @@ public class DataTypeConversion {
 
     public int byteArrayToInt(byte[] data) {
         if (data == null || data.length < 4) {
-            throw new IllegalArgumentException("L'array deve contenere almeno 4 byte");
+            throw new IllegalArgumentException("L'array deve contenere almeno 4 byte: " + (data == null ? "null" : data.length));
         }
 
         // Logica BIG-ENDIAN:

@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class HttpJsonConnector extends RoutableInterface {
 
-    static MediaType JSON = MediaType.get("application/json");
+    public static MediaType JSON = MediaType.get("application/json");
     static OkHttpClient client = new OkHttpClient.Builder()
             .callTimeout(5, java.util.concurrent.TimeUnit.SECONDS)
             .connectTimeout(5, java.util.concurrent.TimeUnit.SECONDS)

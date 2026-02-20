@@ -100,6 +100,17 @@ public class P3PC201 extends SensorInterface {
                 .build();
     }
 
+    public boolean isLightEmitting() throws IOException {
+        byte[] data = master.getParameterValue(deviceName, EMITTED_LIGHT);
+        master.getClient().logDebug("Emitted light raw data: " + data[0]);
+        return data[0] == 0;
+    }
+
+    public void setLightEmitting(boolean emitting) throws IOException {
+        byte[] data = new byte[]{(byte) (emitting ? 0 : 1)};
+        master.setParameterValue(deviceName, EMITTED_LIGHT, data);
+    }
+
     public void dumpToConsole() {
         master.getClient().logInfo("--- P3PC201 Device Dump ---");
         try {

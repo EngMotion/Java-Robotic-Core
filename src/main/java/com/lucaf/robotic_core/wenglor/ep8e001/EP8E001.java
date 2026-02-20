@@ -10,7 +10,9 @@ import lombok.Getter;
 
 import java.io.IOException;
 
-public class EP8E001 extends MasterInterface implements IndexInterface  {
+import static com.lucaf.robotic_core.dataInterfaces.tcp.HttpJsonConnector.JSON;
+
+public class EP8E001 extends MasterInterface implements IndexInterface {
 
     final static String GET_PROCESS_DATA = "/iolink/v1/devices/%s/processdata/getdata/value?format=byteArray";
     final static String SET_PROCESS_DATA = "/iolink/v1/devices/%s/processdata/setdata/value?format=byteArray";
@@ -78,11 +80,13 @@ public class EP8E001 extends MasterInterface implements IndexInterface  {
 
     @Override
     public void setParameterValue(String device, int index, byte[] value) throws IOException {
-
+        IOLinkParameter parameter = IOLinkParameter.builder().value(value).build();
+        client.post(String.format(GET_PARAMETER_VALUE, device, String.valueOf(index)), convertTypeToByteArray(parameter), JSON);
     }
 
     @Override
     public void setParameterValue(String device, int index, int subIndex, byte[] value) throws IOException {
-
+        IOLinkParameter parameter = IOLinkParameter.builder().value(value).build();
+        client.post(String.format(GET_PARAMETER_VALUE_SUBINDEX, device, String.valueOf(index), String.valueOf(subIndex)), convertTypeToByteArray(parameter), JSON);
     }
 }

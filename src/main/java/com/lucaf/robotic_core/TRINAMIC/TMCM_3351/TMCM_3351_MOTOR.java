@@ -7,6 +7,7 @@ import com.lucaf.robotic_core.TRINAMIC.utils.TMCLCommand;
 import com.lucaf.robotic_core.exception.ConfigurationException;
 import com.lucaf.robotic_core.exception.DeviceCommunicationException;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -98,6 +99,11 @@ public class TMCM_3351_MOTOR {
     AtomicInteger deceleration = new AtomicInteger(0);
 
     /**
+     * Closed loop mode.
+     */
+    AtomicInteger clMode = new AtomicInteger(0);
+
+    /**
      * Flag to indicate if the motor has a fault
      */
     @Getter
@@ -107,6 +113,9 @@ public class TMCM_3351_MOTOR {
      * Global Logger
      */
     final Logger logger;
+
+    @Setter
+    int thresholdPosition = 50;
 
     /**
      * Constructor of the class
@@ -241,6 +250,8 @@ public class TMCM_3351_MOTOR {
                 acceleration.set(value);
             } else if (parameter == PARAM_MAX_DECELERATION) {
                 deceleration.set(value);
+            } else if (parameter == PARAM_CL_MODE) {
+                clMode.set(value);
             }
         }
     }
@@ -444,6 +455,7 @@ public class TMCM_3351_MOTOR {
     private void waitTillPositionReached(long timeout) throws DeviceCommunicationException {
         long endTime = System.currentTimeMillis() + timeout;
         long startTime = System.currentTimeMillis();
+        long targetPosition = targetPos.get();
         logger.debug("[TMCM_3351_MOTOR] Waiting for position to be reached, timeout: " + timeout + " ms, end time: " + endTime);
         while (true) {
             if (!isMoving.get()) {
@@ -460,10 +472,20 @@ public class TMCM_3351_MOTOR {
                 logger.debug("[TMCM_3351_MOTOR] Shutdown complete");
                 throw new DeviceCommunicationException("Timeout waiting for position to be reached");
             }
-            int status = getParameter(PARAM_POSITION_FLAG);
-            //1 = reached , 0 = not reached
-            if (status == 1) {
-                break;
+            if (clMode.get() == 2) {
+                // In CL_MODE 2, the position flag is not updated correctly, so we check the actual position instead
+                long encoder_position = getParameter(PARAM_ENCODER_POSITION);
+                logger.debug("[TMCM_3351_MOTOR] Current encoder position: " + encoder_position + ", target position: " + targetPosition + ", threshold: " + thresholdPosition);
+                logger.debug("[TMCM_3351_MOTOR] Position difference: " + Math.abs(encoder_position - targetPosition));
+                if (Math.abs(encoder_position - targetPosition) <= thresholdPosition) {
+                    break;
+                }
+            } else {
+                int status = getParameter(PARAM_POSITION_FLAG);
+                //1 = reached , 0 = not reached
+                if (status == 1) {
+                    break;
+                }
             }
             try {
                 Thread.sleep(50);
