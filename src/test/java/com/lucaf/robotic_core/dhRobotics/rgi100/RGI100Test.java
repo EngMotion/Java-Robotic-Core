@@ -2,7 +2,7 @@ package com.lucaf.robotic_core.dhRobotics.rgi100;
 
 import com.ghgande.j2mod.modbus.procimg.Register;
 import com.lucaf.robotic_core.Pair;
-import com.lucaf.robotic_core.mock.dataInterface.MockedRegisterInterface;
+import com.lucaf.robotic_core.dataInterfaces.test.MockedRegisterInterface;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

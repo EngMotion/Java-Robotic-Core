@@ -1,6 +1,6 @@
 package com.lucaf.robotic_core.stepperOnline.iDmRs;
 
-import com.lucaf.robotic_core.mock.dataInterface.FakeIDMRSEngine;
+import com.lucaf.robotic_core.stepperOnline.iDmRs.test.FakeIDMRSEngine;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;

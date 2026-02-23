@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.mock.dataInterface;
+package com.lucaf.robotic_core.dataInterfaces.test;
 
 import com.lucaf.robotic_core.Logger;
 import com.lucaf.robotic_core.dataInterfaces.impl.SerialEvent;

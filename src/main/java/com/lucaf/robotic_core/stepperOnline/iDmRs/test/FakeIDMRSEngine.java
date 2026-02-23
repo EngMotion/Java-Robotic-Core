@@ -1,9 +1,8 @@
-package com.lucaf.robotic_core.mock.dataInterface;
+package com.lucaf.robotic_core.stepperOnline.iDmRs.test;
 
-import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
+import com.lucaf.robotic_core.dataInterfaces.test.MockedRegisterInterface;
 import com.lucaf.robotic_core.stepperOnline.iDmRs.ControlMode;
 import com.lucaf.robotic_core.stepperOnline.iDmRs.ControlType;
-import com.lucaf.robotic_core.stepperOnline.iDmRs.StatusMode;
 
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;

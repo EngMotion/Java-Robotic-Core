@@ -1,6 +1,6 @@
 package com.lucaf.robotic_core.dhRobotics.sacN;
 
-import com.lucaf.robotic_core.mock.dataInterface.MockedRegisterInterface;
+import com.lucaf.robotic_core.dataInterfaces.test.MockedRegisterInterface;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.lucaf.robotic_core.mock.dataInterface;
+package com.lucaf.robotic_core.dataInterfaces.test;
 
 import com.ghgande.j2mod.modbus.procimg.Register;
 import com.ghgande.j2mod.modbus.procimg.SimpleRegister;
@@ -43,7 +43,7 @@ public class MockedRegisterInterface extends RegisterInterface {
         return true;
     }
 
-    int registerToInt(byte[] register) {
+    protected int registerToInt(byte[] register) {
         int value = 0;
         for (int i = 0; i < register.length; i++) {
             value = (value << 8) | (register[i] & 0xFF);
