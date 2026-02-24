@@ -307,6 +307,35 @@ public class IDMRS extends MotorInterface {
         stop();
     }
 
+    public Future<Boolean> homing() {
+        return executorService.submit(() -> {
+            try {
+                if (!homingControl.getHomingMethod().equals(HomingMethod.NO_HOMING)) {
+                    connection.logInfo("Starting homing");
+                    connection.writeInteger(HOMING_METHOD, homingControl.toInt());
+                    connection.writeInteger(STATUS_MODE, StatusMode.HOMING);
+                    isMoving.set(true);
+                    long startTime = System.currentTimeMillis();
+                    while (true) {
+                        if (!isMoving.get()) throw new IOException("Device stopped");
+                        if (homingControl.getHomingTimeout() > 0 && startTime + homingControl.getHomingTimeout() < System.currentTimeMillis()) {
+                            throw new IOException("Homing timeout reached");
+                        }
+                        if (getStatusMode().getSTATUS_CODE() == 0) break;
+                        Thread.sleep(50);
+                    }
+                    isMoving.set(false);
+                    targetPosition.set(0);
+                    currentPosition.set(0);
+                }
+                return true;
+            } catch (Exception e) {
+                connection.logError("Error during shutdown: " + e.getMessage());
+                return false;
+            }
+        });
+    }
+
     /**
      * Method that sets the speed of the device
      *
