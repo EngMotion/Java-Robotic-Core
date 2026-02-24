@@ -20,19 +20,19 @@ public class StatusMode {
      * Homing mode constant
      */
     @Getter
-    static final int HOMING = 0x20;
+    public static final int HOMING = 0x20;
 
     /**
      * Set current position as zero constant
      */
     @Getter
-    static final int SET_CURRENT_POSITION_AS_ZERO = 0x21;
+    public static final int SET_CURRENT_POSITION_AS_ZERO = 0x21;
 
     /**
      * Emergency stop constant
      */
     @Getter
-    static final int EMERGENCY_STOP = 0x40;
+    public static final int EMERGENCY_STOP = 0x40;
 
     /**
      * Bit 0-7: Path Mode

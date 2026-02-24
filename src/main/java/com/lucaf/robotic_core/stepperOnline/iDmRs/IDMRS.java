@@ -26,61 +26,62 @@ public class IDMRS extends MotorInterface {
     /**
      * The low-level register/communication interface used to talk with the device.
      */
-    final RegisterInterface connection;
+    protected final RegisterInterface connection;
 
     /**
      * The state of the device
      */
-    final HashMap<String, Object> state;
+    protected final HashMap<String, Object> state;
 
     /**
      * The control mode of the device
      */
-    final ControlMode controlMode = new ControlMode(0x00);
+    @Getter
+    protected final ControlMode controlMode = new ControlMode(0x00);
 
     /**
      * The state class
      */
-    final State stateFunction;
+    protected final State stateFunction;
 
     /**
      * The ramp acceleration mode
      */
-    final AtomicInteger path = new AtomicInteger(0x00);
+    protected final AtomicInteger path = new AtomicInteger(0x00);
 
     /**
      * The executor service for async operations
      */
     @Getter
-    final ExecutorService executorService = Executors.newSingleThreadExecutor();
+    protected final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     /**
      * Last verified position
      */
-    final AtomicLong currentPosition = new AtomicLong(0);
+    protected final AtomicLong currentPosition = new AtomicLong(0);
 
     /**
      * Target position sent to the device
      */
-    final AtomicLong targetPosition = new AtomicLong(0);
+    protected final AtomicLong targetPosition = new AtomicLong(0);
 
     /**
      * The current set speed of the device
      */
-    final AtomicInteger speed = new AtomicInteger(0);
+    protected final AtomicInteger speed = new AtomicInteger(0);
 
     /**
      * The current acceleration of the device
      */
-    final AtomicInteger acceleration = new AtomicInteger(0);
+    protected final AtomicInteger acceleration = new AtomicInteger(0);
 
     /**
      * The current deceleration of the device
      */
-    final AtomicInteger deceleration = new AtomicInteger(0);
+    protected final AtomicInteger deceleration = new AtomicInteger(0);
 
     @Setter
-    HomingControl homingControl = new HomingControl();
+    protected HomingControl homingControl = new HomingControl();
 
     /**
      * Constructor of the class
@@ -161,6 +162,7 @@ public class IDMRS extends MotorInterface {
     public void applyConfig(IDMRSConfig config) throws IOException{
         applyTravelParameters(config.getTravelParameters());
         applyHomingConfig(config.getHoming());
+        setPeakCurrent(config.getPeakCurrent());
         if (config.isPositioningMode()){
             setPositioningMode();
             setRelativePositioning(config.isRelativePositioning());
@@ -251,19 +253,7 @@ public class IDMRS extends MotorInterface {
             connection.logInfo("Initializing device");
             if (!homingControl.getHomingMethod().equals(HomingMethod.NO_HOMING)) {
                 try {
-                    connection.logInfo("Starting homing");
-                    connection.writeInteger(HOMING_METHOD, homingControl.toInt());
-                    connection.writeInteger(STATUS_MODE, StatusMode.HOMING);
-                    isMoving.set(true);
-                    long startTime = System.currentTimeMillis();
-                    while (true) {
-                        if (!isMoving.get()) throw new IOException("Device stopped");
-                        if (homingControl.getHomingTimeout() > 0 && startTime + homingControl.getHomingTimeout() < System.currentTimeMillis()) {
-                            throw new IOException("Homing timeout reached");
-                        }
-                        if (getStatusMode().getSTATUS_CODE() == 0) break;
-                        Thread.sleep(50);
-                    }
+                    homingSync();
                 } catch (Exception e) {
                     connection.logError("Error homing: " + e.getMessage());
                     isMoving.set(false);
@@ -307,27 +297,32 @@ public class IDMRS extends MotorInterface {
         stop();
     }
 
+    protected void homingSync() throws Exception{
+        if (!homingControl.getHomingMethod().equals(HomingMethod.NO_HOMING)) {
+            stop();
+            connection.logInfo("Starting homing");
+            connection.writeInteger(HOMING_METHOD, homingControl.toInt());
+            connection.writeInteger(STATUS_MODE, StatusMode.HOMING);
+            isMoving.set(true);
+            long startTime = System.currentTimeMillis();
+            while (true) {
+                if (!isMoving.get()) throw new IOException("Device stopped");
+                if (homingControl.getHomingTimeout() > 0 && startTime + homingControl.getHomingTimeout() < System.currentTimeMillis()) {
+                    throw new IOException("Homing timeout reached");
+                }
+                if (getStatusMode().getSTATUS_CODE() == 0) break;
+                Thread.sleep(50);
+            }
+            isMoving.set(false);
+            targetPosition.set(0);
+            currentPosition.set(0);
+        }
+    }
+
     public Future<Boolean> homing() {
         return executorService.submit(() -> {
             try {
-                if (!homingControl.getHomingMethod().equals(HomingMethod.NO_HOMING)) {
-                    connection.logInfo("Starting homing");
-                    connection.writeInteger(HOMING_METHOD, homingControl.toInt());
-                    connection.writeInteger(STATUS_MODE, StatusMode.HOMING);
-                    isMoving.set(true);
-                    long startTime = System.currentTimeMillis();
-                    while (true) {
-                        if (!isMoving.get()) throw new IOException("Device stopped");
-                        if (homingControl.getHomingTimeout() > 0 && startTime + homingControl.getHomingTimeout() < System.currentTimeMillis()) {
-                            throw new IOException("Homing timeout reached");
-                        }
-                        if (getStatusMode().getSTATUS_CODE() == 0) break;
-                        Thread.sleep(50);
-                    }
-                    isMoving.set(false);
-                    targetPosition.set(0);
-                    currentPosition.set(0);
-                }
+                homingSync();
                 return true;
             } catch (Exception e) {
                 connection.logError("Error during shutdown: " + e.getMessage());
@@ -488,6 +483,13 @@ public class IDMRS extends MotorInterface {
      */
     public DigitalInputs getDigitalInputs() throws IOException {
         return new DigitalInputs(connection.readShort(DIGITAL_INPUTS_STATUS));
+    }
+
+
+    public long getActualPosition() throws IOException {
+        long position = connection.readSignedLong(ACTUAL_POSITION_HIGH, false);
+        currentPosition.set(position);
+        return position;
     }
 
     /**
@@ -742,6 +744,14 @@ public class IDMRS extends MotorInterface {
      */
     public HomingControl getHomingMethod() throws IOException {
         return new HomingControl(connection.readShort(HOMING_METHOD));
+    }
+
+    public void setPeakCurrent(int peakCurrent) throws IOException {
+        connection.writeInteger(PEAK_CURRENT, peakCurrent);
+    }
+
+    public int getPeakCurrent() throws IOException {
+        return connection.readShort(PEAK_CURRENT);
     }
 
     /**

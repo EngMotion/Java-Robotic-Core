@@ -12,6 +12,7 @@ import lombok.Setter;
 public class IDMRSConfig extends BaseConfig {
     protected SerialParams connection = new SerialParams();
     protected int turnResolution = 10000;
+    protected int peakCurrent = 36;
     protected int ratio = 1;
     protected boolean positioningMode = true;
     protected boolean relativePositioning = true;

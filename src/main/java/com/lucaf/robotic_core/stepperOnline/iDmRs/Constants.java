@@ -54,6 +54,9 @@ public class Constants {
      */
     public static final byte[] DO3 = new byte[]{0x01, 0x5B};
 
+    public static final byte[] ACTUAL_POSITION_HIGH = new byte[]{0x60, (byte) 0x2C};
+    public static final byte[] ACTUAL_POSITION_LOW = new byte[]{0x60, (byte) 0x2D};
+
 
     /**
      * Digital Inputs Status, reads current state of the digital inputs. Controlled via DigitalInputs class
@@ -167,4 +170,7 @@ public class Constants {
      * Homing deceleration value
      */
     public static final byte[] HOMING_DECELERATION = new byte[]{0x60, 0x12};
+
+
+    public static final byte[] PEAK_CURRENT = new byte[]{0x01, (byte) 0x91};
 }
