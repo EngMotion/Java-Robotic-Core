@@ -5,6 +5,7 @@ com.lucaf.robotic_core.dataInterfaces.impl
 com.lucaf.robotic_core.dataInterfaces.modbus
 com.lucaf.robotic_core.dataInterfaces.serial
 com.lucaf.robotic_core.dataInterfaces.tcp
+com.lucaf.robotic_core.dataInterfaces.test
 com.lucaf.robotic_core.dhRobotics.rgi100
 com.lucaf.robotic_core.dhRobotics.sacN
 com.lucaf.robotic_core.exception
@@ -17,6 +18,7 @@ com.lucaf.robotic_core.NANOTEC
 com.lucaf.robotic_core.NANOTEC.PD4E_RTU
 com.lucaf.robotic_core.stepperOnline.dm556Rs
 com.lucaf.robotic_core.stepperOnline.iDmRs
+com.lucaf.robotic_core.stepperOnline.iDmRs.test
 com.lucaf.robotic_core.stepperOnline.iDmRs.ui
 com.lucaf.robotic_core.stepperOnline.iSv2Rs
 com.lucaf.robotic_core.TRINAMIC
