@@ -20,63 +20,63 @@ public class P3PC201 extends SensorInterface {
     }
 
     public String getVendorName() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, VENDOR_NAME);
+        byte[] data = master.getParameterValue(deviceName, VENDOR_NAME).getValue();
         return conversion.byteArrayToString(data);
     }
 
     public String getVendorText() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, VENDOR_TEXT);
+        byte[] data = master.getParameterValue(deviceName, VENDOR_TEXT).getValue();
         return conversion.byteArrayToString(data);
     }
 
     public String getProductName() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, PRODUCT_NAME);
+        byte[] data = master.getParameterValue(deviceName, PRODUCT_NAME).getValue();
         return conversion.byteArrayToString(data);
     }
 
     public String getProductId() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, PRODUCT_ID);
+        byte[] data = master.getParameterValue(deviceName, PRODUCT_ID).getValue();
         return conversion.byteArrayToString(data);
     }
 
     public String getProductText() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, PRODUCT_TEXT);
+        byte[] data = master.getParameterValue(deviceName, PRODUCT_TEXT).getValue();
         return conversion.byteArrayToString(data);
     }
 
     public String getSerialNumber() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, SERIAL_NUMBER);
+        byte[] data = master.getParameterValue(deviceName, SERIAL_NUMBER).getValue();
         return conversion.byteArrayToString(data);
     }
 
     public String getHardwareVersion() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, HARDWARE_VERSION);
+        byte[] data = master.getParameterValue(deviceName, HARDWARE_VERSION).getValue();
         return conversion.byteArrayToString(data);
     }
 
     public String getFirmwareVersion() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, FIRMWARE_VERSION);
+        byte[] data = master.getParameterValue(deviceName, FIRMWARE_VERSION).getValue();
         return conversion.byteArrayToString(data);
     }
 
     public String getApplicationSpecificTag() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, APPLICATION_SPECIFIC_TAG);
+        byte[] data = master.getParameterValue(deviceName, APPLICATION_SPECIFIC_TAG).getValue();
         return conversion.byteArrayToString(data);
     }
 
     public String getFunctionTag() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, FUNCTION_TAG);
+        byte[] data = master.getParameterValue(deviceName, FUNCTION_TAG).getValue();
         return conversion.byteArrayToString(data);
     }
 
     public String getLocationTag() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, LOCATION_TAG);
+        byte[] data = master.getParameterValue(deviceName, LOCATION_TAG).getValue();
         return conversion.byteArrayToString(data);
     }
 
 
     public Measurement getMeasurement() throws IOException {
-        byte[] data = master.getProcessGetData(deviceName);
+        byte[] data = master.getProcessGetData(deviceName).getIolink().getValue();
         byte[] value = new byte[4];
         System.arraycopy(data, 0, value, 0, 4);
         int readValue = conversion.byteArrayToInt(value);
@@ -101,7 +101,7 @@ public class P3PC201 extends SensorInterface {
     }
 
     public boolean isLightEmitting() throws IOException {
-        byte[] data = master.getParameterValue(deviceName, EMITTED_LIGHT);
+        byte[] data = master.getParameterValue(deviceName, EMITTED_LIGHT).getValue();
         master.getClient().logDebug("Emitted light raw data: " + data[0]);
         return data[0] == 0;
     }
