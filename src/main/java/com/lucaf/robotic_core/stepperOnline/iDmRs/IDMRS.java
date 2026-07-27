@@ -326,6 +326,7 @@ public class IDMRS extends MotorInterface {
                 return true;
             } catch (Exception e) {
                 connection.logError("Error during shutdown: " + e.getMessage());
+                isMoving.set(false);
                 return false;
             }
         });
@@ -853,6 +854,8 @@ public class IDMRS extends MotorInterface {
             } catch (Exception e) {
                 connection.logError("Error moving to position " + position);
                 connection.logError(e.getMessage());
+                isMoving.set(false);
+                notifyStateChange();
                 return false;
             }
         });
