@@ -26,8 +26,64 @@ public class IDMRSTest {
     );
 
     void initializeMotor() throws Exception {
+        connection.writeInteger(ALARM, 0);
         motor.initialize().get();
         motor.setPositioningMode();
+    }
+
+    @Test
+    public void testState() {
+        assertTrue(state.containsKey("has_fault"));
+        assertTrue(state.containsKey("fault"));
+        assertTrue(state.containsKey("fault_code"));
+        assertEquals(FaultCode.NONE, motor.getFaultCode());
+        assertFalse(motor.hasFault());
+    }
+
+    @Test
+    public void testErrorHandling() throws Exception {
+        initializeMotor();
+        connection.writeInteger(ALARM, 0x01); // Over-current
+        Thread.sleep(2000);
+        assertTrue(motor.hasFault());
+        assertEquals(FaultCode.OVER_CURRENT, motor.getFaultCode());
+        assertEquals("Over-current", state.get("fault"));
+
+        connection.writeInteger(ALARM, 0); // No alarm
+        Thread.sleep(2000);
+        assertFalse(motor.hasFault());
+        assertEquals(FaultCode.NONE, motor.getFaultCode());
+        assertEquals("", state.get("fault"));
+    }
+
+    @Test
+    public void testClearError() throws Exception {
+        initializeMotor();
+        connection.writeInteger(ALARM, 0x02); // Over-voltage
+        Thread.sleep(2000);
+        assertTrue(motor.hasFault());
+
+        connection.writeInteger(ALARM, 0); // simulate the device clearing the alarm
+        motor.clearError();
+
+        assertFalse(motor.hasFault());
+        assertEquals(FaultCode.NONE, motor.getFaultCode());
+        assertEquals("", state.get("fault"));
+        assertEquals(CONTROL_WORD_RESET_ALARM, connection.readInteger(CONTROL_WORD));
+    }
+
+    @Test
+    public void testClearAlarmHistory() throws Exception {
+        initializeMotor();
+        motor.clearAlarmHistory();
+        assertEquals(CONTROL_WORD_RESET_ALARM_HISTORY, connection.readInteger(CONTROL_WORD));
+    }
+
+    @Test
+    public void testSaveConfig() throws Exception {
+        initializeMotor();
+        motor.saveConfig();
+        assertEquals(CONTROL_WORD_SAVE_EEPROM, connection.readInteger(CONTROL_WORD));
     }
 
     @Test

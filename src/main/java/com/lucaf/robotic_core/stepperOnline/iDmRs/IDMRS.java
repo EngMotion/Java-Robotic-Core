@@ -13,8 +13,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.lucaf.robotic_core.stepperOnline.iDmRs.Constants.*;
 
@@ -84,6 +87,16 @@ public class IDMRS extends MotorInterface {
     protected HomingControl homingControl = new HomingControl();
 
     /**
+     * The current fault code of the device. {@link FaultCode#NONE} when no fault is present.
+     */
+    protected final AtomicReference<FaultCode> faultCode = new AtomicReference<>(FaultCode.NONE);
+
+    /**
+     * The scheduled executor service used for periodic alarm polling.
+     */
+    protected ScheduledExecutorService scheduledExecutorService;
+
+    /**
      * Constructor of the class
      *
      * @param registerInterface low-level interface used to read/write registers
@@ -149,6 +162,7 @@ public class IDMRS extends MotorInterface {
         state.put("initialized", isInitialized);
         state.put("has_fault", hasError);
         state.put("fault", "");
+        state.put("fault_code", faultCode);
         state.put("stopped", isStopped);
         notifyStateChange();
     }
@@ -266,6 +280,7 @@ public class IDMRS extends MotorInterface {
             currentPosition.set(0);
             isMoving.set(false);
             isStopped.set(false);
+            setupErrorListener();
             return true;
         });
     }
@@ -291,6 +306,9 @@ public class IDMRS extends MotorInterface {
     @Override
     public void shutdown() throws IOException {
         connection.logDebug("Shutting down device");
+        if (scheduledExecutorService != null) {
+            scheduledExecutorService.shutdownNow();
+        }
         executorService.shutdownNow();
         isShutdown.set(true);
         isStopped.set(true);
@@ -308,6 +326,7 @@ public class IDMRS extends MotorInterface {
             while (true) {
                 if (!isMoving.get()) throw new IOException("Device stopped");
                 if (homingControl.getHomingTimeout() > 0 && startTime + homingControl.getHomingTimeout() < System.currentTimeMillis()) {
+                    isMoving.set(false);
                     throw new IOException("Homing timeout reached");
                 }
                 if (getStatusMode().getSTATUS_CODE() == 0) break;
@@ -755,6 +774,150 @@ public class IDMRS extends MotorInterface {
     }
 
     /**
+     * Returns whether the device is currently in fault state.
+     *
+     * @return true if a fault has been detected
+     */
+    public boolean hasFault() {
+        return hasError.get();
+    }
+
+    /**
+     * Returns the current fault code. {@link FaultCode#NONE} when no fault is present.
+     *
+     * @return the current {@link FaultCode}
+     */
+    public FaultCode getFaultCode() {
+        return faultCode.get();
+    }
+
+    /**
+     * Reads the current-alarm register (0x2203) and wraps it into an {@link ErrorFlags}.
+     *
+     * @return the current alarm flags
+     * @throws IOException if there is an error reading the register
+     */
+    public ErrorFlags getErrorFlags() throws IOException {
+        return new ErrorFlags(connection.readShort(ALARM));
+    }
+
+    /**
+     * Reads the raw motion status register (0x1003). Bit 0 set indicates a faulty state.
+     *
+     * @return the raw motion status value
+     * @throws IOException if there is an error reading the register
+     */
+    public int getMotionStatus() throws IOException {
+        return connection.readShort(MOTION_STATUS);
+    }
+
+    /**
+     * Reads the PR warning register (0x601D). Non-zero values indicate PR-module warnings.
+     *
+     * @return the raw PR warning value
+     * @throws IOException if there is an error reading the register
+     */
+    public int getPrWarning() throws IOException {
+        return connection.readShort(PR_WARNING);
+    }
+
+    /**
+     * Reads the alarm detection selection bitmask (0x016D).
+     *
+     * @return the raw alarm detection selection value
+     * @throws IOException if there is an error reading the register
+     */
+    public int getAlarmDetectionSelection() throws IOException {
+        return connection.readShort(ALARM_DETECTION_SELECTION);
+    }
+
+    /**
+     * Writes the alarm detection selection bitmask (0x016D).
+     *
+     * @param mask the alarm detection selection bitmask to set
+     * @throws IOException if there is an error writing the register
+     */
+    public void setAlarmDetectionSelection(int mask) throws IOException {
+        connection.writeInteger(ALARM_DETECTION_SELECTION, mask);
+    }
+
+    /**
+     * Sets up a periodic alarm listener that polls the current-alarm register and updates
+     * the fault state when an alarm is detected.
+     * <p>
+     * The listener notifies the registered {@link State} callback via {@code notifyError()}
+     * whenever a fault transitions to detected.
+     */
+    private void setupErrorListener() {
+        connection.logDebug("Setting up error listener");
+        if (scheduledExecutorService != null) {
+            scheduledExecutorService.shutdownNow();
+        }
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            if (scheduledExecutorService == null || scheduledExecutorService.isShutdown()) return;
+            try {
+                ErrorFlags errorFlags = getErrorFlags();
+                if (errorFlags.hasError()) {
+                    faultCode.set(errorFlags.getFaultCode());
+                    state.put("fault", errorFlags.getErrorDescription());
+                    hasError.set(true);
+                    if (stateFunction != null) stateFunction.notifyError();
+                } else {
+                    faultCode.set(FaultCode.NONE);
+                    state.put("fault", "");
+                    hasError.set(false);
+                }
+            } catch (IOException e) {
+                connection.logError("Error checking for alarms: " + e.getMessage());
+                state.put("fault", e.getMessage());
+                hasError.set(true);
+            }
+        }, 1000, 1000, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * Clears the current alarm on the device and resets the local fault state.
+     * <p>
+     * Writes {@link Constants#CONTROL_WORD_RESET_ALARM} to the control word register (0x1801),
+     * then resets {@code hasError} and {@code faultCode} to their default values.
+     *
+     * @throws IOException if there is an error writing the control word
+     */
+    public void clearError() throws IOException {
+        connection.logInfo("Clearing alarm");
+        connection.writeInteger(CONTROL_WORD, CONTROL_WORD_RESET_ALARM);
+        hasError.set(false);
+        faultCode.set(FaultCode.NONE);
+        state.put("fault", "");
+        notifyStateChange();
+    }
+
+    /**
+     * Clears the alarm history stored on the device.
+     * <p>
+     * Writes {@link Constants#CONTROL_WORD_RESET_ALARM_HISTORY} to the control word register (0x1801).
+     *
+     * @throws IOException if there is an error writing the control word
+     */
+    public void clearAlarmHistory() throws IOException {
+        connection.logInfo("Clearing alarm history");
+        connection.writeInteger(CONTROL_WORD, CONTROL_WORD_RESET_ALARM_HISTORY);
+    }
+
+    /**
+     * Persists the current parameters into the device EEPROM.
+     * <p>
+     * Writes {@link Constants#CONTROL_WORD_SAVE_EEPROM} to the control word register (0x1801).
+     *
+     * @throws IOException if there is an error writing the control word
+     */
+    public void saveConfig() throws IOException {
+        connection.logInfo("Saving configuration to EEPROM");
+        connection.writeInteger(CONTROL_WORD, CONTROL_WORD_SAVE_EEPROM);
+    }
+
+    /**
      * Method that waits for the device to reach the position
      *
      * @throws IOException if there is an error waiting for the position
@@ -853,6 +1016,7 @@ public class IDMRS extends MotorInterface {
             } catch (Exception e) {
                 connection.logError("Error moving to position " + position);
                 connection.logError(e.getMessage());
+                isMoving.set(false);
                 return false;
             }
         });

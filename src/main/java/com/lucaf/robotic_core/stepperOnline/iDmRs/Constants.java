@@ -82,6 +82,52 @@ public class Constants {
     public static final byte[] ALARM = new byte[]{0x22, 0x03};
 
     /**
+     * Alarm detection selection: 0x016D (Pr4.22)
+     * Bitmask enabling detection of each alarm:
+     * bit0 over-current, bit1 over-voltage, bit3 ADC sampling failure,
+     * bit4 locked shaft, bit5 EEPROM, bit6 auto-tuning.
+     * Type: Read/Write
+     */
+    public static final byte[] ALARM_DETECTION_SELECTION = new byte[]{0x01, 0x6D};
+
+    /**
+     * Motion status: 0x1003
+     * Bit0 = 1 indicates the drive is in "faulty" state (quick fault flag).
+     * Type: Read
+     */
+    public static final byte[] MOTION_STATUS = new byte[]{0x10, 0x03};
+
+    /**
+     * PR warning: 0x601D (Pr8.29)
+     * PR-module specific warnings:
+     * 0x100 limit switch error during homing, 0x102 over-travel error during homing,
+     * 0x20P limit switch error in path P.
+     * Type: Read
+     */
+    public static final byte[] PR_WARNING = new byte[]{0x60, 0x1D};
+
+    /**
+     * Control word: 0x1801
+     * Write-only command register (see CONTROL_WORD_* constants).
+     */
+    public static final byte[] CONTROL_WORD = new byte[]{0x18, 0x01};
+
+    /**
+     * Control word command: reset the current alarm.
+     */
+    public static final int CONTROL_WORD_RESET_ALARM = 0x1111;
+
+    /**
+     * Control word command: reset the alarm history.
+     */
+    public static final int CONTROL_WORD_RESET_ALARM_HISTORY = 0x1122;
+
+    /**
+     * Control word command: save parameters to EEPROM.
+     */
+    public static final int CONTROL_WORD_SAVE_EEPROM = 0x2211;
+
+    /**
      * Control Mode: 0x6200
      * Value: Managed by the ControlMode class
      * Type: Read/Write

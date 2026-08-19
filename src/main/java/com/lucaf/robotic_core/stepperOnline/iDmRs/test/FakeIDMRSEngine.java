@@ -54,6 +54,20 @@ public class FakeIDMRSEngine extends MockedRegisterInterface {
 
     public FakeIDMRSEngine(int unitId, String name) {
         super(unitId, name);
+        setAlarm(0);
+    }
+
+    /**
+     * Sets the simulated current-alarm register value (0x2203).
+     * Pass {@code 0} for no fault, or an alarm bitmask (see {@link FaultCode}).
+     *
+     * @param alarm the alarm value to simulate
+     */
+    public void setAlarm(int alarm) {
+        try {
+            super.writeInteger(ALARM, alarm);
+        } catch (IOException ignored) {
+        }
     }
 
     /**
