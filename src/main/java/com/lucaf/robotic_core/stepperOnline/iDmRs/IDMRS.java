@@ -162,7 +162,7 @@ public class IDMRS extends MotorInterface {
         state.put("initialized", isInitialized);
         state.put("has_fault", hasError);
         state.put("fault", "");
-        state.put("fault_code", faultCode);
+        state.put("fault_code", faultCode.get().name());
         state.put("stopped", isStopped);
         notifyStateChange();
     }
@@ -861,11 +861,13 @@ public class IDMRS extends MotorInterface {
                 if (errorFlags.hasError()) {
                     faultCode.set(errorFlags.getFaultCode());
                     state.put("fault", errorFlags.getErrorDescription());
+                    state.put("fault_code", faultCode.get().name());
                     hasError.set(true);
                     if (stateFunction != null) stateFunction.notifyError();
                 } else {
                     faultCode.set(FaultCode.NONE);
                     state.put("fault", "");
+                    state.put("fault_code", faultCode.get().name());
                     hasError.set(false);
                 }
             } catch (IOException e) {
@@ -890,6 +892,7 @@ public class IDMRS extends MotorInterface {
         hasError.set(false);
         faultCode.set(FaultCode.NONE);
         state.put("fault", "");
+        state.put("fault_code", faultCode.get().name());
         notifyStateChange();
     }
 
