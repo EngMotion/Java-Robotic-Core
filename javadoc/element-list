@@ -12,6 +12,8 @@ com.lucaf.robotic_core.exception
 com.lucaf.robotic_core.handlers
 com.lucaf.robotic_core.impl
 com.lucaf.robotic_core.KERN
+com.lucaf.robotic_core.KERN.PCB
+com.lucaf.robotic_core.KERN.PLJ
 com.lucaf.robotic_core.moxMec
 com.lucaf.robotic_core.moxMec.rg024a
 com.lucaf.robotic_core.NANOTEC

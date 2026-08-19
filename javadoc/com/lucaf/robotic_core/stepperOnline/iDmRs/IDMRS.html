@@ -126,13 +126,23 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The executor service for async operations</div>
 </div>
-<div class="col-first even-row-color"><code>protected <a href="HomingControl.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">HomingControl</a></code></div>
-<div class="col-second even-row-color"><code><a href="#homingControl" class="member-name-link">homingControl</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicInteger</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#path" class="member-name-link">path</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicReference.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicReference</a>&lt;<a href="FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#faultCode" class="member-name-link">faultCode</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">The current fault code of the device.</div>
+</div>
+<div class="col-first odd-row-color"><code>protected <a href="HomingControl.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">HomingControl</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#homingControl" class="member-name-link">homingControl</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicInteger</a></code></div>
+<div class="col-second even-row-color"><code><a href="#path" class="member-name-link">path</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The ramp acceleration mode</div>
+</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/ScheduledExecutorService.html" title="class or interface in java.util.concurrent" class="external-link">ScheduledExecutorService</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#scheduledExecutorService" class="member-name-link">scheduledExecutorService</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">The scheduled executor service used for periodic alarm polling.</div>
 </div>
 <div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicInteger</a></code></div>
 <div class="col-second even-row-color"><code><a href="#speed" class="member-name-link">speed</a></code></div>
@@ -212,6 +222,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Applies the given travel parameters to the device.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearAlarmHistory()" class="member-name-link">clearAlarmHistory</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Clears the alarm history stored on the device.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#clearError()" class="member-name-link">clearError</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Clears the current alarm on the device and resets the local fault state.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#estimateArrivalTime(int)" class="member-name-link">estimateArrivalTime</a><wbr>(int&nbsp;distance)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -226,72 +246,102 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getActualPosition()" class="member-name-link">getActualPosition</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeceleration()" class="member-name-link">getDeceleration</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAlarmDetectionSelection()" class="member-name-link">getAlarmDetectionSelection</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Reads the alarm detection selection bitmask (0x016D).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDeceleration()" class="member-name-link">getDeceleration</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that gets the deceleration of the device</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DigitalInput.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalInput</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDigitalInput(int)" class="member-name-link">getDigitalInput</a><wbr>(int&nbsp;input)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DigitalInput.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalInput</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDigitalInput(int)" class="member-name-link">getDigitalInput</a><wbr>(int&nbsp;input)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the digital input settings for a specific input.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DigitalInputs.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalInputs</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDigitalInputs()" class="member-name-link">getDigitalInputs</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DigitalInputs.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalInputs</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDigitalInputs()" class="member-name-link">getDigitalInputs</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the digital input statuses.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DigitalOutput.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalOutput</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDigitalOutput(int)" class="member-name-link">getDigitalOutput</a><wbr>(int&nbsp;output)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DigitalOutput.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalOutput</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDigitalOutput(int)" class="member-name-link">getDigitalOutput</a><wbr>(int&nbsp;output)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the digital output settings for a specific output.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DigitalOutputs.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalOutputs</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDigitalOutputs()" class="member-name-link">getDigitalOutputs</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="DigitalOutputs.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalOutputs</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDigitalOutputs()" class="member-name-link">getDigitalOutputs</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the digital output statuses.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingAcceleration()" class="member-name-link">getHomingAcceleration</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ErrorFlags.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">ErrorFlags</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getErrorFlags()" class="member-name-link">getErrorFlags</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Reads the current-alarm register (0x2203) and wraps it into an <a href="ErrorFlags.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs"><code>ErrorFlags</code></a>.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFaultCode()" class="member-name-link">getFaultCode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the current fault code.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingAcceleration()" class="member-name-link">getHomingAcceleration</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the current homing acceleration of the device.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingDeceleration()" class="member-name-link">getHomingDeceleration</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingDeceleration()" class="member-name-link">getHomingDeceleration</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the current homing deceleration of the device.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="HomingControl.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">HomingControl</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingMethod()" class="member-name-link">getHomingMethod</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="HomingControl.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">HomingControl</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingMethod()" class="member-name-link">getHomingMethod</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the current homing method of the device.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingSpeed()" class="member-name-link">getHomingSpeed</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingSpeed()" class="member-name-link">getHomingSpeed</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the current homing speed of the device.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingSpeedLow()" class="member-name-link">getHomingSpeedLow</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingSpeedLow()" class="member-name-link">getHomingSpeedLow</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the current low homing speed of the device.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingStopPosition()" class="member-name-link">getHomingStopPosition</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHomingStopPosition()" class="member-name-link">getHomingStopPosition</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieves the current homing stop position of the device.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMotionStatus()" class="member-name-link">getMotionStatus</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Reads the raw motion status register (0x1003).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPeakCurrent()" class="member-name-link">getPeakCurrent</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSpeed()" class="member-name-link">getSpeed</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPrWarning()" class="member-name-link">getPrWarning</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Reads the PR warning register (0x601D).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSpeed()" class="member-name-link">getSpeed</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that gets the speed of the device</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StatusMode.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">StatusMode</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatusMode()" class="member-name-link">getStatusMode</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StatusMode.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">StatusMode</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatusMode()" class="member-name-link">getStatusMode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Methos that gets the status of the motor</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasFault()" class="member-name-link">hasFault</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns whether the device is currently in fault state.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/Future.html" title="class or interface in java.util.concurrent" class="external-link">Future</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#homing()" class="member-name-link">homing</a>()</code></div>
@@ -316,9 +366,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Method that moves the device to a relative position and waits for the movement to end</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAcceleration(int)" class="member-name-link">setAcceleration</a><wbr>(int&nbsp;acceleration)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#saveConfig()" class="member-name-link">saveConfig</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Persists the current parameters into the device EEPROM.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAcceleration(int)" class="member-name-link">setAcceleration</a><wbr>(int&nbsp;acceleration)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Method that sets the acceleration of the device</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAlarmDetectionSelection(int)" class="member-name-link">setAlarmDetectionSelection</a><wbr>(int&nbsp;mask)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Writes the alarm detection selection bitmask (0x016D).</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDeceleration(int)" class="member-name-link">setDeceleration</a><wbr>(int&nbsp;deceleration)</code></div>
@@ -531,6 +591,20 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="homingControl">
 <h3>homingControl</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="HomingControl.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">HomingControl</a></span>&nbsp;<span class="element-name">homingControl</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="faultCode">
+<h3>faultCode</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicReference.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicReference</a>&lt;<a href="FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a>&gt;</span>&nbsp;<span class="element-name">faultCode</span></div>
+<div class="block">The current fault code of the device. <a href="FaultCode.html#NONE"><code>FaultCode.NONE</code></a> when no fault is present.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="scheduledExecutorService">
+<h3>scheduledExecutorService</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/ScheduledExecutorService.html" title="class or interface in java.util.concurrent" class="external-link">ScheduledExecutorService</a></span>&nbsp;<span class="element-name">scheduledExecutorService</span></div>
+<div class="block">The scheduled executor service used for periodic alarm polling.</div>
 </section>
 </li>
 </ul>
@@ -1169,6 +1243,141 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hasFault()">
+<h3>hasFault</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasFault</span>()</div>
+<div class="block">Returns whether the device is currently in fault state.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>true if a fault has been detected</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getFaultCode()">
+<h3>getFaultCode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></span>&nbsp;<span class="element-name">getFaultCode</span>()</div>
+<div class="block">Returns the current fault code. <a href="FaultCode.html#NONE"><code>FaultCode.NONE</code></a> when no fault is present.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the current <a href="FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs"><code>FaultCode</code></a></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getErrorFlags()">
+<h3>getErrorFlags</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ErrorFlags.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">ErrorFlags</a></span>&nbsp;<span class="element-name">getErrorFlags</span>()
+                         throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Reads the current-alarm register (0x2203) and wraps it into an <a href="ErrorFlags.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs"><code>ErrorFlags</code></a>.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the current alarm flags</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if there is an error reading the register</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMotionStatus()">
+<h3>getMotionStatus</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getMotionStatus</span>()
+                    throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Reads the raw motion status register (0x1003). Bit 0 set indicates a faulty state.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the raw motion status value</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if there is an error reading the register</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getPrWarning()">
+<h3>getPrWarning</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getPrWarning</span>()
+                 throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Reads the PR warning register (0x601D). Non-zero values indicate PR-module warnings.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the raw PR warning value</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if there is an error reading the register</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAlarmDetectionSelection()">
+<h3>getAlarmDetectionSelection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getAlarmDetectionSelection</span>()
+                               throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Reads the alarm detection selection bitmask (0x016D).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the raw alarm detection selection value</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if there is an error reading the register</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setAlarmDetectionSelection(int)">
+<h3>setAlarmDetectionSelection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAlarmDetectionSelection</span><wbr><span class="parameters">(int&nbsp;mask)</span>
+                                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Writes the alarm detection selection bitmask (0x016D).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mask</code> - the alarm detection selection bitmask to set</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if there is an error writing the register</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="clearError()">
+<h3>clearError</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearError</span>()
+                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Clears the current alarm on the device and resets the local fault state.
+ <p>
+ Writes <a href="Constants.html#CONTROL_WORD_RESET_ALARM"><code>Constants.CONTROL_WORD_RESET_ALARM</code></a> to the control word register (0x1801),
+ then resets <code>hasError</code> and <code>faultCode</code> to their default values.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if there is an error writing the control word</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="clearAlarmHistory()">
+<h3>clearAlarmHistory</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">clearAlarmHistory</span>()
+                       throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Clears the alarm history stored on the device.
+ <p>
+ Writes <a href="Constants.html#CONTROL_WORD_RESET_ALARM_HISTORY"><code>Constants.CONTROL_WORD_RESET_ALARM_HISTORY</code></a> to the control word register (0x1801).</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if there is an error writing the control word</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="saveConfig()">
+<h3>saveConfig</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">saveConfig</span>()
+                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Persists the current parameters into the device EEPROM.
+ <p>
+ Writes <a href="Constants.html#CONTROL_WORD_SAVE_EEPROM"><code>Constants.CONTROL_WORD_SAVE_EEPROM</code></a> to the control word register (0x1801).</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if there is an error writing the control word</dd>
 </dl>
 </section>
 </li>

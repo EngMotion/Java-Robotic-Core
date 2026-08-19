@@ -181,6 +181,11 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/BusHardwareOptions.html#addOption(java.lang.String,java.lang.String)" class="member-name-link">addOption(String, String)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/BusHardwareOptions.html" title="class in com.nanotec.nanolib">BusHardwareOptions</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#addReadingListener(java.util.function.Consumer)" class="member-name-link">addReadingListener(Consumer&lt;Double&gt;)</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Registers a consumer that will be notified with every reading reported via
+ <a href="com/lucaf/robotic_core/impl/ScaleInterface.html#emitReading(double)"><code>ScaleInterface.emitReading(double)</code></a>.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalOutput.Mode.html#ALARM" class="member-name-link">ALARM</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalOutput.Mode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalOutput.Mode</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html#ALARM" class="member-name-link">ALARM</a> - Static variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">Constants</a></dt>
@@ -197,6 +202,13 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalInput.Mode.html#ALARM_CLEARING" class="member-name-link">ALARM_CLEARING</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalInput.Mode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalInput.Mode</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html#ALARM_DETECTION_SELECTION" class="member-name-link">ALARM_DETECTION_SELECTION</a> - Static variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">Constants</a></dt>
+<dd>
+<div class="block">Alarm detection selection: 0x016D (Pr4.22)
+ Bitmask enabling detection of each alarm:
+ bit0 over-current, bit1 over-voltage, bit3 ADC sampling failure,
+ bit4 locked shaft, bit5 EEPROM, bit6 auto-tuning.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html#ANALOG_5V_12MA" class="member-name-link">ANALOG_5V_12MA</a> - Static variable in class com.lucaf.robotic_core.wenglor.p3pcxxx.<a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html" title="class in com.lucaf.robotic_core.wenglor.p3pcxxx">Indexes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/ObjectSaveable.html#APPLICATION" class="member-name-link">APPLICATION</a> - Static variable in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/ObjectSaveable.html" title="class in com.nanotec.nanolib">ObjectSaveable</a></dt>
@@ -255,6 +267,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/sacN/Constants.html#AUTO_INITIALIZE" class="member-name-link">AUTO_INITIALIZE</a> - Static variable in class com.lucaf.robotic_core.dhRobotics.sacN.<a href="com/lucaf/robotic_core/dhRobotics/sacN/Constants.html" title="class in com.lucaf.robotic_core.dhRobotics.sacN">Constants</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#AUTO_TUNING_FAULT" class="member-name-link">AUTO_TUNING_FAULT</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
+<dd>
+<div class="block">Auto-tuning fault.</div>
+</dd>
 <dt><a href="com/nanotec/nanolib/NanoLibAccessor.html#autoAssignObjectDictionary(com.nanotec.nanolib.DeviceHandle,java.lang.String)" class="member-name-link">autoAssignObjectDictionary(DeviceHandle, String)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/NanoLibAccessor.html" title="class in com.nanotec.nanolib">NanoLibAccessor</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -651,9 +667,17 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/sacN/Constants.html#CLEAR_FAULT" class="member-name-link">CLEAR_FAULT</a> - Static variable in class com.lucaf.robotic_core.dhRobotics.sacN.<a href="com/lucaf/robotic_core/dhRobotics/sacN/Constants.html" title="class in com.lucaf.robotic_core.dhRobotics.sacN">Constants</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#clearAlarmHistory()" class="member-name-link">clearAlarmHistory()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">Clears the alarm history stored on the device.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html#clearError()" class="member-name-link">clearError()</a> - Method in class com.lucaf.robotic_core.dhRobotics.rgi100.<a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html" title="class in com.lucaf.robotic_core.dhRobotics.rgi100">RGI100</a></dt>
 <dd>
 <div class="block">Clears the device error state.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#clearError()" class="member-name-link">clearError()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">Clears the current alarm on the device and resets the local fault state.</div>
 </dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/sacN/SACN.html#clearErrors()" class="member-name-link">clearErrors()</a> - Method in class com.lucaf.robotic_core.dhRobotics.sacN.<a href="com/lucaf/robotic_core/dhRobotics/sacN/SACN.html" title="class in com.lucaf.robotic_core.dhRobotics.sacN">SACN</a></dt>
 <dd>
@@ -701,10 +725,6 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/ObjectEntryDataType.html#ClosedLoopControllerParameter" class="member-name-link">ClosedLoopControllerParameter</a> - Static variable in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/ObjectEntryDataType.html" title="class in com.nanotec.nanolib">ObjectEntryDataType</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PCB_3.html#closePort()" class="member-name-link">closePort()</a> - Method in class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PCB_3.html" title="class in com.lucaf.robotic_core.KERN">PCB_3</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PLJ_1200.html#closePort()" class="member-name-link">closePort()</a> - Method in class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN">PLJ_1200</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/package-summary.html">com.lucaf.robotic_core</a> - package com.lucaf.robotic_core</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/BARCODE/package-summary.html">com.lucaf.robotic_core.BARCODE</a> - package com.lucaf.robotic_core.BARCODE</dt>
@@ -732,6 +752,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/lucaf/robotic_core/impl/package-summary.html">com.lucaf.robotic_core.impl</a> - package com.lucaf.robotic_core.impl</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/KERN/package-summary.html">com.lucaf.robotic_core.KERN</a> - package com.lucaf.robotic_core.KERN</dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PCB/package-summary.html">com.lucaf.robotic_core.KERN.PCB</a> - package com.lucaf.robotic_core.KERN.PCB</dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PLJ/package-summary.html">com.lucaf.robotic_core.KERN.PLJ</a> - package com.lucaf.robotic_core.KERN.PLJ</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/moxMec/package-summary.html">com.lucaf.robotic_core.moxMec</a> - package com.lucaf.robotic_core.moxMec</dt>
 <dd>&nbsp;</dd>
@@ -873,6 +897,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/sacN/SACNConfig.html#connection" class="member-name-link">connection</a> - Variable in class com.lucaf.robotic_core.dhRobotics.sacN.<a href="com/lucaf/robotic_core/dhRobotics/sacN/SACNConfig.html" title="class in com.lucaf.robotic_core.dhRobotics.sacN">SACNConfig</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#connection" class="member-name-link">connection</a> - Variable in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">The low-level I/O interface used to talk with the scale.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#connection" class="member-name-link">connection</a> - Variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
 <dd>
 <div class="block">The low-level register/communication interface used to talk with the device.</div>
@@ -947,6 +975,23 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.html#CONTROL_WORD" class="member-name-link">CONTROL_WORD</a> - Static variable in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">Constants</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html#CONTROL_WORD" class="member-name-link">CONTROL_WORD</a> - Static variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">Constants</a></dt>
+<dd>
+<div class="block">Control word: 0x1801
+ Write-only command register (see CONTROL_WORD_* constants).</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html#CONTROL_WORD_RESET_ALARM" class="member-name-link">CONTROL_WORD_RESET_ALARM</a> - Static variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">Constants</a></dt>
+<dd>
+<div class="block">Control word command: reset the current alarm.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html#CONTROL_WORD_RESET_ALARM_HISTORY" class="member-name-link">CONTROL_WORD_RESET_ALARM_HISTORY</a> - Static variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">Constants</a></dt>
+<dd>
+<div class="block">Control word command: reset the alarm history.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html#CONTROL_WORD_SAVE_EEPROM" class="member-name-link">CONTROL_WORD_SAVE_EEPROM</a> - Static variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">Constants</a></dt>
+<dd>
+<div class="block">Control word command: save parameters to EEPROM.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#controlMode" class="member-name-link">controlMode</a> - Variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
 <dd>
 <div class="block">The control mode of the device</div>
@@ -999,6 +1044,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/nanotec/nanolib/LogLevel.html#Critical" class="member-name-link">Critical</a> - Static variable in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/LogLevel.html" title="class in com.nanotec.nanolib">LogLevel</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#CURRENT_SAMPLING_FAULT" class="member-name-link">CURRENT_SAMPLING_FAULT</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
+<dd>
+<div class="block">Current sampling fault.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#currentPosition" class="member-name-link">currentPosition</a> - Variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
 <dd>
 <div class="block">Last verified position</div>
@@ -1548,6 +1597,18 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Method that disables the closed loop</div>
 </dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#disableEventReading()" class="member-name-link">disableEventReading()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Disables the continuous reading stream.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#disableEventReading()" class="member-name-link">disableEventReading()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
+<dd>
+<div class="block">Disables the continuous reading stream.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html#disableEventReading()" class="member-name-link">disableEventReading()</a> - Method in class com.lucaf.robotic_core.KERN.PLJ.<a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN.PLJ">PLJ_1200</a></dt>
+<dd>
+<div class="block">Disables the continuous reading stream.</div>
+</dd>
 <dt><a href="com/nanotec/nanolib/helper/NanolibHelper.html#disconnectDevice(com.nanotec.nanolib.DeviceHandle)" class="member-name-link">disconnectDevice(DeviceHandle)</a> - Method in class com.nanotec.nanolib.helper.<a href="com/nanotec/nanolib/helper/NanolibHelper.html" title="class in com.nanotec.nanolib.helper">NanolibHelper</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/NanoLibAccessor.html#disconnectDevice(com.nanotec.nanolib.DeviceHandle)" class="member-name-link">disconnectDevice(DeviceHandle)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/NanoLibAccessor.html" title="class in com.nanotec.nanolib">NanoLibAccessor</a></dt>
@@ -1556,6 +1617,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html#DISPLAY_ROTATE" class="member-name-link">DISPLAY_ROTATE</a> - Static variable in class com.lucaf.robotic_core.wenglor.p3pcxxx.<a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html" title="class in com.lucaf.robotic_core.wenglor.p3pcxxx">Indexes</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html#dispose()" class="member-name-link">dispose()</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">FakeScaleSerialInterface</a></dt>
+<dd>
+<div class="block">Shuts down the internal scheduler.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/test/FakeIDMRSEngine.html#dispose()" class="member-name-link">dispose()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.test.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/test/FakeIDMRSEngine.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs.test">FakeIDMRSEngine</a></dt>
 <dd>
 <div class="block">Cancels any pending movement task and shuts down the internal scheduler.</div>
@@ -1607,6 +1672,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/moxMec/rg024a/StatusCode.html#EEPROM_ERROR" class="member-name-link">EEPROM_ERROR</a> - Enum constant in enum class com.lucaf.robotic_core.moxMec.rg024a.<a href="com/lucaf/robotic_core/moxMec/rg024a/StatusCode.html" title="enum class in com.lucaf.robotic_core.moxMec.rg024a">StatusCode</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#EEPROM_FAULT" class="member-name-link">EEPROM_FAULT</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
+<dd>
+<div class="block">EEPROM fault.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/UnitControl.Units.html#ELECTRICAL_POLE" class="member-name-link">ELECTRICAL_POLE</a> - Static variable in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/UnitControl.Units.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">UnitControl.Units</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalInput.Mode.html#EMERGENCY_STOP" class="member-name-link">EMERGENCY_STOP</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalInput.Mode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalInput.Mode</a></dt>
@@ -1617,6 +1686,11 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/impl/SerialInterface.html#emitDataEvent(com.lucaf.robotic_core.dataInterfaces.impl.SerialEvent)" class="member-name-link">emitDataEvent(SerialEvent)</a> - Method in class com.lucaf.robotic_core.dataInterfaces.impl.<a href="com/lucaf/robotic_core/dataInterfaces/impl/SerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">SerialInterface</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#emitReading(double)" class="member-name-link">emitReading(double)</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Forwards a reading received from the scale to all registered listeners and updates
+ <a href="com/lucaf/robotic_core/impl/ScaleInterface.html#getLastReading()"><code>ScaleInterface.getLastReading()</code></a>.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html#EMITTED_LIGHT" class="member-name-link">EMITTED_LIGHT</a> - Static variable in class com.lucaf.robotic_core.wenglor.p3pcxxx.<a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html" title="class in com.lucaf.robotic_core.wenglor.p3pcxxx">Indexes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/moxMec/rg024a/RG024A.html#enable()" class="member-name-link">enable()</a> - Method in class com.lucaf.robotic_core.moxMec.rg024a.<a href="com/lucaf/robotic_core/moxMec/rg024a/RG024A.html" title="class in com.lucaf.robotic_core.moxMec.rg024a">RG024A</a></dt>
@@ -1635,6 +1709,19 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/HomingConfig.html#enabled" class="member-name-link">enabled</a> - Variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/HomingConfig.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">HomingConfig</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#enableEventReading()" class="member-name-link">enableEventReading()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Enables the continuous reading stream: the scale starts pushing readings, which subclasses
+ forward through <a href="com/lucaf/robotic_core/impl/ScaleInterface.html#emitReading(double)"><code>ScaleInterface.emitReading(double)</code></a>.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#enableEventReading()" class="member-name-link">enableEventReading()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
+<dd>
+<div class="block">Enables the continuous reading stream.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html#enableEventReading()" class="member-name-link">enableEventReading()</a> - Method in class com.lucaf.robotic_core.KERN.PLJ.<a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN.PLJ">PLJ_1200</a></dt>
+<dd>
+<div class="block">Enables the continuous reading stream.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/UnitControl.Units.html#ENCODER" class="member-name-link">ENCODER</a> - Static variable in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/UnitControl.Units.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">UnitControl.Units</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/BARCODE/BarcodeScanner.html#ensureConnection()" class="member-name-link">ensureConnection()</a> - Method in class com.lucaf.robotic_core.BARCODE.<a href="com/lucaf/robotic_core/BARCODE/BarcodeScanner.html" title="class in com.lucaf.robotic_core.BARCODE">BarcodeScanner</a></dt>
@@ -1686,6 +1773,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/ErrorFlags.html" class="type-name-link" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">ErrorFlags</a> - Class in <a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/package-summary.html">com.lucaf.robotic_core.NANOTEC.PD4E_RTU</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html" class="type-name-link" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">ErrorFlags</a> - Class in <a href="com/lucaf/robotic_core/stepperOnline/iDmRs/package-summary.html">com.lucaf.robotic_core.stepperOnline.iDmRs</a></dt>
+<dd>
+<div class="block">Wrapper around the current-alarm register (0x2203) of the iDM_RS drive.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/TRINAMIC/TMCM_3351/ErrorFlags.html" class="type-name-link" title="class in com.lucaf.robotic_core.TRINAMIC.TMCM_3351">ErrorFlags</a> - Class in <a href="com/lucaf/robotic_core/TRINAMIC/TMCM_3351/package-summary.html">com.lucaf.robotic_core.TRINAMIC.TMCM_3351</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/rgi100/ErrorFlags.html#%3Cinit%3E(int)" class="member-name-link">ErrorFlags(int)</a> - Constructor for class com.lucaf.robotic_core.dhRobotics.rgi100.<a href="com/lucaf/robotic_core/dhRobotics/rgi100/ErrorFlags.html" title="class in com.lucaf.robotic_core.dhRobotics.rgi100">ErrorFlags</a></dt>
@@ -1694,6 +1785,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/ErrorFlags.html#%3Cinit%3E(int)" class="member-name-link">ErrorFlags(int)</a> - Constructor for class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/ErrorFlags.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">ErrorFlags</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html#%3Cinit%3E(int)" class="member-name-link">ErrorFlags(int)</a> - Constructor for class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">ErrorFlags</a></dt>
+<dd>
+<div class="block">Constructor of the class.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/TRINAMIC/TMCM_3351/ErrorFlags.html#%3Cinit%3E(int)" class="member-name-link">ErrorFlags(int)</a> - Constructor for class com.lucaf.robotic_core.TRINAMIC.TMCM_3351.<a href="com/lucaf/robotic_core/TRINAMIC/TMCM_3351/ErrorFlags.html" title="class in com.lucaf.robotic_core.TRINAMIC.TMCM_3351">ErrorFlags</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#estimateArrivalTime(int)" class="member-name-link">estimateArrivalTime(int)</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
@@ -1777,11 +1872,21 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/nanotec/nanolib/SamplerState.html#Failed" class="member-name-link">Failed</a> - Static variable in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/SamplerState.html" title="class in com.nanotec.nanolib">SamplerState</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#FAILED_TO_LOCK_SHAFT" class="member-name-link">FAILED_TO_LOCK_SHAFT</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
+<dd>
+<div class="block">Failed to lock shaft.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/test/FakeIDMRSEngine.html" class="type-name-link" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs.test">FakeIDMRSEngine</a> - Class in <a href="com/lucaf/robotic_core/stepperOnline/iDmRs/test/package-summary.html">com.lucaf.robotic_core.stepperOnline.iDmRs.test</a></dt>
 <dd>
 <div class="block">Fake IDMRS engine that simulates motor responses for acceptance testing.</div>
 </dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/test/FakeIDMRSEngine.html#%3Cinit%3E(int,java.lang.String)" class="member-name-link">FakeIDMRSEngine(int, String)</a> - Constructor for class com.lucaf.robotic_core.stepperOnline.iDmRs.test.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/test/FakeIDMRSEngine.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs.test">FakeIDMRSEngine</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html" class="type-name-link" title="class in com.lucaf.robotic_core.dataInterfaces.test">FakeScaleSerialInterface</a> - Class in <a href="com/lucaf/robotic_core/dataInterfaces/test/package-summary.html">com.lucaf.robotic_core.dataInterfaces.test</a></dt>
+<dd>
+<div class="block">Scripted <a href="com/lucaf/robotic_core/dataInterfaces/impl/SerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl"><code>SerialInterface</code></a> used to test scales.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html#%3Cinit%3E(java.lang.String)" class="member-name-link">FakeScaleSerialInterface(String)</a> - Constructor for class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">FakeScaleSerialInterface</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/rgi100/PositionFeedback.html#FALL" class="member-name-link">FALL</a> - Enum constant in enum class com.lucaf.robotic_core.dhRobotics.rgi100.<a href="com/lucaf/robotic_core/dhRobotics/rgi100/PositionFeedback.html" title="enum class in com.lucaf.robotic_core.dhRobotics.rgi100">PositionFeedback</a></dt>
 <dd>
@@ -1791,6 +1896,15 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/StatusWord.States.html#FAULT_REACTION_ACTIVE" class="member-name-link">FAULT_REACTION_ACTIVE</a> - Static variable in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/StatusWord.States.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">StatusWord.States</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#faultCode" class="member-name-link">faultCode</a> - Variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">The current fault code of the device.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" class="type-name-link" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a> - Enum Class in <a href="com/lucaf/robotic_core/stepperOnline/iDmRs/package-summary.html">com.lucaf.robotic_core.stepperOnline.iDmRs</a></dt>
+<dd>
+<div class="block">Enumeration of the fault/alarm codes reported by the iDM_RS drive through the
+ current-alarm register (0x2203).</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/sacN/Constants.html#FEEDBACK_CURRENT" class="member-name-link">FEEDBACK_CURRENT</a> - Static variable in class com.lucaf.robotic_core.dhRobotics.sacN.<a href="com/lucaf/robotic_core/dhRobotics/sacN/Constants.html" title="class in com.lucaf.robotic_core.dhRobotics.sacN">Constants</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/rgi100/Constants.html#FEEDBACK_CURRENT_ROTATION" class="member-name-link">FEEDBACK_CURRENT_ROTATION</a> - Static variable in class com.lucaf.robotic_core.dhRobotics.rgi100.<a href="com/lucaf/robotic_core/dhRobotics/rgi100/Constants.html" title="class in com.lucaf.robotic_core.dhRobotics.rgi100">Constants</a></dt>
@@ -2083,6 +2197,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Method that converts a frame to a string</div>
 </dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#fromAlarm(int)" class="member-name-link">fromAlarm(int)</a> - Static method in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
+<dd>
+<div class="block">Resolves the first fault code contained in the current-alarm bitmask.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalInput.Mode.html#fromInt(int)" class="member-name-link">fromInt(int)</a> - Static method in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalInput.Mode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalInput.Mode</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalOutput.Mode.html#fromInt(int)" class="member-name-link">fromInt(int)</a> - Static method in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalOutput.Mode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalOutput.Mode</a></dt>
@@ -2172,6 +2290,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/SamplerTrigger.html#getAddress()" class="member-name-link">getAddress()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/SamplerTrigger.html" title="class in com.nanotec.nanolib">SamplerTrigger</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#getAlarmDetectionSelection()" class="member-name-link">getAlarmDetectionSelection()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">Reads the alarm detection selection bitmask (0x016D).</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/moxMec/rg024a/RG024A.html#getAmplitude()" class="member-name-link">getAmplitude()</a> - Method in class com.lucaf.robotic_core.moxMec.rg024a.<a href="com/lucaf/robotic_core/moxMec/rg024a/RG024A.html" title="class in com.lucaf.robotic_core.moxMec.rg024a">RG024A</a></dt>
 <dd>
 <div class="block">Retrieves the current amplitude of the device.</div>
@@ -2634,9 +2756,17 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/ErrorFlags.html#getErrorDescription()" class="member-name-link">getErrorDescription()</a> - Method in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/ErrorFlags.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">ErrorFlags</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html#getErrorDescription()" class="member-name-link">getErrorDescription()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">ErrorFlags</a></dt>
+<dd>
+<div class="block">Returns a human readable description of the current fault.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html#getErrorFlags()" class="member-name-link">getErrorFlags()</a> - Method in class com.lucaf.robotic_core.dhRobotics.rgi100.<a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html" title="class in com.lucaf.robotic_core.dhRobotics.rgi100">RGI100</a></dt>
 <dd>
 <div class="block">Reads and returns the device error flags wrapper.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#getErrorFlags()" class="member-name-link">getErrorFlags()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">Reads the current-alarm register (0x2203) and wraps it into an <a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs"><code>ErrorFlags</code></a>.</div>
 </dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/sacN/SACN.html#getErrors()" class="member-name-link">getErrors()</a> - Method in class com.lucaf.robotic_core.dhRobotics.sacN.<a href="com/lucaf/robotic_core/dhRobotics/sacN/SACN.html" title="class in com.lucaf.robotic_core.dhRobotics.sacN">SACN</a></dt>
 <dd>
@@ -2668,6 +2798,14 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/DeviceId.html#getExtraStringId()" class="member-name-link">getExtraStringId()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/DeviceId.html" title="class in com.nanotec.nanolib">DeviceId</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html#getFaultCode()" class="member-name-link">getFaultCode()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">ErrorFlags</a></dt>
+<dd>
+<div class="block">Resolves the first fault code present in the alarm bitmask.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#getFaultCode()" class="member-name-link">getFaultCode()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">Returns the current fault code.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pc201/P3PC201.html#getFirmwareVersion()" class="member-name-link">getFirmwareVersion()</a> - Method in class com.lucaf.robotic_core.wenglor.p3pc201.<a href="com/lucaf/robotic_core/wenglor/p3pc201/P3PC201.html" title="class in com.lucaf.robotic_core.wenglor.p3pc201">P3PC201</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/TRINAMIC/utils/TMCLCommand.html#getFrame()" class="member-name-link">getFrame()</a> - Method in class com.lucaf.robotic_core.TRINAMIC.utils.<a href="com/lucaf/robotic_core/TRINAMIC/utils/TMCLCommand.html" title="class in com.lucaf.robotic_core.TRINAMIC.utils">TMCLCommand</a></dt>
@@ -2750,6 +2888,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/SamplerInterface.html#getLastError(com.nanotec.nanolib.DeviceHandle)" class="member-name-link">getLastError(DeviceHandle)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/SamplerInterface.html" title="class in com.nanotec.nanolib">SamplerInterface</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#getLastReading()" class="member-name-link">getLastReading()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Returns the most recent reading reported through <a href="com/lucaf/robotic_core/impl/ScaleInterface.html#emitReading(double)"><code>ScaleInterface.emitReading(double)</code></a>.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pc201/P3PC201.html#getLocationTag()" class="member-name-link">getLocationTag()</a> - Method in class com.lucaf.robotic_core.wenglor.p3pc201.<a href="com/lucaf/robotic_core/wenglor/p3pc201/P3PC201.html" title="class in com.lucaf.robotic_core.wenglor.p3pc201">P3PC201</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/utils/StateUtils.html#getLong(java.lang.Object)" class="member-name-link">getLong(Object)</a> - Static method in class com.lucaf.robotic_core.utils.<a href="com/lucaf/robotic_core/utils/StateUtils.html" title="class in com.lucaf.robotic_core.utils">StateUtils</a></dt>
@@ -2782,6 +2924,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/nanotec/nanolib/SamplerConfiguration.html#getMode()" class="member-name-link">getMode()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/SamplerConfiguration.html" title="class in com.nanotec.nanolib">SamplerConfiguration</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#getMotionStatus()" class="member-name-link">getMotionStatus()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">Reads the raw motion status register (0x1003).</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/TRINAMIC/utils/TMCLCommand.html#getMotor()" class="member-name-link">getMotor()</a> - Method in class com.lucaf.robotic_core.TRINAMIC.utils.<a href="com/lucaf/robotic_core/TRINAMIC/utils/TMCLCommand.html" title="class in com.lucaf.robotic_core.TRINAMIC.utils">TMCLCommand</a></dt>
 <dd>
 <div class="block">Method that gets the motor of the command</div>
@@ -2940,6 +3086,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/NanoLibAccessor.html#getProtocolSpecificAccessor(com.nanotec.nanolib.BusHardwareId)" class="member-name-link">getProtocolSpecificAccessor(BusHardwareId)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/NanoLibAccessor.html" title="class in com.nanotec.nanolib">NanoLibAccessor</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#getPrWarning()" class="member-name-link">getPrWarning()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">Reads the PR warning register (0x601D).</div>
+</dd>
 <dt><a href="com/nanotec/nanolib/imaxdiv_t.html#getQuot()" class="member-name-link">getQuot()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/imaxdiv_t.html" title="class in com.nanotec.nanolib">imaxdiv_t</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/moxMec/rg024a/RG024A.html#getRamp()" class="member-name-link">getRamp()</a> - Method in class com.lucaf.robotic_core.moxMec.rg024a.<a href="com/lucaf/robotic_core/moxMec/rg024a/RG024A.html" title="class in com.lucaf.robotic_core.moxMec.rg024a">RG024A</a></dt>
@@ -2949,10 +3099,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/nanotec/nanolib/EtherCATBus.html#getREAD_TIMEOUT_OPTION_NAME()" class="member-name-link">getREAD_TIMEOUT_OPTION_NAME()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/EtherCATBus.html" title="class in com.nanotec.nanolib">EtherCATBus</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/EtherCATBus.html#getREAD_WRITE_ATTEMPTS_OPTION_NAME()" class="member-name-link">getREAD_WRITE_ATTEMPTS_OPTION_NAME()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/EtherCATBus.html" title="class in com.nanotec.nanolib">EtherCATBus</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PCB_3.html#getReading()" class="member-name-link">getReading()</a> - Method in class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PCB_3.html" title="class in com.lucaf.robotic_core.KERN">PCB_3</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PLJ_1200.html#getReading()" class="member-name-link">getReading()</a> - Method in class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN">PLJ_1200</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/imaxdiv_t.html#getRem()" class="member-name-link">getRem()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/imaxdiv_t.html" title="class in com.nanotec.nanolib">imaxdiv_t</a></dt>
 <dd>&nbsp;</dd>
@@ -3032,6 +3178,8 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Output is in format 0x1P with P path 0-15</div>
 </dd>
+<dt><a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html#getSentCommands()" class="member-name-link">getSentCommands()</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">FakeScaleSerialInterface</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/BusHwOptionsDefault.html#getSerial()" class="member-name-link">getSerial()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/BusHwOptionsDefault.html" title="class in com.nanotec.nanolib">BusHwOptionsDefault</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pc201/P3PC201.html#getSerialNumber()" class="member-name-link">getSerialNumber()</a> - Method in class com.lucaf.robotic_core.wenglor.p3pc201.<a href="com/lucaf/robotic_core/wenglor/p3pc201/P3PC201.html" title="class in com.lucaf.robotic_core.wenglor.p3pc201">P3PC201</a></dt>
@@ -3205,10 +3353,18 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/ErrorFlags.html#hasError()" class="member-name-link">hasError()</a> - Method in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/ErrorFlags.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">ErrorFlags</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html#hasError()" class="member-name-link">hasError()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">ErrorFlags</a></dt>
+<dd>
+<div class="block">Returns whether the drive is currently reporting an alarm.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/TRINAMIC/TMCM_3351/ErrorFlags.html#hasError()" class="member-name-link">hasError()</a> - Method in class com.lucaf.robotic_core.TRINAMIC.TMCM_3351.<a href="com/lucaf/robotic_core/TRINAMIC/TMCM_3351/ErrorFlags.html" title="class in com.lucaf.robotic_core.TRINAMIC.TMCM_3351">ErrorFlags</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/Result.html#hasError()" class="member-name-link">hasError()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/Result.html" title="class in com.nanotec.nanolib">Result</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#hasFault()" class="member-name-link">hasFault()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">Returns whether the device is currently in fault state.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html#hasGripInitialized()" class="member-name-link">hasGripInitialized()</a> - Method in class com.lucaf.robotic_core.dhRobotics.rgi100.<a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html" title="class in com.lucaf.robotic_core.dhRobotics.rgi100">RGI100</a></dt>
 <dd>
 <div class="block">Checks whether the grip subsystem completed its initialization routine on the device.</div>
@@ -3422,16 +3578,16 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/impl/MotorInterface.html#initialize()" class="member-name-link">initialize()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/MotorInterface.html" title="class in com.lucaf.robotic_core.impl">MotorInterface</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#initialize()" class="member-name-link">initialize()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Initializes the scale by checking the connection.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/impl/SensorInterface.html#initialize()" class="member-name-link">initialize()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/SensorInterface.html" title="class in com.lucaf.robotic_core.impl">SensorInterface</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#initialize()" class="member-name-link">initialize()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
 <dd>
 <div class="block">Initializes the device asynchronously.</div>
 </dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PCB_3.html#initReader()" class="member-name-link">initReader()</a> - Method in class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PCB_3.html" title="class in com.lucaf.robotic_core.KERN">PCB_3</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PLJ_1200.html#initReader()" class="member-name-link">initReader()</a> - Method in class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN">PLJ_1200</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.html#INPUT_SPECIAL_FUNCTION" class="member-name-link">INPUT_SPECIAL_FUNCTION</a> - Static variable in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">Constants</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/InputSpecialFunction.html" class="type-name-link" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">InputSpecialFunction</a> - Class in <a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/package-summary.html">com.lucaf.robotic_core.NANOTEC.PD4E_RTU</a></dt>
@@ -3556,10 +3712,16 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/tcp/HttpJsonConnector.html#isConnected()" class="member-name-link">isConnected()</a> - Method in class com.lucaf.robotic_core.dataInterfaces.tcp.<a href="com/lucaf/robotic_core/dataInterfaces/tcp/HttpJsonConnector.html" title="class in com.lucaf.robotic_core.dataInterfaces.tcp">HttpJsonConnector</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html#isConnected()" class="member-name-link">isConnected()</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">FakeScaleSerialInterface</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/test/MockedRegisterInterface.html#isConnected()" class="member-name-link">isConnected()</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/MockedRegisterInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">MockedRegisterInterface</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/test/MockedSerialInterface.html#isConnected()" class="member-name-link">isConnected()</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/MockedSerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">MockedSerialInterface</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#isConnected()" class="member-name-link">isConnected()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Returns whether the scale is currently connected.</div>
+</dd>
 <dt><a href="com/nanotec/nanolib/OdTypesHelper.html#isDefstructIndex(int)" class="member-name-link">isDefstructIndex(int)</a> - Static method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/OdTypesHelper.html" title="class in com.nanotec.nanolib">OdTypesHelper</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/OdTypesHelper.html#isDeftypeIndex(int)" class="member-name-link">isDeftypeIndex(int)</a> - Static method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/OdTypesHelper.html" title="class in com.nanotec.nanolib">OdTypesHelper</a></dt>
@@ -3589,6 +3751,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/sacN/SACN.html#isEnabled()" class="member-name-link">isEnabled()</a> - Method in class com.lucaf.robotic_core.dhRobotics.sacN.<a href="com/lucaf/robotic_core/dhRobotics/sacN/SACN.html" title="class in com.lucaf.robotic_core.dhRobotics.sacN">SACN</a></dt>
 <dd>
 <div class="block">Check whether the device is currently enabled by reading the status register.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#isEventReadingEnabled()" class="member-name-link">isEventReadingEnabled()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Returns whether the continuous reading stream is currently enabled.</div>
 </dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html#isGripMoving()" class="member-name-link">isGripMoving()</a> - Method in class com.lucaf.robotic_core.dhRobotics.rgi100.<a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html" title="class in com.lucaf.robotic_core.dhRobotics.rgi100">RGI100</a></dt>
 <dd>
@@ -3656,10 +3822,22 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/impl/SensorInterface.html#isShutdown()" class="member-name-link">isShutdown()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/SensorInterface.html" title="class in com.lucaf.robotic_core.impl">SensorInterface</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#isStable" class="member-name-link">isStable</a> - Variable in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Whether the last reported reading is stable (settled) rather than still oscillating.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#isStable()" class="member-name-link">isStable()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Returns whether the most recent reading is stable (settled).</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/impl/MotorInterface.html#isStopped" class="member-name-link">isStopped</a> - Variable in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/MotorInterface.html" title="class in com.lucaf.robotic_core.impl">MotorInterface</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/impl/MotorInterface.html#isStopped()" class="member-name-link">isStopped()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/MotorInterface.html" title="class in com.lucaf.robotic_core.impl">MotorInterface</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#isStreaming" class="member-name-link">isStreaming</a> - Variable in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Whether the continuous reading stream is currently enabled.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iSv2Rs/ISV2RS.html" class="type-name-link" title="class in com.lucaf.robotic_core.stepperOnline.iSv2Rs">ISV2RS</a> - Class in <a href="com/lucaf/robotic_core/stepperOnline/iSv2Rs/package-summary.html">com.lucaf.robotic_core.stepperOnline.iSv2Rs</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iSv2Rs/ISV2RS.html#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface)" class="member-name-link">ISV2RS(RegisterInterface)</a> - Constructor for class com.lucaf.robotic_core.stepperOnline.iSv2Rs.<a href="com/lucaf/robotic_core/stepperOnline/iSv2Rs/ISV2RS.html" title="class in com.lucaf.robotic_core.stepperOnline.iSv2Rs">ISV2RS</a></dt>
@@ -3720,6 +3898,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html#LASER_CLASS_LICENSE_KEY" class="member-name-link">LASER_CLASS_LICENSE_KEY</a> - Static variable in class com.lucaf.robotic_core.wenglor.p3pcxxx.<a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html" title="class in com.lucaf.robotic_core.wenglor.p3pcxxx">Indexes</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#lastReading" class="member-name-link">lastReading</a> - Variable in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">The most recent reading reported through <a href="com/lucaf/robotic_core/impl/ScaleInterface.html#emitReading(double)"><code>ScaleInterface.emitReading(double)</code></a>.</div>
+</dd>
 <dt><a href="com/nanotec/nanolib/helper/LibraryLoader.html" class="type-name-link" title="class in com.nanotec.nanolib.helper">LibraryLoader</a> - Class in <a href="com/nanotec/nanolib/helper/package-summary.html">com.nanotec.nanolib.helper</a></dt>
 <dd>
 <div class="block">The library loader serves as a helper class to load nanolib 
@@ -3835,6 +4017,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/NanolibJNI.html#MacAddress_size(long,com.nanotec.nanolib.MacAddress)" class="member-name-link">MacAddress_size(long, MacAddress)</a> - Static method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/NanolibJNI.html" title="class in com.nanotec.nanolib">NanolibJNI</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/ScaleManualTest.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/ScaleManualTest.html" title="class in com.lucaf.robotic_core.KERN">ScaleManualTest</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/UI/DH_ID.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.lucaf.robotic_core.UI.<a href="com/lucaf/robotic_core/UI/DH_ID.html" title="class in com.lucaf.robotic_core.UI">DH_ID</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/UI/MainTuner.html#main(java.lang.String%5B%5D)" class="member-name-link">main(String[])</a> - Static method in class com.lucaf.robotic_core.UI.<a href="com/lucaf/robotic_core/UI/MainTuner.html" title="class in com.lucaf.robotic_core.UI">MainTuner</a></dt>
@@ -3905,6 +4089,11 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.html#MODE_OF_OPERATION" class="member-name-link">MODE_OF_OPERATION</a> - Static variable in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">Constants</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html#MOTION_STATUS" class="member-name-link">MOTION_STATUS</a> - Static variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">Constants</a></dt>
+<dd>
+<div class="block">Motion status: 0x1003
+ Bit0 = 1 indicates the drive is in "faulty" state (quick fault flag).</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/impl/MotorInterface.html" class="type-name-link" title="class in com.lucaf.robotic_core.impl">MotorInterface</a> - Class in <a href="com/lucaf/robotic_core/impl/package-summary.html">com.lucaf.robotic_core.impl</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/impl/MotorInterface.html#%3Cinit%3E()" class="member-name-link">MotorInterface()</a> - Constructor for class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/MotorInterface.html" title="class in com.lucaf.robotic_core.impl">MotorInterface</a></dt>
@@ -4594,6 +4783,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/ObjectSdoAccessAttribute.html#NoAccess" class="member-name-link">NoAccess</a> - Static variable in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/ObjectSdoAccessAttribute.html" title="class in com.nanotec.nanolib">ObjectSdoAccessAttribute</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#NONE" class="member-name-link">NONE</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
+<dd>
+<div class="block">No fault present.</div>
+</dd>
 <dt><a href="com/nanotec/nanolib/SamplerMode.html#Normal" class="member-name-link">Normal</a> - Static variable in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/SamplerMode.html" title="class in com.nanotec.nanolib">SamplerMode</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/StatusWord.States.html#NOT_READY_TO_SWITCH_ON" class="member-name-link">NOT_READY_TO_SWITCH_ON</a> - Static variable in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/StatusWord.States.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">StatusWord.States</a></dt>
@@ -4987,6 +5180,14 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/moxMec/rg024a/StatusCode.html#OUTPUT_ERROR" class="member-name-link">OUTPUT_ERROR</a> - Enum constant in enum class com.lucaf.robotic_core.moxMec.rg024a.<a href="com/lucaf/robotic_core/moxMec/rg024a/StatusCode.html" title="enum class in com.lucaf.robotic_core.moxMec.rg024a">StatusCode</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#OVER_CURRENT" class="member-name-link">OVER_CURRENT</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
+<dd>
+<div class="block">Over-current.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#OVER_VOLTAGE" class="member-name-link">OVER_VOLTAGE</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
+<dd>
+<div class="block">Over-voltage.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ControlMode.html#OVERLAP" class="member-name-link">OVERLAP</a> - Variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ControlMode.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">ControlMode</a></dt>
 <dd>
 <div class="block">BIT 5: Overlap</div>
@@ -5511,12 +5712,18 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/NanolibJNI.html#PCAN_USBBUS9_get()" class="member-name-link">PCAN_USBBUS9_get()</a> - Static method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/NanolibJNI.html" title="class in com.nanotec.nanolib">NanolibJNI</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PCB_3.html" class="type-name-link" title="class in com.lucaf.robotic_core.KERN">PCB_3</a> - Class in <a href="com/lucaf/robotic_core/KERN/package-summary.html">com.lucaf.robotic_core.KERN</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PCB_3.html#%3Cinit%3E(com.fazecast.jSerialComm.SerialPort)" class="member-name-link">PCB_3(SerialPort)</a> - Constructor for class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PCB_3.html" title="class in com.lucaf.robotic_core.KERN">PCB_3</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PCB_3.html#%3Cinit%3E(java.lang.String)" class="member-name-link">PCB_3(String)</a> - Constructor for class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PCB_3.html" title="class in com.lucaf.robotic_core.KERN">PCB_3</a></dt>
-<dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" class="type-name-link" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a> - Class in <a href="com/lucaf/robotic_core/KERN/PCB/package-summary.html">com.lucaf.robotic_core.KERN.PCB</a></dt>
+<dd>
+<div class="block">KERN PCB series weighing scale, adapted to the <a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl"><code>ScaleInterface</code></a> abstraction.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface)" class="member-name-link">PCB_3(SerialInterface)</a> - Constructor for class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
+<dd>
+<div class="block">Constructs the scale on top of the given serial interface.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface,java.util.function.Consumer)" class="member-name-link">PCB_3(SerialInterface, Consumer&lt;Double&gt;)</a> - Constructor for class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
+<dd>
+<div class="block">Constructs the scale on top of the given serial interface and registers a reading consumer.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/PD4E.html" class="type-name-link" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">PD4E</a> - Class in <a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/package-summary.html">com.lucaf.robotic_core.NANOTEC.PD4E_RTU</a></dt>
 <dd>
 <div class="block">Class that represents the PD4E module of Nanotec</div>
@@ -5593,12 +5800,18 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Method that checks if the device is connected</div>
 </dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PLJ_1200.html" class="type-name-link" title="class in com.lucaf.robotic_core.KERN">PLJ_1200</a> - Class in <a href="com/lucaf/robotic_core/KERN/package-summary.html">com.lucaf.robotic_core.KERN</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PLJ_1200.html#%3Cinit%3E(com.fazecast.jSerialComm.SerialPort)" class="member-name-link">PLJ_1200(SerialPort)</a> - Constructor for class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN">PLJ_1200</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PLJ_1200.html#%3Cinit%3E(java.lang.String)" class="member-name-link">PLJ_1200(String)</a> - Constructor for class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN">PLJ_1200</a></dt>
-<dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html" class="type-name-link" title="class in com.lucaf.robotic_core.KERN.PLJ">PLJ_1200</a> - Class in <a href="com/lucaf/robotic_core/KERN/PLJ/package-summary.html">com.lucaf.robotic_core.KERN.PLJ</a></dt>
+<dd>
+<div class="block">KERN PLJ precision balance, adapted to the <a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl"><code>ScaleInterface</code></a> abstraction.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface)" class="member-name-link">PLJ_1200(SerialInterface)</a> - Constructor for class com.lucaf.robotic_core.KERN.PLJ.<a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN.PLJ">PLJ_1200</a></dt>
+<dd>
+<div class="block">Constructs the scale on top of the given serial interface.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface,java.util.function.Consumer)" class="member-name-link">PLJ_1200(SerialInterface, Consumer&lt;Double&gt;)</a> - Constructor for class com.lucaf.robotic_core.KERN.PLJ.<a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN.PLJ">PLJ_1200</a></dt>
+<dd>
+<div class="block">Constructs the scale on top of the given serial interface and registers a reading consumer.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.html#POLE_PAIRS" class="member-name-link">POLE_PAIRS</a> - Static variable in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">Constants</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/HomingConfig.html#position" class="member-name-link">position</a> - Variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/HomingConfig.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">HomingConfig</a></dt>
@@ -5627,6 +5840,13 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/tcp/HttpJsonConnector.html#post(java.lang.String,byte%5B%5D,okhttp3.MediaType)" class="member-name-link">post(String, byte[], MediaType)</a> - Method in class com.lucaf.robotic_core.dataInterfaces.tcp.<a href="com/lucaf/robotic_core/dataInterfaces/tcp/HttpJsonConnector.html" title="class in com.lucaf.robotic_core.dataInterfaces.tcp">HttpJsonConnector</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html#PR_WARNING" class="member-name-link">PR_WARNING</a> - Static variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/Constants.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">Constants</a></dt>
+<dd>
+<div class="block">PR warning: 0x601D (Pr8.29)
+ PR-module specific warnings:
+ 0x100 limit switch error during homing, 0x102 over-travel error during homing,
+ 0x20P limit switch error in path P.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html#PRODUCT_ID" class="member-name-link">PRODUCT_ID</a> - Static variable in class com.lucaf.robotic_core.wenglor.p3pcxxx.<a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html" title="class in com.lucaf.robotic_core.wenglor.p3pcxxx">Indexes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html#PRODUCT_NAME" class="member-name-link">PRODUCT_NAME</a> - Static variable in class com.lucaf.robotic_core.wenglor.p3pcxxx.<a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html" title="class in com.lucaf.robotic_core.wenglor.p3pcxxx">Indexes</a></dt>
@@ -5791,6 +6011,19 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">The grip reached its target and did not detect an object.</div>
 </dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#read()" class="member-name-link">read()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Actively reads the current weight from the scale.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#read()" class="member-name-link">read()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
+<dd>
+<div class="block">Actively reads the current weight (stable or unstable) by sending the <code>"w"</code> command and
+ waiting for the response.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html#read()" class="member-name-link">read()</a> - Method in class com.lucaf.robotic_core.KERN.PLJ.<a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN.PLJ">PLJ_1200</a></dt>
+<dd>
+<div class="block">Reads the most recent weight streamed by the scale.</div>
+</dd>
 <dt><a href="com/nanotec/nanolib/helper/NanolibHelper.html#readArray(com.nanotec.nanolib.DeviceHandle,int)" class="member-name-link">readArray(DeviceHandle, int)</a> - Method in class com.nanotec.nanolib.helper.<a href="com/nanotec/nanolib/helper/NanolibHelper.html" title="class in com.nanotec.nanolib.helper">NanolibHelper</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/impl/SerialEvent.html#readBytes()" class="member-name-link">readBytes()</a> - Method in class com.lucaf.robotic_core.dataInterfaces.impl.<a href="com/lucaf/robotic_core/dataInterfaces/impl/SerialEvent.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">SerialEvent</a></dt>
@@ -5815,6 +6048,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/moxMec/rg024a/Constants.html#READING_VOLTAGE" class="member-name-link">READING_VOLTAGE</a> - Static variable in class com.lucaf.robotic_core.moxMec.rg024a.<a href="com/lucaf/robotic_core/moxMec/rg024a/Constants.html" title="class in com.lucaf.robotic_core.moxMec.rg024a">Constants</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#readingListeners" class="member-name-link">readingListeners</a> - Variable in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Consumers notified with every reading reported through <a href="com/lucaf/robotic_core/impl/ScaleInterface.html#emitReading(double)"><code>ScaleInterface.emitReading(double)</code></a>.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/impl/RegisterInterface.html#readInteger(byte%5B%5D)" class="member-name-link">readInteger(byte[])</a> - Method in class com.lucaf.robotic_core.dataInterfaces.impl.<a href="com/lucaf/robotic_core/dataInterfaces/impl/RegisterInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">RegisterInterface</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/modbus/ModbusRS485.html#readInteger(byte%5B%5D)" class="member-name-link">readInteger(byte[])</a> - Method in class com.lucaf.robotic_core.dataInterfaces.modbus.<a href="com/lucaf/robotic_core/dataInterfaces/modbus/ModbusRS485.html" title="class in com.lucaf.robotic_core.dataInterfaces.modbus">ModbusRS485</a></dt>
@@ -5859,6 +6096,15 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/test/MockedRegisterInterface.html#readSingleRegister(int)" class="member-name-link">readSingleRegister(int)</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/MockedRegisterInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">MockedRegisterInterface</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#readStable()" class="member-name-link">readStable()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Actively reads the current <em>stable</em> (settled) weight from the scale.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#readStable()" class="member-name-link">readStable()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
+<dd>
+<div class="block">Actively reads the current stable weight by sending the <code>"s"</code> command and waiting for the
+ response.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/impl/SerialEvent.html#readString()" class="member-name-link">readString()</a> - Method in class com.lucaf.robotic_core.dataInterfaces.impl.<a href="com/lucaf/robotic_core/dataInterfaces/impl/SerialEvent.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">SerialEvent</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/ObjectSubEntry.html#readString()" class="member-name-link">readString()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/ObjectSubEntry.html" title="class in com.nanotec.nanolib">ObjectSubEntry</a></dt>
@@ -5961,6 +6207,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/SampledValueVector.html#removeRange(int,int)" class="member-name-link">removeRange(int, int)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/SampledValueVector.html" title="class in com.nanotec.nanolib">SampledValueVector</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#removeReadingListener(java.util.function.Consumer)" class="member-name-link">removeReadingListener(Consumer&lt;Double&gt;)</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Removes a previously registered reading consumer.</div>
+</dd>
 <dt><a href="com/nanotec/nanolib/SamplerMode.html#Repetitive" class="member-name-link">Repetitive</a> - Static variable in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/SamplerMode.html" title="class in com.nanotec.nanolib">SamplerMode</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/BusHWIdVector.html#reserve(long)" class="member-name-link">reserve(long)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/BusHWIdVector.html" title="class in com.nanotec.nanolib">BusHWIdVector</a></dt>
@@ -6688,16 +6938,46 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Persists the current configuration into device non-volatile memory (no defaults).</div>
 </dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#saveConfig()" class="member-name-link">saveConfig()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">Persists the current parameters into the device EEPROM.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html#saveConfig(boolean)" class="member-name-link">saveConfig(boolean)</a> - Method in class com.lucaf.robotic_core.dhRobotics.rgi100.<a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html" title="class in com.lucaf.robotic_core.dhRobotics.rgi100">RGI100</a></dt>
 <dd>
 <div class="block">Persists the current configuration into device non-volatile memory.</div>
 </dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html" class="type-name-link" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a> - Class in <a href="com/lucaf/robotic_core/impl/package-summary.html">com.lucaf.robotic_core.impl</a></dt>
+<dd>
+<div class="block">Abstract base class for weighing scales (bilance).</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.IOInterface)" class="member-name-link">ScaleInterface(IOInterface)</a> - Constructor for class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Constructs a scale using the given I/O interface.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.IOInterface,java.util.function.Consumer)" class="member-name-link">ScaleInterface(IOInterface, Consumer&lt;Double&gt;)</a> - Constructor for class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Constructs a scale using the given I/O interface and immediately registers a reading consumer.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/ScaleManualTest.html" class="type-name-link" title="class in com.lucaf.robotic_core.KERN">ScaleManualTest</a> - Class in <a href="com/lucaf/robotic_core/KERN/package-summary.html">com.lucaf.robotic_core.KERN</a></dt>
+<dd>
+<div class="block">Manual console harness to exercise a KERN scale over a real serial connection.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/ScaleManualTest.html#%3Cinit%3E()" class="member-name-link">ScaleManualTest()</a> - Constructor for class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/ScaleManualTest.html" title="class in com.lucaf.robotic_core.KERN">ScaleManualTest</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/helper/NanolibHelper.html#scanBus(com.nanotec.nanolib.BusHardwareId)" class="member-name-link">scanBus(BusHardwareId)</a> - Method in class com.nanotec.nanolib.helper.<a href="com/nanotec/nanolib/helper/NanolibHelper.html" title="class in com.nanotec.nanolib.helper">NanolibHelper</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/NanoLibAccessor.html#scanDevices(com.nanotec.nanolib.BusHardwareId,com.nanotec.nanolib.NlcScanBusCallback)" class="member-name-link">scanDevices(BusHardwareId, NlcScanBusCallback)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/NanoLibAccessor.html" title="class in com.nanotec.nanolib">NanoLibAccessor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/ProfinetDCP.html#scanProfinetDevices(com.nanotec.nanolib.BusHardwareId)" class="member-name-link">scanProfinetDevices(BusHardwareId)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/ProfinetDCP.html" title="class in com.nanotec.nanolib">ProfinetDCP</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#scheduledExecutorService" class="member-name-link">scheduledExecutorService</a> - Variable in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">The scheduled executor service used for periodic alarm polling.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html#scriptResponse(java.lang.String,java.lang.String)" class="member-name-link">scriptResponse(String, String)</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">FakeScaleSerialInterface</a></dt>
+<dd>
+<div class="block">Scripts a reply that will be pushed back after the given command is sent.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/Pair.html#second" class="member-name-link">second</a> - Variable in class com.lucaf.robotic_core.<a href="com/lucaf/robotic_core/Pair.html" title="class in com.lucaf.robotic_core">Pair</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html#SELF_CHECK" class="member-name-link">SELF_CHECK</a> - Static variable in class com.lucaf.robotic_core.wenglor.p3pcxxx.<a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html" title="class in com.lucaf.robotic_core.wenglor.p3pcxxx">Indexes</a></dt>
@@ -6707,6 +6987,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/modbus/ModbusRS485.html#send(byte%5B%5D)" class="member-name-link">send(byte[])</a> - Method in class com.lucaf.robotic_core.dataInterfaces.modbus.<a href="com/lucaf/robotic_core/dataInterfaces/modbus/ModbusRS485.html" title="class in com.lucaf.robotic_core.dataInterfaces.modbus">ModbusRS485</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/serial/SimpleSerialConnector.html#send(byte%5B%5D)" class="member-name-link">send(byte[])</a> - Method in class com.lucaf.robotic_core.dataInterfaces.serial.<a href="com/lucaf/robotic_core/dataInterfaces/serial/SimpleSerialConnector.html" title="class in com.lucaf.robotic_core.dataInterfaces.serial">SimpleSerialConnector</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html#send(byte%5B%5D)" class="member-name-link">send(byte[])</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">FakeScaleSerialInterface</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/test/MockedRegisterInterface.html#send(byte%5B%5D)" class="member-name-link">send(byte[])</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/MockedRegisterInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">MockedRegisterInterface</a></dt>
 <dd>&nbsp;</dd>
@@ -6872,6 +7154,14 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/nanotec/nanolib/SamplerTrigger.html#setAddress(com.nanotec.nanolib.OdIndex)" class="member-name-link">setAddress(OdIndex)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/SamplerTrigger.html" title="class in com.nanotec.nanolib">SamplerTrigger</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/test/FakeIDMRSEngine.html#setAlarm(int)" class="member-name-link">setAlarm(int)</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.test.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/test/FakeIDMRSEngine.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs.test">FakeIDMRSEngine</a></dt>
+<dd>
+<div class="block">Sets the simulated current-alarm register value (0x2203).</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#setAlarmDetectionSelection(int)" class="member-name-link">setAlarmDetectionSelection(int)</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
+<dd>
+<div class="block">Writes the alarm detection selection bitmask (0x016D).</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/moxMec/rg024a/RG024A.html#setAmplitude(int)" class="member-name-link">setAmplitude(int)</a> - Method in class com.lucaf.robotic_core.moxMec.rg024a.<a href="com/lucaf/robotic_core/moxMec/rg024a/RG024A.html" title="class in com.lucaf.robotic_core.moxMec.rg024a">RG024A</a></dt>
 <dd>
 <div class="block">Sets the amplitude of the device.</div>
@@ -6926,6 +7216,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/nanotec/nanolib/SamplerTrigger.html#setCondition(com.nanotec.nanolib.SamplerTriggerCondition)" class="member-name-link">setCondition(SamplerTriggerCondition)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/SamplerTrigger.html" title="class in com.nanotec.nanolib">SamplerTrigger</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html#setConnected(boolean)" class="member-name-link">setConnected(boolean)</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">FakeScaleSerialInterface</a></dt>
+<dd>
+<div class="block">Controls the result reported by <a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html#isConnected()"><code>FakeScaleSerialInterface.isConnected()</code></a>.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/PD4E.html#setDeceleration(int)" class="member-name-link">setDeceleration(int)</a> - Method in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/PD4E.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">PD4E</a></dt>
 <dd>
 <div class="block">Method that sets the deceleration of the device</div>
@@ -7144,6 +7438,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/nanotec/nanolib/imaxdiv_t.html#setRem(long)" class="member-name-link">setRem(long)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/imaxdiv_t.html" title="class in com.nanotec.nanolib">imaxdiv_t</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html#setResponseDelayMs(long)" class="member-name-link">setResponseDelayMs(long)</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">FakeScaleSerialInterface</a></dt>
+<dd>
+<div class="block">Controls the delay before a scripted response is pushed back.</div>
+</dd>
 <dt><a href="com/nanotec/nanolib/ProfinetDCP.html#setResponseTimeout(long)" class="member-name-link">setResponseTimeout(long)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/ProfinetDCP.html" title="class in com.nanotec.nanolib">ProfinetDCP</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html#setRotationForce(int)" class="member-name-link">setRotationForce(int)</a> - Method in class com.lucaf.robotic_core.dhRobotics.rgi100.<a href="com/lucaf/robotic_core/dhRobotics/rgi100/RGI100.html" title="class in com.lucaf.robotic_core.dhRobotics.rgi100">RGI100</a></dt>
@@ -7167,6 +7465,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html#setSpeed(int)" class="member-name-link">setSpeed(int)</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></dt>
 <dd>
 <div class="block">Method that sets the speed of the device</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#setStable(boolean)" class="member-name-link">setStable(boolean)</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Marks the stability of the current reading.</div>
 </dd>
 <dt><a href="com/nanotec/nanolib/SamplerConfiguration.html#setStartTrigger(com.nanotec.nanolib.SamplerTrigger)" class="member-name-link">setStartTrigger(SamplerTrigger)</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/SamplerConfiguration.html" title="class in com.nanotec.nanolib">SamplerConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -7264,8 +7566,20 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/impl/MotorInterface.html#shutdown()" class="member-name-link">shutdown()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/MotorInterface.html" title="class in com.lucaf.robotic_core.impl">MotorInterface</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#shutdown()" class="member-name-link">shutdown()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Gracefully shuts the scale down: stops the reading stream and clears the registered listeners.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/impl/SensorInterface.html#shutdown()" class="member-name-link">shutdown()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/SensorInterface.html" title="class in com.lucaf.robotic_core.impl">SensorInterface</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#shutdown()" class="member-name-link">shutdown()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
+<dd>
+<div class="block">Shuts down the scale and its executor.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html#shutdown()" class="member-name-link">shutdown()</a> - Method in class com.lucaf.robotic_core.KERN.PLJ.<a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN.PLJ">PLJ_1200</a></dt>
+<dd>
+<div class="block">Shuts down the scale and its executor.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/moxMec/MoxMecSerialWrapper.html#shutdown()" class="member-name-link">shutdown()</a> - Method in class com.lucaf.robotic_core.moxMec.<a href="com/lucaf/robotic_core/moxMec/MoxMecSerialWrapper.html" title="class in com.lucaf.robotic_core.moxMec">MoxMecSerialWrapper</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/moxMec/rg024a/RG024A.html#shutdown()" class="member-name-link">shutdown()</a> - Method in class com.lucaf.robotic_core.moxMec.rg024a.<a href="com/lucaf/robotic_core/moxMec/rg024a/RG024A.html" title="class in com.lucaf.robotic_core.moxMec.rg024a">RG024A</a></dt>
@@ -7292,6 +7606,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dataInterfaces/serial/SimpleSerialConnector.html#%3Cinit%3E(jssc.SerialPort,java.lang.String,com.lucaf.robotic_core.Logger)" class="member-name-link">SimpleSerialConnector(SerialPort, String, Logger)</a> - Constructor for class com.lucaf.robotic_core.dataInterfaces.serial.<a href="com/lucaf/robotic_core/dataInterfaces/serial/SimpleSerialConnector.html" title="class in com.lucaf.robotic_core.dataInterfaces.serial">SimpleSerialConnector</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html#simulateData(java.lang.String)" class="member-name-link">simulateData(String)</a> - Method in class com.lucaf.robotic_core.dataInterfaces.test.<a href="com/lucaf/robotic_core/dataInterfaces/test/FakeScaleSerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.test">FakeScaleSerialInterface</a></dt>
+<dd>
+<div class="block">Pushes incoming data to all registered data listeners, as if it were received from the scale.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html#SIMULATION_AMBIENT_LIGHT" class="member-name-link">SIMULATION_AMBIENT_LIGHT</a> - Static variable in class com.lucaf.robotic_core.wenglor.p3pcxxx.<a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html" title="class in com.lucaf.robotic_core.wenglor.p3pcxxx">Indexes</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html#SIMULATION_ANALOG_OUTPUT_CURRENT" class="member-name-link">SIMULATION_ANALOG_OUTPUT_CURRENT</a> - Static variable in class com.lucaf.robotic_core.wenglor.p3pcxxx.<a href="com/lucaf/robotic_core/wenglor/p3pcxxx/Indexes.html" title="class in com.lucaf.robotic_core.wenglor.p3pcxxx">Indexes</a></dt>
@@ -8022,10 +8340,18 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:T">T</h2>
 <dl class="index">
-<dt><a href="com/lucaf/robotic_core/KERN/PCB_3.html#tare()" class="member-name-link">tare()</a> - Method in class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PCB_3.html" title="class in com.lucaf.robotic_core.KERN">PCB_3</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="com/lucaf/robotic_core/KERN/PLJ_1200.html#tare()" class="member-name-link">tare()</a> - Method in class com.lucaf.robotic_core.KERN.<a href="com/lucaf/robotic_core/KERN/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN">PLJ_1200</a></dt>
-<dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#tare()" class="member-name-link">tare()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">Tares (zeroes) the scale.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#tare()" class="member-name-link">tare()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
+<dd>
+<div class="block">Tares the scale and waits until the reading settles near zero.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html#tare()" class="member-name-link">tare()</a> - Method in class com.lucaf.robotic_core.KERN.PLJ.<a href="com/lucaf/robotic_core/KERN/PLJ/PLJ_1200.html" title="class in com.lucaf.robotic_core.KERN.PLJ">PLJ_1200</a></dt>
+<dd>
+<div class="block">Tares the scale and waits until the reading settles near zero.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.html#TARGET_MOTOR_CURRENT" class="member-name-link">TARGET_MOTOR_CURRENT</a> - Static variable in class com.lucaf.robotic_core.NANOTEC.PD4E_RTU.<a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/Constants.html" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">Constants</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/dhRobotics/rgi100/Constants.html#TARGET_POSITION" class="member-name-link">TARGET_POSITION</a> - Static variable in class com.lucaf.robotic_core.dhRobotics.rgi100.<a href="com/lucaf/robotic_core/dhRobotics/rgi100/Constants.html" title="class in com.lucaf.robotic_core.dhRobotics.rgi100">Constants</a></dt>
@@ -8248,6 +8574,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalOutputs.html#toString()" class="member-name-link">toString()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalOutputs.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalOutputs</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html#toString()" class="member-name-link">toString()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/ErrorFlags.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">ErrorFlags</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/MotorStatus.html#toString()" class="member-name-link">toString()</a> - Method in class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/MotorStatus.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">MotorStatus</a></dt>
 <dd>
 <div class="block">Method that returns the status of the motor as a string.</div>
@@ -8355,6 +8683,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/ObjectEntryDataType.html#UnicodeString" class="member-name-link">UnicodeString</a> - Static variable in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/ObjectEntryDataType.html" title="class in com.nanotec.nanolib">ObjectEntryDataType</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#unit" class="member-name-link">unit</a> - Variable in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
+<dd>
+<div class="block">The unit of the readings reported by this scale (e.g.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/UnitControl.html" class="type-name-link" title="class in com.lucaf.robotic_core.NANOTEC.PD4E_RTU">UnitControl</a> - Class in <a href="com/lucaf/robotic_core/NANOTEC/PD4E_RTU/package-summary.html">com.lucaf.robotic_core.NANOTEC.PD4E_RTU</a></dt>
 <dd>
 <div class="block">Class that contains the unit control of the PD4E.</div>
@@ -8375,6 +8707,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/ObjectEntryDataType.html#Unknown" class="member-name-link">Unknown</a> - Static variable in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/ObjectEntryDataType.html" title="class in com.nanotec.nanolib">ObjectEntryDataType</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#UNKNOWN" class="member-name-link">UNKNOWN</a> - Enum constant in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
+<dd>
+<div class="block">Unknown/unmapped fault code.</div>
+</dd>
 <dt><a href="com/nanotec/nanolib/ObjectSaveable.html#UNKNOWN_SAVEABLE_TYPE" class="member-name-link">UNKNOWN_SAVEABLE_TYPE</a> - Static variable in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/ObjectSaveable.html" title="class in com.nanotec.nanolib">ObjectSaveable</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/nanotec/nanolib/NanoLibAccessor.html#unsetLoggingCallback()" class="member-name-link">unsetLoggingCallback()</a> - Method in class com.nanotec.nanolib.<a href="com/nanotec/nanolib/NanoLibAccessor.html" title="class in com.nanotec.nanolib">NanoLibAccessor</a></dt>
@@ -8462,6 +8798,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
+<dd>
+<div class="block">Returns the enum constant of this class with the specified name.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/HomingMethod.html#valueOf(java.lang.String)" class="member-name-link">valueOf(String)</a> - Static method in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/HomingMethod.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">HomingMethod</a></dt>
 <dd>
 <div class="block">Returns the enum constant of this class with the specified name.</div>
@@ -8496,6 +8836,11 @@ the order they are declared.</div>
 the order they are declared.</div>
 </dd>
 <dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalOutput.Mode.html#values()" class="member-name-link">values()</a> - Static method in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/DigitalOutput.Mode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">DigitalOutput.Mode</a></dt>
+<dd>
+<div class="block">Returns an array containing the constants of this enum class, in
+the order they are declared.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html#values()" class="member-name-link">values()</a> - Static method in enum class com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="com/lucaf/robotic_core/stepperOnline/iDmRs/FaultCode.html" title="enum class in com.lucaf.robotic_core.stepperOnline.iDmRs">FaultCode</a></dt>
 <dd>
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>

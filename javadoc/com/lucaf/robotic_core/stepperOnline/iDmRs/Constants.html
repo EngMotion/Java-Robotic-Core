@@ -113,113 +113,148 @@ loadScripts(document, 'script');</script>
  Type: Read</div>
 </div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#CONTROL_MODE" class="member-name-link">CONTROL_MODE</a></code></div>
+<div class="col-second even-row-color"><code><a href="#ALARM_DETECTION_SELECTION" class="member-name-link">ALARM_DETECTION_SELECTION</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Alarm detection selection: 0x016D (Pr4.22)
+ Bitmask enabling detection of each alarm:
+ bit0 over-current, bit1 over-voltage, bit3 ADC sampling failure,
+ bit4 locked shaft, bit5 EEPROM, bit6 auto-tuning.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#CONTROL_MODE" class="member-name-link">CONTROL_MODE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Control Mode: 0x6200
  Value: Managed by the ControlMode class
  Type: Read/Write</div>
 </div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#DECELERATION" class="member-name-link">DECELERATION</a></code></div>
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#CONTROL_WORD" class="member-name-link">CONTROL_WORD</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Control word: 0x1801
+ Write-only command register (see CONTROL_WORD_* constants).</div>
+</div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#CONTROL_WORD_RESET_ALARM" class="member-name-link">CONTROL_WORD_RESET_ALARM</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Control word command: reset the current alarm.</div>
+</div>
+<div class="col-first even-row-color"><code>static final int</code></div>
+<div class="col-second even-row-color"><code><a href="#CONTROL_WORD_RESET_ALARM_HISTORY" class="member-name-link">CONTROL_WORD_RESET_ALARM_HISTORY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Control word command: reset the alarm history.</div>
+</div>
+<div class="col-first odd-row-color"><code>static final int</code></div>
+<div class="col-second odd-row-color"><code><a href="#CONTROL_WORD_SAVE_EEPROM" class="member-name-link">CONTROL_WORD_SAVE_EEPROM</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Control word command: save parameters to EEPROM.</div>
+</div>
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#DECELERATION" class="member-name-link">DECELERATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Deceleration: 0x6205
  Value: ms/1000rpm
  Type: Read/Write</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#DI1" class="member-name-link">DI1</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#DI1" class="member-name-link">DI1</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Settings for Digital Input 1.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#DI2" class="member-name-link">DI2</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#DI2" class="member-name-link">DI2</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Settings for Digital Input 2.</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#DI3" class="member-name-link">DI3</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#DI3" class="member-name-link">DI3</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Settings for Digital Input 3.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#DI4" class="member-name-link">DI4</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#DI4" class="member-name-link">DI4</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Settings for Digital Input 4.</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#DI5" class="member-name-link">DI5</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#DI5" class="member-name-link">DI5</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Settings for Digital Input 5.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#DI6" class="member-name-link">DI6</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#DI6" class="member-name-link">DI6</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Settings for Digital Input 6.</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#DI7" class="member-name-link">DI7</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#DI7" class="member-name-link">DI7</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Settings for Digital Input 7.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#DIGITAL_INPUTS_STATUS" class="member-name-link">DIGITAL_INPUTS_STATUS</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#DIGITAL_INPUTS_STATUS" class="member-name-link">DIGITAL_INPUTS_STATUS</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Digital Inputs Status, reads current state of the digital inputs.</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#DIGITAL_OUTPUTS_STATUS" class="member-name-link">DIGITAL_OUTPUTS_STATUS</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#DIGITAL_OUTPUTS_STATUS" class="member-name-link">DIGITAL_OUTPUTS_STATUS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Digital Outputs Status, reads current state of the digital outputs.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#DO1" class="member-name-link">DO1</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#DO1" class="member-name-link">DO1</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Settings for Digital Output 1.</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#DO2" class="member-name-link">DO2</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#DO2" class="member-name-link">DO2</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Settings for Digital Output 2.</div>
 </div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#DO3" class="member-name-link">DO3</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#DO3" class="member-name-link">DO3</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Settings for Digital Output 3.</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#HOMING_ACCELERATION" class="member-name-link">HOMING_ACCELERATION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#HOMING_ACCELERATION" class="member-name-link">HOMING_ACCELERATION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Homing acceleration value</div>
 </div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#HOMING_DECELERATION" class="member-name-link">HOMING_DECELERATION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#HOMING_DECELERATION" class="member-name-link">HOMING_DECELERATION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Homing deceleration value</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#HOMING_METHOD" class="member-name-link">HOMING_METHOD</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#HOMING_METHOD" class="member-name-link">HOMING_METHOD</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Homing Method</div>
 </div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#HOMING_SPEED_HIGH" class="member-name-link">HOMING_SPEED_HIGH</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#HOMING_SPEED_HIGH" class="member-name-link">HOMING_SPEED_HIGH</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Homing speed value high</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#HOMING_SPEED_LOW" class="member-name-link">HOMING_SPEED_LOW</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#HOMING_SPEED_LOW" class="member-name-link">HOMING_SPEED_LOW</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Homing speed value low</div>
 </div>
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#HOMING_STOP_POSITION_HIGH" class="member-name-link">HOMING_STOP_POSITION_HIGH</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Position to reach after homing.</div>
+</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#HOMING_STOP_POSITION_HIGH" class="member-name-link">HOMING_STOP_POSITION_HIGH</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#HOMING_STOP_POSITION_LOW" class="member-name-link">HOMING_STOP_POSITION_LOW</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">Position to reach after homing.</div>
 </div>
 <div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#HOMING_STOP_POSITION_LOW" class="member-name-link">HOMING_STOP_POSITION_LOW</a></code></div>
+<div class="col-second even-row-color"><code><a href="#MOTION_STATUS" class="member-name-link">MOTION_STATUS</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Position to reach after homing.</div>
+<div class="block">Motion status: 0x1003
+ Bit0 = 1 indicates the drive is in "faulty" state (quick fault flag).</div>
 </div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
 <div class="col-second odd-row-color"><code><a href="#PAUSE_TIME" class="member-name-link">PAUSE_TIME</a></code></div>
@@ -232,28 +267,36 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color"><code><a href="#PEAK_CURRENT" class="member-name-link">PEAK_CURRENT</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#STATUS_MODE" class="member-name-link">STATUS_MODE</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#PR_WARNING" class="member-name-link">PR_WARNING</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">PR warning: 0x601D (Pr8.29)
+ PR-module specific warnings:
+ 0x100 limit switch error during homing, 0x102 over-travel error during homing,
+ 0x20P limit switch error in path P.</div>
+</div>
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#STATUS_MODE" class="member-name-link">STATUS_MODE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Status Mode: 0x6002
  Value: Managed by the StatusMode class</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#TARGET_POSITION_HIGH" class="member-name-link">TARGET_POSITION_HIGH</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#TARGET_POSITION_HIGH" class="member-name-link">TARGET_POSITION_HIGH</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Target Position High: 0x6201
  Value: High 16 bits of the target position
  Type: Read/Write</div>
 </div>
-<div class="col-first odd-row-color"><code>static final byte[]</code></div>
-<div class="col-second odd-row-color"><code><a href="#TARGET_POSITION_LOW" class="member-name-link">TARGET_POSITION_LOW</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code>static final byte[]</code></div>
+<div class="col-second even-row-color"><code><a href="#TARGET_POSITION_LOW" class="member-name-link">TARGET_POSITION_LOW</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Target Position Low: 0x6202
  Value: High 16 bits of the target position
  Type: Read/Write</div>
 </div>
-<div class="col-first even-row-color"><code>static final byte[]</code></div>
-<div class="col-second even-row-color"><code><a href="#VELOCITY" class="member-name-link">VELOCITY</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code>static final byte[]</code></div>
+<div class="col-second odd-row-color"><code><a href="#VELOCITY" class="member-name-link">VELOCITY</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Velocity: 0x6203
  Value: rpm
  Type: Read/Write</div>
@@ -401,6 +444,90 @@ loadScripts(document, 'script');</script>
  0x200 EEPROM fault
  0x100 Auto-tuning fault
  Type: Read</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ALARM_DETECTION_SELECTION">
+<h3>ALARM_DETECTION_SELECTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">ALARM_DETECTION_SELECTION</span></div>
+<div class="block">Alarm detection selection: 0x016D (Pr4.22)
+ Bitmask enabling detection of each alarm:
+ bit0 over-current, bit1 over-voltage, bit3 ADC sampling failure,
+ bit4 locked shaft, bit5 EEPROM, bit6 auto-tuning.
+ Type: Read/Write</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MOTION_STATUS">
+<h3>MOTION_STATUS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">MOTION_STATUS</span></div>
+<div class="block">Motion status: 0x1003
+ Bit0 = 1 indicates the drive is in "faulty" state (quick fault flag).
+ Type: Read</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PR_WARNING">
+<h3>PR_WARNING</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">PR_WARNING</span></div>
+<div class="block">PR warning: 0x601D (Pr8.29)
+ PR-module specific warnings:
+ 0x100 limit switch error during homing, 0x102 over-travel error during homing,
+ 0x20P limit switch error in path P.
+ Type: Read</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONTROL_WORD">
+<h3>CONTROL_WORD</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">byte[]</span>&nbsp;<span class="element-name">CONTROL_WORD</span></div>
+<div class="block">Control word: 0x1801
+ Write-only command register (see CONTROL_WORD_* constants).</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONTROL_WORD_RESET_ALARM">
+<h3>CONTROL_WORD_RESET_ALARM</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">CONTROL_WORD_RESET_ALARM</span></div>
+<div class="block">Control word command: reset the current alarm.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../constant-values.html#com.lucaf.robotic_core.stepperOnline.iDmRs.Constants.CONTROL_WORD_RESET_ALARM">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="CONTROL_WORD_RESET_ALARM_HISTORY">
+<h3>CONTROL_WORD_RESET_ALARM_HISTORY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">CONTROL_WORD_RESET_ALARM_HISTORY</span></div>
+<div class="block">Control word command: reset the alarm history.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../constant-values.html#com.lucaf.robotic_core.stepperOnline.iDmRs.Constants.CONTROL_WORD_RESET_ALARM_HISTORY">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="CONTROL_WORD_SAVE_EEPROM">
+<h3>CONTROL_WORD_SAVE_EEPROM</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">CONTROL_WORD_SAVE_EEPROM</span></div>
+<div class="block">Control word command: save parameters to EEPROM.</div>
+<dl class="notes">
+<dt>See Also:</dt>
+<dd>
+<ul class="see-list">
+<li><a href="../../../../../constant-values.html#com.lucaf.robotic_core.stepperOnline.iDmRs.Constants.CONTROL_WORD_SAVE_EEPROM">Constant Field Values</a></li>
+</ul>
+</dd>
+</dl>
 </section>
 </li>
 <li>

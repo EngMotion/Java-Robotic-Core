@@ -138,19 +138,24 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the simulated current position of the motor in pulses.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHomingDurationMs(long)" class="member-name-link">setHomingDurationMs</a><wbr>(long&nbsp;durationMs)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAlarm(int)" class="member-name-link">setAlarm</a><wbr>(int&nbsp;alarm)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Sets the simulated homing duration.</div>
+<div class="block">Sets the simulated current-alarm register value (0x2203).</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMovementDurationMs(long)" class="member-name-link">setMovementDurationMs</a><wbr>(long&nbsp;durationMs)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setHomingDurationMs(long)" class="member-name-link">setHomingDurationMs</a><wbr>(long&nbsp;durationMs)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sets the simulated homing duration.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMovementDurationMs(long)" class="member-name-link">setMovementDurationMs</a><wbr>(long&nbsp;durationMs)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets a fixed movement duration for all positioning moves.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeInteger(byte%5B%5D,int)" class="member-name-link">writeInteger</a><wbr>(byte[]&nbsp;register,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeInteger(byte%5B%5D,int)" class="member-name-link">writeInteger</a><wbr>(byte[]&nbsp;register,
  int&nbsp;data)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Intercepts STATUS_MODE writes to simulate motor movement.</div>
 </div>
 </div>
@@ -191,6 +196,18 @@ loadScripts(document, 'script');</script>
 <section class="method-details" id="method-detail">
 <h2>Method Details</h2>
 <ul class="member-list">
+<li>
+<section class="detail" id="setAlarm(int)">
+<h3>setAlarm</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAlarm</span><wbr><span class="parameters">(int&nbsp;alarm)</span></div>
+<div class="block">Sets the simulated current-alarm register value (0x2203).
+ Pass <code>0</code> for no fault, or an alarm bitmask (see <code>FaultCode</code>).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>alarm</code> - the alarm value to simulate</dd>
+</dl>
+</section>
+</li>
 <li>
 <section class="detail" id="writeInteger(byte[],int)">
 <h3>writeInteger</h3>
