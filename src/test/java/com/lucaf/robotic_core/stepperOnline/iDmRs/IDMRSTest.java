@@ -293,6 +293,4 @@ public class IDMRSTest {
         assertTrue(motor.moveToPositionAndWait(1000).get());
         assertEquals(1000, connection.readSignedLong(TARGET_POSITION_HIGH, false));
     }
-
-
 }

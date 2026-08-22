@@ -43,39 +43,35 @@ public class EP8E001 extends MasterInterface implements IndexInterface {
     }
 
     @Override
-    public byte[] getProcessGetData(String device) throws IOException {
-        IOLinkData data = convertByteArrayToType(
+    public IOLinkData getProcessGetData(String device) throws IOException {
+        return convertByteArrayToType(
                 client.get(String.format(GET_PROCESS_DATA, device)),
                 IOLinkData.class
         );
-        return data.getIolink().getValue();
     }
 
     @Override
-    public byte[] getProcessSetData(String device) throws IOException {
-        IOLinkData data = convertByteArrayToType(
+    public IOLinkData getProcessSetData(String device) throws IOException {
+        return convertByteArrayToType(
                 client.get(String.format(SET_PROCESS_DATA, device)),
                 IOLinkData.class
         );
-        return data.getIolink().getValue();
     }
 
     @Override
-    public byte[] getParameterValue(String device, int index) throws IOException {
-        IOLinkParameter data = convertByteArrayToType(
+    public IOLinkParameter getParameterValue(String device, int index) throws IOException {
+        return convertByteArrayToType(
                 client.get(String.format(GET_PARAMETER_VALUE, device, String.valueOf(index))),
                 IOLinkParameter.class
         );
-        return data.getValue();
     }
 
     @Override
-    public byte[] getParameterValue(String device, int index, int subIndex) throws IOException {
-        IOLinkParameter data = convertByteArrayToType(
+    public IOLinkParameter getParameterValue(String device, int index, int subIndex) throws IOException {
+        return convertByteArrayToType(
                 client.get(String.format(GET_PARAMETER_VALUE_SUBINDEX, device, String.valueOf(index), String.valueOf(subIndex))),
                 IOLinkParameter.class
         );
-        return data.getValue();
     }
 
     @Override
