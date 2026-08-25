@@ -151,11 +151,6 @@ public class PCB_3 extends ScaleInterface {
     private static final int MAX_BUFFER_LENGTH = 256;
 
     /**
-     * Value returned by the read methods when no weight could be obtained.
-     */
-    private static final double NO_READING = -1;
-
-    /**
      * Absolute weight below which the scale is considered tared.
      */
     private static final double TARE_TOLERANCE = 0.1;
@@ -217,7 +212,7 @@ public class PCB_3 extends ScaleInterface {
      * @param serial          low-level serial interface connected to the scale
      * @param readingConsumer consumer notified with every streamed weight reading (may be {@code null})
      */
-    public PCB_3(SerialInterface serial, Consumer<Double> readingConsumer) {
+    public PCB_3(SerialInterface serial, Consumer<ScaleResponse> readingConsumer) {
         super(serial, readingConsumer);
         this.serial = serial;
         serial.addDataListener(this::onData);
@@ -387,9 +382,9 @@ public class PCB_3 extends ScaleInterface {
             if (!response.getUnit().isEmpty()) {
                 setUnit(response.getUnit());
             }
-            lastReading.set(response.getWeight());
+            lastReading.set(response);
             if (isEventReadingEnabled()) {
-                emitReading(response.getWeight());
+                emitReading(response);
             }
         }
         CountDownLatch latch = readLatch;
@@ -407,7 +402,7 @@ public class PCB_3 extends ScaleInterface {
      * @throws IOException if the read command cannot be sent or the wait is interrupted
      */
     @Override
-    public double read() throws IOException {
+    public ScaleResponse read() throws IOException {
         return readWithCommand(COMMAND_READ, READ_TIMEOUT_MS, true);
     }
 
@@ -424,7 +419,7 @@ public class PCB_3 extends ScaleInterface {
      * @throws IOException if the read command cannot be sent or the wait is interrupted
      */
     @Override
-    public double readStable() throws IOException {
+    public ScaleResponse readStable() throws IOException {
         return readWithCommand(COMMAND_READ_STABLE, STABLE_READ_TIMEOUT_MS, false);
     }
 
@@ -439,7 +434,7 @@ public class PCB_3 extends ScaleInterface {
      * with an error
      * @throws IOException if the command cannot be sent or the wait is interrupted
      */
-    private double readWithCommand(String command, long timeoutMillis, boolean warnOnTimeout) throws IOException {
+    private ScaleResponse readWithCommand(String command, long timeoutMillis, boolean warnOnTimeout) throws IOException {
         CountDownLatch latch = new CountDownLatch(1);
         pendingResponse.set(null);
         readLatch = latch;
@@ -461,12 +456,12 @@ public class PCB_3 extends ScaleInterface {
             } else {
                 serial.logDebug(message + ", the weight is not stable");
             }
-            return NO_READING;
+            return ScaleResponse.error();
         }
         if (response.isError()) {
-            return NO_READING;
+            return ScaleResponse.error();
         }
-        return response.getWeight();
+        return response;
     }
 
     /**
@@ -481,8 +476,8 @@ public class PCB_3 extends ScaleInterface {
                 serial.send(COMMAND_TARE.getBytes());
                 long start = System.currentTimeMillis();
                 while (System.currentTimeMillis() - start < TARE_TIMEOUT_MS) {
-                    double weight = read();
-                    if (weight != NO_READING && Math.abs(weight) < TARE_TOLERANCE) {
+                    ScaleResponse weight = read();
+                    if (!weight.isError() && Math.abs(weight.getWeight()) < TARE_TOLERANCE) {
                         return true;
                     }
                     Thread.sleep(TARE_POLL_INTERVAL_MS);
