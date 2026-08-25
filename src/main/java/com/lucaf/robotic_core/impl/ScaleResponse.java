@@ -36,12 +36,19 @@ public class ScaleResponse {
     }
 
     /**
+     * Builds a weight frame.
+     * <p>
+     * Stability is passed in rather than derived, because every scale family signals it differently:
+     * the KERN PCB blanks out the unit field while the weight is moving, whereas the KERN PLJ carries
+     * a dedicated stability character at the end of the frame.
+     *
      * @param weight the decoded weight
      * @param unit   the unit, empty when the scale left the field blank
-     * @return a weight frame, stable if and only if it carries a unit
+     * @param stable whether the device reported the weight as settled
+     * @return a weight frame
      */
-    public static ScaleResponse weight(double weight, String unit) {
-        return new ScaleResponse(weight, unit, !unit.isEmpty(), false);
+    public static ScaleResponse weight(double weight, String unit, boolean stable) {
+        return new ScaleResponse(weight, unit, stable, false);
     }
 
     /**

@@ -4,6 +4,7 @@ import com.lucaf.robotic_core.KERN.PCB.PCB_3;
 import com.lucaf.robotic_core.KERN.PLJ.PLJ_1200;
 import com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface;
 import com.lucaf.robotic_core.impl.ScaleInterface;
+import com.lucaf.robotic_core.impl.ScaleResponse;
 
 import java.util.function.Consumer;
 
@@ -21,20 +22,21 @@ public enum KernScaleType {
             "Imposta la bilancia in modalità di trasmissione \"rE CR\" (menu → Pr → rE CR), "
                     + "altrimenti ignora i comandi remoti.") {
         @Override
-        public ScaleInterface create(SerialInterface serial, Consumer<Double> readingConsumer) {
+        public ScaleInterface create(SerialInterface serial, Consumer<ScaleResponse> readingConsumer) {
             return new PCB_3(serial, readingConsumer);
         }
     },
 
     /**
-     * KERN PLJ precision balance: streams readings continuously, tare command is {@code "T"}.
+     * KERN PLJ precision balance: transmits continuously, answers {@code "E"} with a stable weight.
      */
     PLJ("KERN PLJ",
-            "Streaming continuo: la lettura restituisce l'ultimo peso ricevuto, 'T' = tara.",
-            "La bilancia deve essere in trasmissione continua: il pulsante Leggi non invia nulla, "
-                    + "restituisce l'ultimo valore arrivato.") {
+            "Trasmissione continua: 'E' = peso stabile, 'T' = tara, 'C' = registra, 'M' = menu, "
+                    + "'O' = on/off.",
+            "La bilancia deve essere in trasmissione continua: il pulsante Leggi non invia nulla e "
+                    + "restituisce l'ultimo valore arrivato, mentre Leggi stabile invia 'E'.") {
         @Override
-        public ScaleInterface create(SerialInterface serial, Consumer<Double> readingConsumer) {
+        public ScaleInterface create(SerialInterface serial, Consumer<ScaleResponse> readingConsumer) {
             return new PLJ_1200(serial, readingConsumer);
         }
     };
@@ -72,7 +74,7 @@ public enum KernScaleType {
      * @param readingConsumer consumer notified with every streamed reading (may be {@code null})
      * @return the scale driver
      */
-    public abstract ScaleInterface create(SerialInterface serial, Consumer<Double> readingConsumer);
+    public abstract ScaleInterface create(SerialInterface serial, Consumer<ScaleResponse> readingConsumer);
 
     /**
      * Returns the one-line summary of the command set.

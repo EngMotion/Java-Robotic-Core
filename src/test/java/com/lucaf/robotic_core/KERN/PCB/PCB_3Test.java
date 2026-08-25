@@ -1,12 +1,14 @@
 package com.lucaf.robotic_core.KERN.PCB;
 
 import com.lucaf.robotic_core.dataInterfaces.test.FakeScaleSerialInterface;
+import com.lucaf.robotic_core.impl.ScaleResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,6 +49,15 @@ public class PCB_3Test {
     }
 
     /**
+     * Asserts that a response carries the expected weight rather than an error.
+     */
+    private static void assertWeight(double expected, ScaleResponse actual) {
+        assertNotNull(actual);
+        assertFalse(actual.isError(), "expected a weight, got an error response");
+        assertEquals(expected, actual.getWeight(), 0.0001);
+    }
+
+    /**
      * Pushes incoming data after a short delay, so that a blocking read is already waiting for it.
      */
     private void simulateLater(long delayMs, String... chunks) {
@@ -83,7 +94,7 @@ public class PCB_3Test {
 
     @Test
     void testParseStableFrame() {
-        PCB_3.Response response = PCB_3.parse(STABLE_12_345);
+        ScaleResponse response = PCB_3.parse(STABLE_12_345);
         assertNotNull(response);
         assertFalse(response.isError());
         assertTrue(response.isStable());
@@ -93,7 +104,7 @@ public class PCB_3Test {
 
     @Test
     void testParseUnstableFrameHasNoUnit() {
-        PCB_3.Response response = PCB_3.parse(UNSTABLE_12_345);
+        ScaleResponse response = PCB_3.parse(UNSTABLE_12_345);
         assertNotNull(response);
         assertFalse(response.isError());
         assertFalse(response.isStable());
@@ -103,7 +114,7 @@ public class PCB_3Test {
 
     @Test
     void testParseErrorFrame() {
-        PCB_3.Response response = PCB_3.parse(ERROR_FRAME);
+        ScaleResponse response = PCB_3.parse(ERROR_FRAME);
         assertNotNull(response);
         assertTrue(response.isError());
         assertNull(response.getWeight());
@@ -111,9 +122,7 @@ public class PCB_3Test {
 
     @Test
     void testParseNegativeWeight() {
-        PCB_3.Response response = PCB_3.parse(STABLE_NEGATIVE);
-        assertNotNull(response);
-        assertEquals(-5.25, response.getWeight(), 0.0001);
+        assertEquals(-5.25, PCB_3.parse(STABLE_NEGATIVE).getWeight(), 0.0001);
     }
 
     @Test
@@ -126,7 +135,7 @@ public class PCB_3Test {
 
     @Test
     void testParseAcceptsModeMarker() {
-        PCB_3.Response response = PCB_3.parse(STABLE_MODE_MARKER);
+        ScaleResponse response = PCB_3.parse(STABLE_MODE_MARKER);
         assertNotNull(response);
         assertEquals(12.345, response.getWeight(), 0.0001);
     }
@@ -155,7 +164,7 @@ public class PCB_3Test {
     @Test
     void testReadSendsWCommand() throws Exception {
         serial.scriptResponse("w", STABLE_12_345 + CRLF);
-        assertEquals(12.345, scale.read(), 0.001);
+        assertWeight(12.345, scale.read());
         assertEquals("w", serial.getSentCommands().get(0));
         assertTrue(scale.isStable());
         assertEquals("g", scale.getUnit());
@@ -164,15 +173,15 @@ public class PCB_3Test {
     @Test
     void testReadStableSendsSCommand() throws Exception {
         serial.scriptResponse("s", STABLE_9_000 + CRLF);
-        assertEquals(9.0, scale.readStable(), 0.001);
+        assertWeight(9.0, scale.readStable());
         assertEquals("s", serial.getSentCommands().get(0));
     }
 
     @Test
-    void testReadStableReturnsMinusOneWhenScaleStaysSilent() throws Exception {
+    void testReadStableReturnsErrorWhenScaleStaysSilent() throws Exception {
         // The scale answers "s" only while the weight is settled: silence means "not stable".
         long start = System.currentTimeMillis();
-        assertEquals(-1, scale.readStable(), 0.001);
+        assertTrue(scale.readStable().isError());
         long elapsed = System.currentTimeMillis() - start;
         assertTrue(elapsed >= 400, "readStable() returned after only " + elapsed + " ms");
         assertTrue(elapsed < 2000, "readStable() waited " + elapsed + " ms, expected roughly 500");
@@ -181,20 +190,22 @@ public class PCB_3Test {
     @Test
     void testReadNegativeWeight() throws Exception {
         serial.scriptResponse("w", STABLE_NEGATIVE + CRLF);
-        assertEquals(-5.25, scale.read(), 0.001);
+        assertWeight(-5.25, scale.read());
     }
 
     @Test
     void testReadUnstableFrameStillReturnsTheWeight() throws Exception {
         serial.scriptResponse("w", UNSTABLE_12_345 + CRLF);
-        assertEquals(12.345, scale.read(), 0.001);
+        ScaleResponse response = scale.read();
+        assertWeight(12.345, response);
+        assertFalse(response.isStable());
         assertFalse(scale.isStable());
     }
 
     @Test
-    void testReadErrorFrameReturnsMinusOne() throws Exception {
+    void testReadErrorFrameReturnsErrorResponse() throws Exception {
         serial.scriptResponse("w", ERROR_FRAME + CRLF);
-        assertEquals(-1, scale.read(), 0.001);
+        assertTrue(scale.read().isError());
         assertTrue(scale.hasError());
         assertFalse(scale.isStable());
         // An error frame carries no weight, so the last known reading must not be touched.
@@ -210,9 +221,9 @@ public class PCB_3Test {
     }
 
     @Test
-    void testReadMalformedFrameReturnsMinusOne() throws Exception {
+    void testReadMalformedFrameReturnsErrorResponse() throws Exception {
         serial.scriptResponse("w", "no weight here" + CRLF);
-        assertEquals(-1, scale.read(), 0.001);
+        assertTrue(scale.read().isError());
     }
 
     @Test
@@ -230,7 +241,7 @@ public class PCB_3Test {
         // The scale regularly splits a reply across two serial events; the first fragment must not be
         // mistaken for a complete weight (this used to report 11.0 instead of 11.203).
         simulateLater(30, "      11.", "203 g  " + CRLF);
-        assertEquals(11.203, scale.read(), 0.0001);
+        assertWeight(11.203, scale.read());
     }
 
     @Test
@@ -238,13 +249,13 @@ public class PCB_3Test {
         serial.simulateData("      11.");
         assertNull(scale.getLastReading());
         serial.simulateData("203 g  " + CRLF);
-        assertEquals(11.203, scale.getLastReading(), 0.0001);
+        assertWeight(11.203, scale.getLastReading());
     }
 
     @Test
     void testSeveralFramesInASingleChunk() {
         serial.simulateData(STABLE_12_345 + CRLF + STABLE_11_203 + CRLF);
-        assertEquals(11.203, scale.getLastReading(), 0.0001);
+        assertWeight(11.203, scale.getLastReading());
     }
 
     @Test
@@ -253,14 +264,14 @@ public class PCB_3Test {
         serial.simulateData("      11.");
         Thread.sleep(300);
         serial.simulateData(STABLE_12_345 + CRLF);
-        assertEquals(12.345, scale.getLastReading(), 0.0001);
+        assertWeight(12.345, scale.getLastReading());
     }
 
     @Test
     void testUnitIsUpdatedFromTheFrame() {
         serial.simulateData(STABLE_KILOGRAMS + CRLF);
         assertEquals("kg", scale.getUnit());
-        assertEquals(1.5, scale.getLastReading(), 0.0001);
+        assertWeight(1.5, scale.getLastReading());
     }
 
     @Test
@@ -275,14 +286,14 @@ public class PCB_3Test {
 
     @Test
     void testEventReading() {
-        double[] received = new double[1];
-        scale.addReadingListener(w -> received[0] = w);
+        AtomicReference<ScaleResponse> received = new AtomicReference<>();
+        scale.addReadingListener(received::set);
         scale.enableEventReading();
         assertTrue(scale.isEventReadingEnabled());
 
         serial.simulateData(STABLE_3_14 + CRLF);
-        assertEquals(3.14, received[0], 0.001);
-        assertEquals(3.14, scale.getLastReading(), 0.001);
+        assertWeight(3.14, received.get());
+        assertWeight(3.14, scale.getLastReading());
 
         scale.disableEventReading();
         assertFalse(scale.isEventReadingEnabled());
@@ -290,14 +301,14 @@ public class PCB_3Test {
 
     @Test
     void testEventReadingDisabledDoesNotEmit() {
-        double[] received = new double[]{-1};
-        scale.addReadingListener(w -> received[0] = w);
+        AtomicReference<ScaleResponse> received = new AtomicReference<>();
+        scale.addReadingListener(received::set);
 
         // Event reading is disabled by default, so consumers must not be notified...
         serial.simulateData(STABLE_3_14 + CRLF);
-        assertEquals(-1, received[0], 0.001);
+        assertNull(received.get());
 
         // ...but the last reading is still tracked internally.
-        assertEquals(3.14, scale.getLastReading(), 0.001);
+        assertWeight(3.14, scale.getLastReading());
     }
 }

@@ -5,6 +5,7 @@ import com.lucaf.robotic_core.SerialParams;
 import com.lucaf.robotic_core.UI.ThemeSetup;
 import com.lucaf.robotic_core.dataInterfaces.serial.SerialPortCache;
 import com.lucaf.robotic_core.impl.ScaleInterface;
+import com.lucaf.robotic_core.impl.ScaleResponse;
 import jssc.SerialPort;
 
 import javax.swing.BorderFactory;
@@ -308,16 +309,18 @@ public class ScaleTesterUI {
     }
 
     /**
-     * Formats a weight returned by the driver, which uses {@code -1} to signal "no reading yet".
+     * Formats a response returned by the driver, which reports "no reading available" as an error
+     * response — on the KERN scales that is also how an unstable weight comes back.
      *
-     * @param weight the value returned by the driver
+     * @param response the value returned by the driver
      * @return the formatted result
      */
-    private String formatReadResult(double weight) {
-        if (weight == -1) {
-            return "-1 (nessuna lettura disponibile)";
+    private String formatReadResult(ScaleResponse response) {
+        if (response == null || response.isError()) {
+            return "nessuna lettura disponibile";
         }
-        return weight + " " + scale.getUnit();
+        return response.getWeight() + " " + response.getUnit()
+                + (response.isStable() ? " (stabile)" : " (non stabile)");
     }
 
     /**
@@ -348,8 +351,7 @@ public class ScaleTesterUI {
         }
         commands.submit(() -> {
             try {
-                double weight = scale.read();
-                log(LogLevel.CMD, "poll read() → " + formatReadResult(weight));
+                log(LogLevel.CMD, "poll read() → " + formatReadResult(scale.read()));
             } catch (Exception e) {
                 log(LogLevel.ERROR, "poll read() ✗ " + e.getMessage());
             } finally {
@@ -485,8 +487,8 @@ public class ScaleTesterUI {
      * Runs on the Event Dispatch Thread, driven by {@link #refreshTimer}.
      */
     private void refreshReadout() {
-        Double last = scale.getLastReading();
-        weightLabel.setText(last == null ? "—" : last + " " + scale.getUnit());
+        ScaleResponse last = scale.getLastReading();
+        weightLabel.setText(last == null ? "—" : last.getWeight() + " " + scale.getUnit());
         statusLabel.setText("<html>"
                 + flag("connesso", scale.isConnected())
                 + " &nbsp; " + flag("inizializzato", scale.isInitialized())

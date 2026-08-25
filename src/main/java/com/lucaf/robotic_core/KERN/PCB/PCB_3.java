@@ -2,13 +2,11 @@ package com.lucaf.robotic_core.KERN.PCB;
 
 import com.lucaf.robotic_core.dataInterfaces.impl.SerialEvent;
 import com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface;
+import com.lucaf.robotic_core.dataInterfaces.serial.LineAssembler;
 import com.lucaf.robotic_core.impl.ScaleInterface;
 import com.lucaf.robotic_core.impl.ScaleResponse;
-import lombok.Getter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -48,7 +46,7 @@ import java.util.function.Consumer;
  * <h2>Framing</h2>
  * The scale does not necessarily deliver a frame in a single serial event: a reply such as
  * {@code "      11.203 g  \r\n"} is regularly split into {@code "      11."} and {@code "203 g  \r\n"}.
- * Incoming bytes are therefore accumulated in {@link #buffer} and only decoded once the {@code CR LF}
+ * Incoming bytes are therefore fed to a {@link LineAssembler} and only decoded once the {@code CR LF}
  * terminator shows up, so that a partial fragment is never mistaken for a complete weight.
  */
 public class PCB_3 extends ScaleInterface {
@@ -137,20 +135,6 @@ public class PCB_3 extends ScaleInterface {
     private static final long STABLE_READ_TIMEOUT_MS = 500;
 
     /**
-     * Idle time after which a partially received frame is considered abandoned and dropped, so that a
-     * truncated reply cannot corrupt the frame that follows it. Sending sixteen characters takes a few
-     * milliseconds even at the slowest supported baud rate, hence a gap this long means the rest of
-     * the frame is never coming.
-     */
-    private static final long FRAGMENT_TIMEOUT_MS = 250;
-
-    /**
-     * Upper bound on the unterminated bytes kept in {@link #buffer}, so that a device stuck babbling
-     * without ever sending a terminator cannot grow it without limit.
-     */
-    private static final int MAX_BUFFER_LENGTH = 256;
-
-    /**
      * Absolute weight below which the scale is considered tared.
      */
     private static final double TARE_TOLERANCE = 0.1;
@@ -176,14 +160,9 @@ public class PCB_3 extends ScaleInterface {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     /**
-     * Incoming characters not yet forming a complete frame. Guarded by its own monitor.
+     * Reassembles the frames out of the chunks in which the serial port delivers them.
      */
-    private final StringBuilder buffer = new StringBuilder();
-
-    /**
-     * Timestamp of the last chunk appended to {@link #buffer}, used to detect abandoned frames.
-     */
-    private long lastChunkAt = 0;
+    private final LineAssembler frames;
 
     /**
      * Latch used by {@link #readWithCommand} to wait for the answer to a read command.
@@ -203,6 +182,7 @@ public class PCB_3 extends ScaleInterface {
     public PCB_3(SerialInterface serial) {
         super(serial);
         this.serial = serial;
+        this.frames = new LineAssembler(serial::logWarning);
         serial.addDataListener(this::onData);
     }
 
@@ -215,6 +195,7 @@ public class PCB_3 extends ScaleInterface {
     public PCB_3(SerialInterface serial, Consumer<ScaleResponse> readingConsumer) {
         super(serial, readingConsumer);
         this.serial = serial;
+        this.frames = new LineAssembler(serial::logWarning);
         serial.addDataListener(this::onData);
     }
     /**
@@ -250,7 +231,8 @@ public class PCB_3 extends ScaleInterface {
         }
         double magnitude = Double.parseDouble(digits);
         String unit = frame.substring(UNIT_INDEX, UNIT_INDEX + UNIT_LENGTH).trim();
-        return ScaleResponse.weight(sign == SIGN_NEGATIVE ? -magnitude : magnitude, unit);
+        // The PCB blanks out the unit field while the weight is still moving, so a unit means settled.
+        return ScaleResponse.weight(sign == SIGN_NEGATIVE ? -magnitude : magnitude, unit, !unit.isEmpty());
     }
 
     /**
@@ -291,73 +273,9 @@ public class PCB_3 extends ScaleInterface {
             serial.logError("Error reading from scale: " + e.getMessage());
             return;
         }
-        if (chunk == null || chunk.isEmpty()) {
-            return;
-        }
-        for (String frame : assembleFrames(chunk)) {
+        for (String frame : frames.append(chunk)) {
             handleFrame(frame);
         }
-    }
-
-    /**
-     * Appends a chunk of incoming characters to {@link #buffer} and extracts every complete frame it
-     * now contains, leaving any unterminated tail in the buffer for the next chunk.
-     *
-     * @param chunk the characters just received
-     * @return the frames completed by this chunk, terminators stripped, in arrival order
-     */
-    private List<String> assembleFrames(String chunk) {
-        List<String> frames = new ArrayList<>();
-        synchronized (buffer) {
-            long now = System.currentTimeMillis();
-            if (buffer.length() > 0 && now - lastChunkAt > FRAGMENT_TIMEOUT_MS) {
-                serial.logWarning("Dropping abandoned partial frame \"" + buffer + "\"");
-                buffer.setLength(0);
-            }
-            lastChunkAt = now;
-            buffer.append(chunk);
-
-            int end;
-            while ((end = indexOfTerminator(buffer)) >= 0) {
-                String frame = buffer.substring(0, end);
-                // Consume the frame plus the whole terminator, however many CR/LF characters it uses.
-                int consumed = end;
-                while (consumed < buffer.length() && isTerminator(buffer.charAt(consumed))) {
-                    consumed++;
-                }
-                buffer.delete(0, consumed);
-                if (!frame.isEmpty()) {
-                    frames.add(frame);
-                }
-            }
-
-            if (buffer.length() > MAX_BUFFER_LENGTH) {
-                serial.logWarning("Dropping " + buffer.length() + " unterminated characters from the scale");
-                buffer.setLength(0);
-            }
-        }
-        return frames;
-    }
-
-    /**
-     * @param data the buffered characters
-     * @return the position of the first terminator character, or {@code -1} if there is none
-     */
-    private static int indexOfTerminator(CharSequence data) {
-        for (int i = 0; i < data.length(); i++) {
-            if (isTerminator(data.charAt(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * @param c a received character
-     * @return {@code true} if the character is part of a frame terminator
-     */
-    private static boolean isTerminator(char c) {
-        return c == '\r' || c == '\n';
     }
 
     /**
@@ -398,7 +316,7 @@ public class PCB_3 extends ScaleInterface {
      * Actively reads the current weight (stable or unstable) by sending the {@code "w"} command and
      * waiting for the response.
      *
-     * @return the current weight, or {@code -1} if no reading is available
+     * @return the current weight, or an error response if the scale did not answer
      * @throws IOException if the read command cannot be sent or the wait is interrupted
      */
     @Override
@@ -411,11 +329,11 @@ public class PCB_3 extends ScaleInterface {
      * response.
      * <p>
      * The scale answers this command only while the weight is settled and stays silent otherwise, so a
-     * weight that is still moving is reported as {@code -1} once
+     * weight that is still moving comes back as an error response once
      * {@link #STABLE_READ_TIMEOUT_MS} has elapsed. Callers that need a value regardless of stability
      * should use {@link #read()} instead.
      *
-     * @return the current stable weight, or {@code -1} if the weight is not stable
+     * @return the current stable weight, or an error response if the weight is not stable
      * @throws IOException if the read command cannot be sent or the wait is interrupted
      */
     @Override
@@ -430,8 +348,7 @@ public class PCB_3 extends ScaleInterface {
      * @param timeoutMillis  how long to wait for the answer
      * @param warnOnTimeout  whether a missing answer is a fault worth a warning, as opposed to the
      *                       expected way the scale reports an unstable weight
-     * @return the weight carried by the answer, or {@code -1} if the scale did not answer or answered
-     * with an error
+     * @return the answer, or an error response if the scale stayed silent or reported a fault
      * @throws IOException if the command cannot be sent or the wait is interrupted
      */
     private ScaleResponse readWithCommand(String command, long timeoutMillis, boolean warnOnTimeout) throws IOException {
