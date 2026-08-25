@@ -96,7 +96,7 @@ loadScripts(document, 'script');</script>
  <p>
  Concrete scales implement the actual I/O by talking through the <a href="../dataInterfaces/impl/IOInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl"><code>IOInterface</code></a> passed in the
  constructor. Subclasses must report the readings they receive (from polling or from the stream) by
- calling <a href="#emitReading(double)"><code>emitReading(double)</code></a> so that registered listeners and <a href="#getLastReading()"><code>getLastReading()</code></a> stay
+ calling <a href="#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)"><code>emitReading(ScaleResponse)</code></a> so that registered listeners and <a href="#getLastReading()"><code>getLastReading()</code></a> stay
  up to date.</div>
 </section>
 <section class="summary">
@@ -125,15 +125,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Whether the continuous reading stream is currently enabled.</div>
 </div>
-<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicReference.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicReference</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicReference.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicReference</a>&lt;<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;</code></div>
 <div class="col-second odd-row-color"><code><a href="#lastReading" class="member-name-link">lastReading</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">The most recent reading reported through <a href="#emitReading(double)"><code>emitReading(double)</code></a>.</div>
+<div class="block">The most recent reading reported through <a href="#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)"><code>emitReading(ScaleResponse)</code></a>.</div>
 </div>
-<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&gt;</code></div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#readingListeners" class="member-name-link">readingListeners</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Consumers notified with every reading reported through <a href="#emitReading(double)"><code>emitReading(double)</code></a>.</div>
+<div class="block">Consumers notified with every reading reported through <a href="#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)"><code>emitReading(ScaleResponse)</code></a>.</div>
 </div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#unit" class="member-name-link">unit</a></code></div>
@@ -159,7 +159,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Constructs a scale using the given I/O interface.</div>
 </div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.IOInterface,java.util.function.Consumer)" class="member-name-link">ScaleInterface</a><wbr>(<a href="../dataInterfaces/impl/IOInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">IOInterface</a>&nbsp;connection,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;readingConsumer)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&nbsp;readingConsumer)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Constructs a scale using the given I/O interface and immediately registers a reading consumer.</div>
 </div>
@@ -178,10 +178,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addReadingListener(java.util.function.Consumer)" class="member-name-link">addReadingListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;listener)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addReadingListener(java.util.function.Consumer)" class="member-name-link">addReadingListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&nbsp;listener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Registers a consumer that will be notified with every reading reported via
- <a href="#emitReading(double)"><code>emitReading(double)</code></a>.</div>
+ <a href="#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)"><code>emitReading(ScaleResponse)</code></a>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#disableEventReading()" class="member-name-link">disableEventReading</a>()</code></div>
@@ -189,7 +189,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Disables the continuous reading stream.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#emitReading(double)" class="member-name-link">emitReading</a><wbr>(double&nbsp;weight)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)" class="member-name-link">emitReading</a><wbr>(<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&nbsp;reading)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Forwards a reading received from the scale to all registered listeners and updates
  <a href="#getLastReading()"><code>getLastReading()</code></a>.</div>
@@ -198,12 +198,12 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#enableEventReading()" class="member-name-link">enableEventReading</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Enables the continuous reading stream: the scale starts pushing readings, which subclasses
- forward through <a href="#emitReading(double)"><code>emitReading(double)</code></a>.</div>
+ forward through <a href="#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)"><code>emitReading(ScaleResponse)</code></a>.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLastReading()" class="member-name-link">getLastReading</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the most recent reading reported through <a href="#emitReading(double)"><code>emitReading(double)</code></a>.</div>
+<div class="block">Returns the most recent reading reported through <code>#emitReading(double)</code>.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/Future.html" title="class or interface in java.util.concurrent" class="external-link">Future</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initialize()" class="member-name-link">initialize</a>()</code></div>
@@ -225,18 +225,18 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns whether the most recent reading is stable (settled).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract double</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#read()" class="member-name-link">read</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Actively reads the current weight from the scale.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readStable()" class="member-name-link">readStable</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Actively reads the current <em>stable</em> (settled) weight from the scale.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeReadingListener(java.util.function.Consumer)" class="member-name-link">removeReadingListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;listener)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removeReadingListener(java.util.function.Consumer)" class="member-name-link">removeReadingListener</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&nbsp;listener)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Removes a previously registered reading consumer.</div>
 </div>
@@ -299,16 +299,16 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="lastReading">
 <h3>lastReading</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicReference.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicReference</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;</span>&nbsp;<span class="element-name">lastReading</span></div>
-<div class="block">The most recent reading reported through <a href="#emitReading(double)"><code>emitReading(double)</code></a>.
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicReference.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicReference</a>&lt;<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;</span>&nbsp;<span class="element-name">lastReading</span></div>
+<div class="block">The most recent reading reported through <a href="#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)"><code>emitReading(ScaleResponse)</code></a>.
  <code>null</code> until the first reading is received.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="readingListeners">
 <h3>readingListeners</h3>
-<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&gt;</span>&nbsp;<span class="element-name">readingListeners</span></div>
-<div class="block">Consumers notified with every reading reported through <a href="#emitReading(double)"><code>emitReading(double)</code></a>.</div>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&gt;</span>&nbsp;<span class="element-name">readingListeners</span></div>
+<div class="block">Consumers notified with every reading reported through <a href="#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)"><code>emitReading(ScaleResponse)</code></a>.</div>
 </section>
 </li>
 <li>
@@ -341,7 +341,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(com.lucaf.robotic_core.dataInterfaces.impl.IOInterface,java.util.function.Consumer)">
 <h3>ScaleInterface</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ScaleInterface</span><wbr><span class="parameters">(<a href="../dataInterfaces/impl/IOInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">IOInterface</a>&nbsp;connection,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;readingConsumer)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&nbsp;readingConsumer)</span></div>
 <div class="block">Constructs a scale using the given I/O interface and immediately registers a reading consumer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -402,8 +402,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="read()">
 <h3>read</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">read</span>()
-                     throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></span>&nbsp;<span class="element-name">read</span>()
+                            throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <div class="block">Actively reads the current weight from the scale.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -416,8 +416,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="readStable()">
 <h3>readStable</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">readStable</span>()
-                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></span>&nbsp;<span class="element-name">readStable</span>()
+                         throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <div class="block">Actively reads the current <em>stable</em> (settled) weight from the scale.
  <p>
  By default this is equivalent to <a href="#read()"><code>read()</code></a>, since not every scale distinguishes stable
@@ -449,7 +449,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">enableEventReading</span>()
                                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <div class="block">Enables the continuous reading stream: the scale starts pushing readings, which subclasses
- forward through <a href="#emitReading(double)"><code>emitReading(double)</code></a>.</div>
+ forward through <a href="#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)"><code>emitReading(ScaleResponse)</code></a>.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the stream cannot be started</dd>
@@ -505,8 +505,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getLastReading()">
 <h3>getLastReading</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a></span>&nbsp;<span class="element-name">getLastReading</span>()</div>
-<div class="block">Returns the most recent reading reported through <a href="#emitReading(double)"><code>emitReading(double)</code></a>.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></span>&nbsp;<span class="element-name">getLastReading</span>()</div>
+<div class="block">Returns the most recent reading reported through <code>#emitReading(double)</code>.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the last reported weight, or <code>null</code> if no reading has been received yet</dd>
@@ -516,9 +516,9 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="addReadingListener(java.util.function.Consumer)">
 <h3>addReadingListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addReadingListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;listener)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addReadingListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&nbsp;listener)</span></div>
 <div class="block">Registers a consumer that will be notified with every reading reported via
- <a href="#emitReading(double)"><code>emitReading(double)</code></a>.</div>
+ <a href="#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)"><code>emitReading(ScaleResponse)</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>listener</code> - the consumer to notify</dd>
@@ -528,7 +528,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="removeReadingListener(java.util.function.Consumer)">
 <h3>removeReadingListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeReadingListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;listener)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeReadingListener</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&nbsp;listener)</span></div>
 <div class="block">Removes a previously registered reading consumer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -537,14 +537,14 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="emitReading(double)">
+<section class="detail" id="emitReading(com.lucaf.robotic_core.impl.ScaleResponse)">
 <h3>emitReading</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">emitReading</span><wbr><span class="parameters">(double&nbsp;weight)</span></div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">emitReading</span><wbr><span class="parameters">(<a href="ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&nbsp;reading)</span></div>
 <div class="block">Forwards a reading received from the scale to all registered listeners and updates
  <a href="#getLastReading()"><code>getLastReading()</code></a>. Subclasses must call this whenever a new weight value is available.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>weight</code> - the weight value to propagate</dd>
+<dd><code>reading</code> - the weight value to propagate</dd>
 </dl>
 </section>
 </li>

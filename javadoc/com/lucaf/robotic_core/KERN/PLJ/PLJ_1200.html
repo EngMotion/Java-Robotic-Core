@@ -83,9 +83,37 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="../../impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></span></div>
 <div class="block">KERN PLJ precision balance, adapted to the <a href="../../impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl"><code>ScaleInterface</code></a> abstraction.
  <p>
- The PLJ streams weight readings continuously over a <a href="../../dataInterfaces/impl/SerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl"><code>SerialInterface</code></a>; the tare command is
- <code>"T"</code>. Incoming lines are parsed for a numeric weight and forwarded through
- <a href="../../impl/ScaleInterface.html#emitReading(double)"><code>ScaleInterface.emitReading(double)</code></a> when the reading stream is enabled.</div>
+ Unlike the KERN PCB, the PLJ transmits on its own once continuous data transmission is enabled on
+ the device, so <a href="#read()"><code>read()</code></a> reports the most recent frame instead of polling for one. A settled
+ weight can still be requested explicitly with <a href="#readStable()"><code>readStable()</code></a>.
+
+ <h2>Response format</h2>
+ A weighing record is a fixed-width, 13 character frame terminated by <code>CR LF</code>:
+ <pre>
+   S N1 N2 N3 N4 N5 N6 N7 N8 U1 U2 U3 T CR LF
+ </pre>
+ <ul>
+     <li><code>S</code> — a space or a minus sign for negative weights</li>
+     <li><code>N1..N8</code> — the mass, right aligned and padded with spaces, decimal point included</li>
+     <li><code>U1..U3</code> — the unit (<code>"g"</code>, <code>"kg"</code>, <code>"ct"</code>, …), space padded</li>
+     <li><code>T</code> — the stability index, <code>STABILITY_STABLE</code> once the weight has settled</li>
+ </ul>
+ The manual describes the stability index as a single character but does not spell out the value it
+ takes while the weight is still moving, so anything other than <code>'S'</code> counts as unstable.
+
+ <h2>Remote commands</h2>
+ <table>
+     <caption>Remote commands understood by the balance</caption>
+     <tr><td><code>"T"</code> (H54)</td><td>tare — <a href="#tare()"><code>tare()</code></a></td></tr>
+     <tr><td><code>"C"</code> (H43)</td><td>record the current weight — <a href="#record()"><code>record()</code></a></td></tr>
+     <tr><td><code>"E"</code> (H45)</td><td>transmit the stable weight — <a href="#readStable()"><code>readStable()</code></a></td></tr>
+     <tr><td><code>"M"</code> (H4D)</td><td>open the menu — <a href="#menu()"><code>menu()</code></a></td></tr>
+     <tr><td><code>"O"</code> (H4F)</td><td>switch the balance on or off — <a href="#togglePower()"><code>togglePower()</code></a></td></tr>
+ </table>
+
+ <h2>Framing</h2>
+ As on the PCB, the serial port does not necessarily deliver a frame in one piece, so incoming bytes
+ are fed to a <a href="../../dataInterfaces/serial/LineAssembler.html" title="class in com.lucaf.robotic_core.dataInterfaces.serial"><code>LineAssembler</code></a> and decoded only once their <code>CR LF</code> terminator arrives.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -111,12 +139,12 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface)" class="member-name-link">PLJ_1200</a><wbr>(<a href="../../dataInterfaces/impl/SerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">SerialInterface</a>&nbsp;serial)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Constructs the scale on top of the given serial interface.</div>
+<div class="block">Constructs the balance on top of the given serial interface.</div>
 </div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface,java.util.function.Consumer)" class="member-name-link">PLJ_1200</a><wbr>(<a href="../../dataInterfaces/impl/SerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">SerialInterface</a>&nbsp;serial,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;readingConsumer)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&nbsp;readingConsumer)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Constructs the scale on top of the given serial interface and registers a reading consumer.</div>
+<div class="block">Constructs the balance on top of the given serial interface and registers a reading consumer.</div>
 </div>
 </div>
 </section>
@@ -142,27 +170,47 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Enables the continuous reading stream.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#read()" class="member-name-link">read</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#menu()" class="member-name-link">menu</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Reads the most recent weight streamed by the scale.</div>
+<div class="block">Sends the <code>"M"</code> command, opening the balance menu.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#read()" class="member-name-link">read</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Reports the most recent weight transmitted by the balance.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readStable()" class="member-name-link">readStable</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Requests the stable weight by sending the <code>"E"</code> command and waiting for the answer.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdown()" class="member-name-link">shutdown</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#record()" class="member-name-link">record</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Shuts down the scale and its executor.</div>
+<div class="block">Sends the <code>"C"</code> command, asking the balance to record the current weight.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/Future.html" title="class or interface in java.util.concurrent" class="external-link">Future</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tare()" class="member-name-link">tare</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shutdown()" class="member-name-link">shutdown</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Tares the scale and waits until the reading settles near zero.</div>
+<div class="block">Shuts down the balance and its executor.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/Future.html" title="class or interface in java.util.concurrent" class="external-link">Future</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#tare()" class="member-name-link">tare</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Tares the balance and waits until the transmitted weight settles near zero.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#togglePower()" class="member-name-link">togglePower</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Sends the <code>"O"</code> command, switching the balance on or off.</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.lucaf.robotic_core.impl.ScaleInterface">Methods inherited from class&nbsp;com.lucaf.robotic_core.impl.<a href="../../impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></h3>
-<code><a href="../../impl/ScaleInterface.html#addReadingListener(java.util.function.Consumer)">addReadingListener</a>, <a href="../../impl/ScaleInterface.html#emitReading(double)">emitReading</a>, <a href="../../impl/ScaleInterface.html#getLastReading()">getLastReading</a>, <a href="../../impl/ScaleInterface.html#initialize()">initialize</a>, <a href="../../impl/ScaleInterface.html#isConnected()">isConnected</a>, <a href="../../impl/ScaleInterface.html#isEventReadingEnabled()">isEventReadingEnabled</a>, <a href="../../impl/ScaleInterface.html#isStable()">isStable</a>, <a href="../../impl/ScaleInterface.html#readStable()">readStable</a>, <a href="../../impl/ScaleInterface.html#removeReadingListener(java.util.function.Consumer)">removeReadingListener</a>, <a href="../../impl/ScaleInterface.html#setStable(boolean)">setStable</a></code></div>
+<code><a href="../../impl/ScaleInterface.html#addReadingListener(java.util.function.Consumer)">addReadingListener</a>, <a href="../../impl/ScaleInterface.html#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)">emitReading</a>, <a href="../../impl/ScaleInterface.html#getLastReading()">getLastReading</a>, <a href="../../impl/ScaleInterface.html#initialize()">initialize</a>, <a href="../../impl/ScaleInterface.html#isConnected()">isConnected</a>, <a href="../../impl/ScaleInterface.html#isEventReadingEnabled()">isEventReadingEnabled</a>, <a href="../../impl/ScaleInterface.html#isStable()">isStable</a>, <a href="../../impl/ScaleInterface.html#removeReadingListener(java.util.function.Consumer)">removeReadingListener</a>, <a href="../../impl/ScaleInterface.html#setStable(boolean)">setStable</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.lucaf.robotic_core.impl.SensorInterface">Methods inherited from class&nbsp;com.lucaf.robotic_core.impl.<a href="../../impl/SensorInterface.html" title="class in com.lucaf.robotic_core.impl">SensorInterface</a></h3>
 <code><a href="../../impl/SensorInterface.html#hasError()">hasError</a>, <a href="../../impl/SensorInterface.html#isInitialized()">isInitialized</a>, <a href="../../impl/SensorInterface.html#isShutdown()">isShutdown</a></code></div>
@@ -184,10 +232,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface)">
 <h3>PLJ_1200</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">PLJ_1200</span><wbr><span class="parameters">(<a href="../../dataInterfaces/impl/SerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">SerialInterface</a>&nbsp;serial)</span></div>
-<div class="block">Constructs the scale on top of the given serial interface.</div>
+<div class="block">Constructs the balance on top of the given serial interface.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serial</code> - low-level serial interface connected to the scale</dd>
+<dd><code>serial</code> - low-level serial interface connected to the balance</dd>
 </dl>
 </section>
 </li>
@@ -195,11 +243,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface,java.util.function.Consumer)">
 <h3>PLJ_1200</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">PLJ_1200</span><wbr><span class="parameters">(<a href="../../dataInterfaces/impl/SerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">SerialInterface</a>&nbsp;serial,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;readingConsumer)</span></div>
-<div class="block">Constructs the scale on top of the given serial interface and registers a reading consumer.</div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&nbsp;readingConsumer)</span></div>
+<div class="block">Constructs the balance on top of the given serial interface and registers a reading consumer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>serial</code> - low-level serial interface connected to the scale</dd>
+<dd><code>serial</code> - low-level serial interface connected to the balance</dd>
 <dd><code>readingConsumer</code> - consumer notified with every streamed weight reading (may be <code>null</code>)</dd>
 </dl>
 </section>
@@ -215,13 +263,32 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="read()">
 <h3>read</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">read</span>()</div>
-<div class="block">Reads the most recent weight streamed by the scale.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></span>&nbsp;<span class="element-name">read</span>()</div>
+<div class="block">Reports the most recent weight transmitted by the balance.
+ <p>
+ The PLJ transmits on its own, so this method sends nothing and never blocks: it simply returns
+ the last frame received. Use <a href="#readStable()"><code>readStable()</code></a> to actively request a settled weight.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../impl/ScaleInterface.html#read()">read</a></code>&nbsp;in class&nbsp;<code><a href="../../impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></code></dd>
 <dt>Returns:</dt>
-<dd>the latest streamed weight, or <code>-1</code> if no reading is available</dd>
+<dd>the latest streamed response, or an error response if nothing has arrived yet</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="readStable()">
+<h3>readStable</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></span>&nbsp;<span class="element-name">readStable</span>()
+                         throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Requests the stable weight by sending the <code>"E"</code> command and waiting for the answer.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../../impl/ScaleInterface.html#readStable()">readStable</a></code>&nbsp;in class&nbsp;<code><a href="../../impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></code></dd>
+<dt>Returns:</dt>
+<dd>the stable weight, or an error response if the balance did not answer in time</dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the command cannot be sent or the wait is interrupted</dd>
 </dl>
 </section>
 </li>
@@ -229,12 +296,48 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="tare()">
 <h3>tare</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/Future.html" title="class or interface in java.util.concurrent" class="external-link">Future</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a>&gt;</span>&nbsp;<span class="element-name">tare</span>()</div>
-<div class="block">Tares the scale and waits until the reading settles near zero.</div>
+<div class="block">Tares the balance and waits until the transmitted weight settles near zero.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../impl/ScaleInterface.html#tare()">tare</a></code>&nbsp;in class&nbsp;<code><a href="../../impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></code></dd>
 <dt>Returns:</dt>
 <dd>a Future resolving to <code>true</code> if the tare succeeded, <code>false</code> otherwise</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="record()">
+<h3>record</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">record</span>()
+            throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Sends the <code>"C"</code> command, asking the balance to record the current weight.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the command cannot be sent</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="menu()">
+<h3>menu</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">menu</span>()
+          throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Sends the <code>"M"</code> command, opening the balance menu.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the command cannot be sent</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="togglePower()">
+<h3>togglePower</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">togglePower</span>()
+                 throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="block">Sends the <code>"O"</code> command, switching the balance on or off.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the command cannot be sent</dd>
 </dl>
 </section>
 </li>
@@ -265,7 +368,7 @@ loadScripts(document, 'script');</script>
 <h3>shutdown</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">shutdown</span>()
               throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
-<div class="block">Shuts down the scale and its executor.</div>
+<div class="block">Shuts down the balance and its executor.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../../impl/ScaleInterface.html#shutdown()">shutdown</a></code>&nbsp;in class&nbsp;<code><a href="../../impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></code></dd>

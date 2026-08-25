@@ -86,8 +86,33 @@ loadScripts(document, 'script');</script>
  The scale must be set to the <code>"rE CR"</code> data-transmission mode (menu → Pr → rE CR) to accept
  remote ASCII commands, which are sent without a trailing CR/LF. It talks through a
  <a href="../../dataInterfaces/impl/SerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl"><code>SerialInterface</code></a>: <code>"w"</code> requests a stable-or-unstable weight, <code>"s"</code> requests a
- stable weight and <code>"t"</code> tares the scale. Incoming lines are parsed for a numeric weight and
- forwarded through <a href="../../impl/ScaleInterface.html#emitReading(double)"><code>ScaleInterface.emitReading(double)</code></a> when the reading stream is enabled.</div>
+ stable weight and <code>"t"</code> tares the scale.
+
+ <h2>Response format</h2>
+ Every answer is a fixed-width, 16 character frame terminated by <code>CR LF</code>:
+ <pre>
+   M S N1 N2 N3 N4 N5 N6 N7 N8 N9 N10 B U1 U2 U3 CR LF
+ </pre>
+ <ul>
+     <li><code>M</code> — a space or the letter <code>'M'</code></li>
+     <li><code>S</code> — a space or a minus sign for negative weights</li>
+     <li><code>N1..N10</code> — the weight, right aligned and padded with spaces, decimal point included</li>
+     <li><code>B</code> — a space</li>
+     <li><code>U1..U3</code> — the unit (<code>"g"</code>, <code>"kg"</code>, <code>"pcs"</code>, <code>"%"</code>), space padded</li>
+ </ul>
+ Three frames can be received:
+ <ul>
+     <li>stable weight — the unit field is filled in, e.g. <code>"      11.203 g  "</code></li>
+     <li>unstable weight — the very same layout but with a blank unit field, which is what marks the
+     reading as not settled</li>
+     <li>system error — eleven spaces followed by <code>"Error"</code></li>
+ </ul>
+
+ <h2>Framing</h2>
+ The scale does not necessarily deliver a frame in a single serial event: a reply such as
+ <code>"      11.203 g  \r\n"</code> is regularly split into <code>"      11."</code> and <code>"203 g  \r\n"</code>.
+ Incoming bytes are therefore fed to a <a href="../../dataInterfaces/serial/LineAssembler.html" title="class in com.lucaf.robotic_core.dataInterfaces.serial"><code>LineAssembler</code></a> and only decoded once the <code>CR LF</code>
+ terminator shows up, so that a partial fragment is never mistaken for a complete weight.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -116,7 +141,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Constructs the scale on top of the given serial interface.</div>
 </div>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface,java.util.function.Consumer)" class="member-name-link">PCB_3</a><wbr>(<a href="../../dataInterfaces/impl/SerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">SerialInterface</a>&nbsp;serial,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;readingConsumer)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&nbsp;readingConsumer)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Constructs the scale on top of the given serial interface and registers a reading consumer.</div>
 </div>
@@ -144,13 +169,13 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Enables the continuous reading stream.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#read()" class="member-name-link">read</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Actively reads the current weight (stable or unstable) by sending the <code>"w"</code> command and
  waiting for the response.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>double</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readStable()" class="member-name-link">readStable</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Actively reads the current stable weight by sending the <code>"s"</code> command and waiting for the
@@ -171,7 +196,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.lucaf.robotic_core.impl.ScaleInterface">Methods inherited from class&nbsp;com.lucaf.robotic_core.impl.<a href="../../impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></h3>
-<code><a href="../../impl/ScaleInterface.html#addReadingListener(java.util.function.Consumer)">addReadingListener</a>, <a href="../../impl/ScaleInterface.html#emitReading(double)">emitReading</a>, <a href="../../impl/ScaleInterface.html#getLastReading()">getLastReading</a>, <a href="../../impl/ScaleInterface.html#initialize()">initialize</a>, <a href="../../impl/ScaleInterface.html#isConnected()">isConnected</a>, <a href="../../impl/ScaleInterface.html#isEventReadingEnabled()">isEventReadingEnabled</a>, <a href="../../impl/ScaleInterface.html#isStable()">isStable</a>, <a href="../../impl/ScaleInterface.html#removeReadingListener(java.util.function.Consumer)">removeReadingListener</a>, <a href="../../impl/ScaleInterface.html#setStable(boolean)">setStable</a></code></div>
+<code><a href="../../impl/ScaleInterface.html#addReadingListener(java.util.function.Consumer)">addReadingListener</a>, <a href="../../impl/ScaleInterface.html#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)">emitReading</a>, <a href="../../impl/ScaleInterface.html#getLastReading()">getLastReading</a>, <a href="../../impl/ScaleInterface.html#initialize()">initialize</a>, <a href="../../impl/ScaleInterface.html#isConnected()">isConnected</a>, <a href="../../impl/ScaleInterface.html#isEventReadingEnabled()">isEventReadingEnabled</a>, <a href="../../impl/ScaleInterface.html#isStable()">isStable</a>, <a href="../../impl/ScaleInterface.html#removeReadingListener(java.util.function.Consumer)">removeReadingListener</a>, <a href="../../impl/ScaleInterface.html#setStable(boolean)">setStable</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.lucaf.robotic_core.impl.SensorInterface">Methods inherited from class&nbsp;com.lucaf.robotic_core.impl.<a href="../../impl/SensorInterface.html" title="class in com.lucaf.robotic_core.impl">SensorInterface</a></h3>
 <code><a href="../../impl/SensorInterface.html#hasError()">hasError</a>, <a href="../../impl/SensorInterface.html#isInitialized()">isInitialized</a>, <a href="../../impl/SensorInterface.html#isShutdown()">isShutdown</a></code></div>
@@ -204,7 +229,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface,java.util.function.Consumer)">
 <h3>PCB_3</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">PCB_3</span><wbr><span class="parameters">(<a href="../../dataInterfaces/impl/SerialInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">SerialInterface</a>&nbsp;serial,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Double.html" title="class or interface in java.lang" class="external-link">Double</a>&gt;&nbsp;readingConsumer)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Consumer.html" title="class or interface in java.util.function" class="external-link">Consumer</a>&lt;<a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a>&gt;&nbsp;readingConsumer)</span></div>
 <div class="block">Constructs the scale on top of the given serial interface and registers a reading consumer.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -224,15 +249,15 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="read()">
 <h3>read</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">read</span>()
-            throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></span>&nbsp;<span class="element-name">read</span>()
+                   throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <div class="block">Actively reads the current weight (stable or unstable) by sending the <code>"w"</code> command and
  waiting for the response.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../impl/ScaleInterface.html#read()">read</a></code>&nbsp;in class&nbsp;<code><a href="../../impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></code></dd>
 <dt>Returns:</dt>
-<dd>the current weight, or <code>-1</code> if no reading is available</dd>
+<dd>the current weight, or an error response if the scale did not answer</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the read command cannot be sent or the wait is interrupted</dd>
 </dl>
@@ -241,15 +266,20 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="readStable()">
 <h3>readStable</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">readStable</span>()
-                  throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../impl/ScaleResponse.html" title="class in com.lucaf.robotic_core.impl">ScaleResponse</a></span>&nbsp;<span class="element-name">readStable</span>()
+                         throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
 <div class="block">Actively reads the current stable weight by sending the <code>"s"</code> command and waiting for the
- response.</div>
+ response.
+ <p>
+ The scale answers this command only while the weight is settled and stays silent otherwise, so a
+ weight that is still moving comes back as an error response once
+ <code>STABLE_READ_TIMEOUT_MS</code> has elapsed. Callers that need a value regardless of stability
+ should use <a href="#read()"><code>read()</code></a> instead.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="../../impl/ScaleInterface.html#readStable()">readStable</a></code>&nbsp;in class&nbsp;<code><a href="../../impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></code></dd>
 <dt>Returns:</dt>
-<dd>the current stable weight, or <code>-1</code> if no reading is available</dd>
+<dd>the current stable weight, or an error response if the weight is not stable</dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code> - if the read command cannot be sent or the wait is interrupted</dd>
 </dl>
