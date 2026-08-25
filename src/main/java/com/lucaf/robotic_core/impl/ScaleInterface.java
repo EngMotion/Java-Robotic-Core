@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * <p>
  * Concrete scales implement the actual I/O by talking through the {@link IOInterface} passed in the
  * constructor. Subclasses must report the readings they receive (from polling or from the stream) by
- * calling {@link #emitReading(double)} so that registered listeners and {@link #getLastReading()} stay
+ * calling {@link #emitReading(ScaleResponse)} so that registered listeners and {@link #getLastReading()} stay
  * up to date.
  */
 public abstract class ScaleInterface extends SensorInterface {
@@ -48,15 +48,15 @@ public abstract class ScaleInterface extends SensorInterface {
     protected final AtomicBoolean isStable = new AtomicBoolean(false);
 
     /**
-     * The most recent reading reported through {@link #emitReading(double)}.
+     * The most recent reading reported through {@link #emitReading(ScaleResponse)}.
      * {@code null} until the first reading is received.
      */
-    protected final AtomicReference<Double> lastReading = new AtomicReference<>();
+    protected final AtomicReference<ScaleResponse> lastReading = new AtomicReference<>();
 
     /**
-     * Consumers notified with every reading reported through {@link #emitReading(double)}.
+     * Consumers notified with every reading reported through {@link #emitReading(ScaleResponse)}.
      */
-    protected final List<Consumer<Double>> readingListeners = new ArrayList<>();
+    protected final List<Consumer<ScaleResponse>> readingListeners = new ArrayList<>();
 
     /**
      * The unit of the readings reported by this scale (e.g. "g", "kg", "lb").
@@ -80,7 +80,7 @@ public abstract class ScaleInterface extends SensorInterface {
      * @param connection      low-level I/O interface used to communicate with the scale
      * @param readingConsumer consumer that will receive every weight reading (may be {@code null})
      */
-    public ScaleInterface(IOInterface connection, Consumer<Double> readingConsumer) {
+    public ScaleInterface(IOInterface connection, Consumer<ScaleResponse> readingConsumer) {
         this(connection);
         if (readingConsumer != null) {
             addReadingListener(readingConsumer);
@@ -131,7 +131,7 @@ public abstract class ScaleInterface extends SensorInterface {
      * @return the current weight expressed in {@link #getUnit()}
      * @throws IOException if the reading cannot be retrieved
      */
-    public abstract double read() throws IOException;
+    public abstract ScaleResponse read() throws IOException;
 
     /**
      * Actively reads the current <em>stable</em> (settled) weight from the scale.
@@ -144,7 +144,7 @@ public abstract class ScaleInterface extends SensorInterface {
      * @return the current stable weight expressed in {@link #getUnit()}
      * @throws IOException if the reading cannot be retrieved
      */
-    public double readStable() throws IOException {
+    public ScaleResponse readStable() throws IOException {
         return read();
     }
 
@@ -157,7 +157,7 @@ public abstract class ScaleInterface extends SensorInterface {
 
     /**
      * Enables the continuous reading stream: the scale starts pushing readings, which subclasses
-     * forward through {@link #emitReading(double)}.
+     * forward through {@link #emitReading(ScaleResponse)}.
      *
      * @throws IOException if the stream cannot be started
      */
@@ -203,17 +203,17 @@ public abstract class ScaleInterface extends SensorInterface {
      *
      * @return the last reported weight, or {@code null} if no reading has been received yet
      */
-    public Double getLastReading() {
+    public ScaleResponse getLastReading() {
         return lastReading.get();
     }
 
     /**
      * Registers a consumer that will be notified with every reading reported via
-     * {@link #emitReading(double)}.
+     * {@link #emitReading(ScaleResponse)}.
      *
      * @param listener the consumer to notify
      */
-    public void addReadingListener(Consumer<Double> listener) {
+    public void addReadingListener(Consumer<ScaleResponse> listener) {
         readingListeners.add(listener);
     }
 
@@ -222,7 +222,7 @@ public abstract class ScaleInterface extends SensorInterface {
      *
      * @param listener the consumer to remove
      */
-    public void removeReadingListener(Consumer<Double> listener) {
+    public void removeReadingListener(Consumer<ScaleResponse> listener) {
         readingListeners.remove(listener);
     }
 
@@ -230,12 +230,12 @@ public abstract class ScaleInterface extends SensorInterface {
      * Forwards a reading received from the scale to all registered listeners and updates
      * {@link #getLastReading()}. Subclasses must call this whenever a new weight value is available.
      *
-     * @param weight the weight value to propagate
+     * @param reading the weight value to propagate
      */
-    protected void emitReading(double weight) {
-        lastReading.set(weight);
-        for (Consumer<Double> listener : readingListeners) {
-            listener.accept(weight);
+    protected void emitReading(ScaleResponse reading) {
+        lastReading.set(reading);
+        for (Consumer<ScaleResponse> listener : readingListeners) {
+            listener.accept(reading);
         }
     }
 }
