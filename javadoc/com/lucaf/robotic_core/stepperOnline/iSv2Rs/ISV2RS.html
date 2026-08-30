@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -48,7 +52,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li>Method</li>
+<li><a href="#method-detail">Method</a></li>
 </ul>
 </div>
 <div class="nav-list-search"><label for="search-input">SEARCH:</label>
@@ -116,9 +120,25 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
+<div id="method-summary-table">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Method</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPeakCurrent()" class="member-name-link">getPeakCurrent</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPeakCurrent(int)" class="member-name-link">setPeakCurrent</a><wbr>(int&nbsp;peakCurrent)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+</div>
+</div>
+</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.lucaf.robotic_core.stepperOnline.iDmRs.IDMRS">Methods inherited from class&nbsp;com.lucaf.robotic_core.stepperOnline.iDmRs.<a href="../iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></h3>
-<code><a href="../iDmRs/IDMRS.html#applyConfig(com.lucaf.robotic_core.stepperOnline.iDmRs.IDMRSConfig)">applyConfig</a>, <a href="../iDmRs/IDMRS.html#applyHomingConfig(com.lucaf.robotic_core.stepperOnline.iDmRs.HomingConfig)">applyHomingConfig</a>, <a href="../iDmRs/IDMRS.html#applyTravelParameters(com.lucaf.robotic_core.stepperOnline.iDmRs.TravelParameters)">applyTravelParameters</a>, <a href="../iDmRs/IDMRS.html#clearAlarmHistory()">clearAlarmHistory</a>, <a href="../iDmRs/IDMRS.html#clearError()">clearError</a>, <a href="../iDmRs/IDMRS.html#estimateArrivalTime(int)">estimateArrivalTime</a>, <a href="../iDmRs/IDMRS.html#getAcceleration()">getAcceleration</a>, <a href="../iDmRs/IDMRS.html#getActualPosition()">getActualPosition</a>, <a href="../iDmRs/IDMRS.html#getAlarmDetectionSelection()">getAlarmDetectionSelection</a>, <a href="../iDmRs/IDMRS.html#getDeceleration()">getDeceleration</a>, <a href="../iDmRs/IDMRS.html#getDigitalInput(int)">getDigitalInput</a>, <a href="../iDmRs/IDMRS.html#getDigitalInputs()">getDigitalInputs</a>, <a href="../iDmRs/IDMRS.html#getDigitalOutput(int)">getDigitalOutput</a>, <a href="../iDmRs/IDMRS.html#getDigitalOutputs()">getDigitalOutputs</a>, <a href="../iDmRs/IDMRS.html#getErrorFlags()">getErrorFlags</a>, <a href="../iDmRs/IDMRS.html#getFaultCode()">getFaultCode</a>, <a href="../iDmRs/IDMRS.html#getHomingAcceleration()">getHomingAcceleration</a>, <a href="../iDmRs/IDMRS.html#getHomingDeceleration()">getHomingDeceleration</a>, <a href="../iDmRs/IDMRS.html#getHomingMethod()">getHomingMethod</a>, <a href="../iDmRs/IDMRS.html#getHomingSpeed()">getHomingSpeed</a>, <a href="../iDmRs/IDMRS.html#getHomingSpeedLow()">getHomingSpeedLow</a>, <a href="../iDmRs/IDMRS.html#getHomingStopPosition()">getHomingStopPosition</a>, <a href="../iDmRs/IDMRS.html#getMotionStatus()">getMotionStatus</a>, <a href="../iDmRs/IDMRS.html#getPeakCurrent()">getPeakCurrent</a>, <a href="../iDmRs/IDMRS.html#getPrWarning()">getPrWarning</a>, <a href="../iDmRs/IDMRS.html#getSpeed()">getSpeed</a>, <a href="../iDmRs/IDMRS.html#getStatusMode()">getStatusMode</a>, <a href="../iDmRs/IDMRS.html#hasFault()">hasFault</a>, <a href="../iDmRs/IDMRS.html#homing()">homing</a>, <a href="../iDmRs/IDMRS.html#homingSync()">homingSync</a>, <a href="../iDmRs/IDMRS.html#initialize()">initialize</a>, <a href="../iDmRs/IDMRS.html#moveToPositionAndWait(int)">moveToPositionAndWait</a>, <a href="../iDmRs/IDMRS.html#moveToPositionAndWait(int,int)">moveToPositionAndWait</a>, <a href="../iDmRs/IDMRS.html#saveConfig()">saveConfig</a>, <a href="../iDmRs/IDMRS.html#setAcceleration(int)">setAcceleration</a>, <a href="../iDmRs/IDMRS.html#setAlarmDetectionSelection(int)">setAlarmDetectionSelection</a>, <a href="../iDmRs/IDMRS.html#setDeceleration(int)">setDeceleration</a>, <a href="../iDmRs/IDMRS.html#setDigitalInput(int,com.lucaf.robotic_core.stepperOnline.iDmRs.DigitalInput)">setDigitalInput</a>, <a href="../iDmRs/IDMRS.html#setDigitalInputs(com.lucaf.robotic_core.stepperOnline.iDmRs.DigitalInputs)">setDigitalInputs</a>, <a href="../iDmRs/IDMRS.html#setDigitalOutput(int,com.lucaf.robotic_core.stepperOnline.iDmRs.DigitalOutput)">setDigitalOutput</a>, <a href="../iDmRs/IDMRS.html#setDigitalOutputs(com.lucaf.robotic_core.stepperOnline.iDmRs.DigitalOutputs)">setDigitalOutputs</a>, <a href="../iDmRs/IDMRS.html#setHomingAcceleration(int)">setHomingAcceleration</a>, <a href="../iDmRs/IDMRS.html#setHomingDeceleration(int)">setHomingDeceleration</a>, <a href="../iDmRs/IDMRS.html#setHomingSpeed(int)">setHomingSpeed</a>, <a href="../iDmRs/IDMRS.html#setHomingSpeedLow(int)">setHomingSpeedLow</a>, <a href="../iDmRs/IDMRS.html#setHomingStopPosition(long)">setHomingStopPosition</a>, <a href="../iDmRs/IDMRS.html#setPathMode(byte)">setPathMode</a>, <a href="../iDmRs/IDMRS.html#setPeakCurrent(int)">setPeakCurrent</a>, <a href="../iDmRs/IDMRS.html#setPosition(long)">setPosition</a>, <a href="../iDmRs/IDMRS.html#setPositioningMode()">setPositioningMode</a>, <a href="../iDmRs/IDMRS.html#setRelativePositioning(boolean)">setRelativePositioning</a>, <a href="../iDmRs/IDMRS.html#setSpeed(int)">setSpeed</a>, <a href="../iDmRs/IDMRS.html#setVelocityMode()">setVelocityMode</a>, <a href="../iDmRs/IDMRS.html#shutdown()">shutdown</a>, <a href="../iDmRs/IDMRS.html#stop()">stop</a>, <a href="../iDmRs/IDMRS.html#waitReachedPosition()">waitReachedPosition</a>, <a href="../iDmRs/IDMRS.html#waitReachedPosition(int)">waitReachedPosition</a>, <a href="../iDmRs/IDMRS.html#writeControlMode()">writeControlMode</a></code></div>
+<code><a href="../iDmRs/IDMRS.html#applyConfig(com.lucaf.robotic_core.stepperOnline.iDmRs.IDMRSConfig)">applyConfig</a>, <a href="../iDmRs/IDMRS.html#applyHomingConfig(com.lucaf.robotic_core.stepperOnline.iDmRs.HomingConfig)">applyHomingConfig</a>, <a href="../iDmRs/IDMRS.html#applyTravelParameters(com.lucaf.robotic_core.stepperOnline.iDmRs.TravelParameters)">applyTravelParameters</a>, <a href="../iDmRs/IDMRS.html#clearAlarmHistory()">clearAlarmHistory</a>, <a href="../iDmRs/IDMRS.html#clearError()">clearError</a>, <a href="../iDmRs/IDMRS.html#estimateArrivalTime(int)">estimateArrivalTime</a>, <a href="../iDmRs/IDMRS.html#getAcceleration()">getAcceleration</a>, <a href="../iDmRs/IDMRS.html#getActualPosition()">getActualPosition</a>, <a href="../iDmRs/IDMRS.html#getAlarmDetectionSelection()">getAlarmDetectionSelection</a>, <a href="../iDmRs/IDMRS.html#getDeceleration()">getDeceleration</a>, <a href="../iDmRs/IDMRS.html#getDigitalInput(int)">getDigitalInput</a>, <a href="../iDmRs/IDMRS.html#getDigitalInputs()">getDigitalInputs</a>, <a href="../iDmRs/IDMRS.html#getDigitalOutput(int)">getDigitalOutput</a>, <a href="../iDmRs/IDMRS.html#getDigitalOutputs()">getDigitalOutputs</a>, <a href="../iDmRs/IDMRS.html#getErrorFlags()">getErrorFlags</a>, <a href="../iDmRs/IDMRS.html#getFaultCode()">getFaultCode</a>, <a href="../iDmRs/IDMRS.html#getHomingAcceleration()">getHomingAcceleration</a>, <a href="../iDmRs/IDMRS.html#getHomingDeceleration()">getHomingDeceleration</a>, <a href="../iDmRs/IDMRS.html#getHomingMethod()">getHomingMethod</a>, <a href="../iDmRs/IDMRS.html#getHomingSpeed()">getHomingSpeed</a>, <a href="../iDmRs/IDMRS.html#getHomingSpeedLow()">getHomingSpeedLow</a>, <a href="../iDmRs/IDMRS.html#getHomingStopPosition()">getHomingStopPosition</a>, <a href="../iDmRs/IDMRS.html#getMotionStatus()">getMotionStatus</a>, <a href="../iDmRs/IDMRS.html#getPrWarning()">getPrWarning</a>, <a href="../iDmRs/IDMRS.html#getSpeed()">getSpeed</a>, <a href="../iDmRs/IDMRS.html#getStatusMode()">getStatusMode</a>, <a href="../iDmRs/IDMRS.html#hasFault()">hasFault</a>, <a href="../iDmRs/IDMRS.html#homing()">homing</a>, <a href="../iDmRs/IDMRS.html#homingSync()">homingSync</a>, <a href="../iDmRs/IDMRS.html#initialize()">initialize</a>, <a href="../iDmRs/IDMRS.html#moveToPositionAndWait(int)">moveToPositionAndWait</a>, <a href="../iDmRs/IDMRS.html#moveToPositionAndWait(int,int)">moveToPositionAndWait</a>, <a href="../iDmRs/IDMRS.html#saveConfig()">saveConfig</a>, <a href="../iDmRs/IDMRS.html#setAcceleration(int)">setAcceleration</a>, <a href="../iDmRs/IDMRS.html#setAlarmDetectionSelection(int)">setAlarmDetectionSelection</a>, <a href="../iDmRs/IDMRS.html#setDeceleration(int)">setDeceleration</a>, <a href="../iDmRs/IDMRS.html#setDigitalInput(int,com.lucaf.robotic_core.stepperOnline.iDmRs.DigitalInput)">setDigitalInput</a>, <a href="../iDmRs/IDMRS.html#setDigitalInputs(com.lucaf.robotic_core.stepperOnline.iDmRs.DigitalInputs)">setDigitalInputs</a>, <a href="../iDmRs/IDMRS.html#setDigitalOutput(int,com.lucaf.robotic_core.stepperOnline.iDmRs.DigitalOutput)">setDigitalOutput</a>, <a href="../iDmRs/IDMRS.html#setDigitalOutputs(com.lucaf.robotic_core.stepperOnline.iDmRs.DigitalOutputs)">setDigitalOutputs</a>, <a href="../iDmRs/IDMRS.html#setHomingAcceleration(int)">setHomingAcceleration</a>, <a href="../iDmRs/IDMRS.html#setHomingDeceleration(int)">setHomingDeceleration</a>, <a href="../iDmRs/IDMRS.html#setHomingSpeed(int)">setHomingSpeed</a>, <a href="../iDmRs/IDMRS.html#setHomingSpeedLow(int)">setHomingSpeedLow</a>, <a href="../iDmRs/IDMRS.html#setHomingStopPosition(long)">setHomingStopPosition</a>, <a href="../iDmRs/IDMRS.html#setPathMode(byte)">setPathMode</a>, <a href="../iDmRs/IDMRS.html#setPosition(long)">setPosition</a>, <a href="../iDmRs/IDMRS.html#setPositioningMode()">setPositioningMode</a>, <a href="../iDmRs/IDMRS.html#setRelativePositioning(boolean)">setRelativePositioning</a>, <a href="../iDmRs/IDMRS.html#setSpeed(int)">setSpeed</a>, <a href="../iDmRs/IDMRS.html#setVelocityMode()">setVelocityMode</a>, <a href="../iDmRs/IDMRS.html#shutdown()">shutdown</a>, <a href="../iDmRs/IDMRS.html#stop()">stop</a>, <a href="../iDmRs/IDMRS.html#waitReachedPosition()">waitReachedPosition</a>, <a href="../iDmRs/IDMRS.html#waitReachedPosition(int)">waitReachedPosition</a>, <a href="../iDmRs/IDMRS.html#writeControlMode()">writeControlMode</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-com.lucaf.robotic_core.impl.MotorInterface">Methods inherited from class&nbsp;com.lucaf.robotic_core.impl.<a href="../../impl/MotorInterface.html" title="class in com.lucaf.robotic_core.impl">MotorInterface</a></h3>
 <code><a href="../../impl/MotorInterface.html#canMove()">canMove</a>, <a href="../../impl/MotorInterface.html#hasError()">hasError</a>, <a href="../../impl/MotorInterface.html#isInitialized()">isInitialized</a>, <a href="../../impl/MotorInterface.html#isMoving()">isMoving</a>, <a href="../../impl/MotorInterface.html#isShutdown()">isShutdown</a>, <a href="../../impl/MotorInterface.html#isStopped()">isStopped</a>, <a href="../../impl/MotorInterface.html#setMoving(boolean)">setMoving</a>, <a href="../../impl/MotorInterface.html#start()">start</a></code></div>
@@ -155,6 +175,40 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;(com.lucaf.robotic_core.dataInterfaces.impl.RegisterInterface)">
 <h3>ISV2RS</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ISV2RS</span><wbr><span class="parameters">(<a href="../../dataInterfaces/impl/RegisterInterface.html" title="class in com.lucaf.robotic_core.dataInterfaces.impl">RegisterInterface</a>&nbsp;registerInterface)</span></div>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<!-- ============ METHOD DETAIL ========== -->
+<li>
+<section class="method-details" id="method-detail">
+<h2>Method Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="setPeakCurrent(int)">
+<h3>setPeakCurrent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPeakCurrent</span><wbr><span class="parameters">(int&nbsp;peakCurrent)</span>
+                    throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../iDmRs/IDMRS.html#setPeakCurrent(int)">setPeakCurrent</a></code>&nbsp;in class&nbsp;<code><a href="../iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></code></dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getPeakCurrent()">
+<h3>getPeakCurrent</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getPeakCurrent</span>()
+                   throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></span></div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../iDmRs/IDMRS.html#getPeakCurrent()">getPeakCurrent</a></code>&nbsp;in class&nbsp;<code><a href="../iDmRs/IDMRS.html" title="class in com.lucaf.robotic_core.stepperOnline.iDmRs">IDMRS</a></code></dd>
+<dt>Throws:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link">IOException</a></code></dd>
+</dl>
 </section>
 </li>
 </ul>
