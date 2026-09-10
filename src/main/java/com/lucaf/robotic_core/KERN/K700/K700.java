@@ -203,7 +203,7 @@ public class K700 extends ScaleInterface {
             return null;
         }
         char sign = frame.charAt(SIGN_INDEX);
-        if ((sign == ' ' || sign == SIGN_NEGATIVE) && frame.charAt(SEPARATOR_INDEX) == ' ') {
+        if ((sign == ' ' || sign == '+' || sign == SIGN_NEGATIVE) && frame.charAt(SEPARATOR_INDEX) == ' ') {
             String digits = frame.substring(VALUE_INDEX, VALUE_INDEX + VALUE_LENGTH).trim();
             if (isDecimal(digits)) {
                 double magnitude = Double.parseDouble(digits);
