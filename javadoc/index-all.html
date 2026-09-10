@@ -756,6 +756,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/impl/package-summary.html">com.lucaf.robotic_core.impl</a> - package com.lucaf.robotic_core.impl</dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/K700/package-summary.html">com.lucaf.robotic_core.KERN.K700</a> - package com.lucaf.robotic_core.KERN.K700</dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/KERN/PCB/package-summary.html">com.lucaf.robotic_core.KERN.PCB</a> - package com.lucaf.robotic_core.KERN.PCB</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/lucaf/robotic_core/KERN/PLJ/package-summary.html">com.lucaf.robotic_core.KERN.PLJ</a> - package com.lucaf.robotic_core.KERN.PLJ</dt>
@@ -1618,6 +1620,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Disables the continuous reading stream.</div>
 </dd>
+<dt><a href="com/lucaf/robotic_core/KERN/K700/K700.html#disableEventReading()" class="member-name-link">disableEventReading()</a> - Method in class com.lucaf.robotic_core.KERN.K700.<a href="com/lucaf/robotic_core/KERN/K700/K700.html" title="class in com.lucaf.robotic_core.KERN.K700">K700</a></dt>
+<dd>
+<div class="block">Disables the continuous reading stream.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#disableEventReading()" class="member-name-link">disableEventReading()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
 <dd>
 <div class="block">Disables the continuous reading stream.</div>
@@ -1735,6 +1741,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Enables the continuous reading stream: the scale starts pushing readings, which subclasses
  forward through <a href="com/lucaf/robotic_core/impl/ScaleInterface.html#emitReading(com.lucaf.robotic_core.impl.ScaleResponse)"><code>ScaleInterface.emitReading(ScaleResponse)</code></a>.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/K700/K700.html#enableEventReading()" class="member-name-link">enableEventReading()</a> - Method in class com.lucaf.robotic_core.KERN.K700.<a href="com/lucaf/robotic_core/KERN/K700/K700.html" title="class in com.lucaf.robotic_core.KERN.K700">K700</a></dt>
+<dd>
+<div class="block">Enables the continuous reading stream.</div>
 </dd>
 <dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#enableEventReading()" class="member-name-link">enableEventReading()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
 <dd>
@@ -3940,6 +3950,19 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:K">K</h2>
 <dl class="index">
+<dt><a href="com/lucaf/robotic_core/KERN/K700/K700.html" class="type-name-link" title="class in com.lucaf.robotic_core.KERN.K700">K700</a> - Class in <a href="com/lucaf/robotic_core/KERN/K700/package-summary.html">com.lucaf.robotic_core.KERN.K700</a></dt>
+<dd>
+<div class="block">KERN 770/GS/GJ series weighing scale (internally code-named "K700"), adapted to the
+ <a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl"><code>ScaleInterface</code></a> abstraction.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/K700/K700.html#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface)" class="member-name-link">K700(SerialInterface)</a> - Constructor for class com.lucaf.robotic_core.KERN.K700.<a href="com/lucaf/robotic_core/KERN/K700/K700.html" title="class in com.lucaf.robotic_core.KERN.K700">K700</a></dt>
+<dd>
+<div class="block">Constructs the scale on top of the given serial interface.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/K700/K700.html#%3Cinit%3E(com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface,java.util.function.Consumer)" class="member-name-link">K700(SerialInterface, Consumer&lt;ScaleResponse&gt;)</a> - Constructor for class com.lucaf.robotic_core.KERN.K700.<a href="com/lucaf/robotic_core/KERN/K700/K700.html" title="class in com.lucaf.robotic_core.KERN.K700">K700</a></dt>
+<dd>
+<div class="block">Constructs the scale on top of the given serial interface and registers a reading consumer.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/KERN/ui/KernScaleType.html" class="type-name-link" title="enum class in com.lucaf.robotic_core.KERN.ui">KernScaleType</a> - Enum Class in <a href="com/lucaf/robotic_core/KERN/ui/package-summary.html">com.lucaf.robotic_core.KERN.ui</a></dt>
 <dd>
 <div class="block">The KERN scale families supported by <a href="com/lucaf/robotic_core/KERN/ui/ScaleTesterUI.html" title="class in com.lucaf.robotic_core.KERN.ui"><code>ScaleTesterUI</code></a>, together with the hints the operator
@@ -6117,6 +6140,11 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Actively reads the current weight from the scale.</div>
 </dd>
+<dt><a href="com/lucaf/robotic_core/KERN/K700/K700.html#read()" class="member-name-link">read()</a> - Method in class com.lucaf.robotic_core.KERN.K700.<a href="com/lucaf/robotic_core/KERN/K700/K700.html" title="class in com.lucaf.robotic_core.KERN.K700">K700</a></dt>
+<dd>
+<div class="block">Actively reads the current weight (stable or unstable) by sending <code>ESC P CR LF</code> and
+ waiting for the response.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#read()" class="member-name-link">read()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
 <dd>
 <div class="block">Actively reads the current weight (stable or unstable) by sending the <code>"w"</code> command and
@@ -7723,6 +7751,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/lucaf/robotic_core/impl/SensorInterface.html#shutdown()" class="member-name-link">shutdown()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/SensorInterface.html" title="class in com.lucaf.robotic_core.impl">SensorInterface</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/K700/K700.html#shutdown()" class="member-name-link">shutdown()</a> - Method in class com.lucaf.robotic_core.KERN.K700.<a href="com/lucaf/robotic_core/KERN/K700/K700.html" title="class in com.lucaf.robotic_core.KERN.K700">K700</a></dt>
+<dd>
+<div class="block">Shuts down the scale and its executor.</div>
+</dd>
 <dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#shutdown()" class="member-name-link">shutdown()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
 <dd>
 <div class="block">Shuts down the scale and its executor.</div>
@@ -8494,6 +8526,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/lucaf/robotic_core/impl/ScaleInterface.html#tare()" class="member-name-link">tare()</a> - Method in class com.lucaf.robotic_core.impl.<a href="com/lucaf/robotic_core/impl/ScaleInterface.html" title="class in com.lucaf.robotic_core.impl">ScaleInterface</a></dt>
 <dd>
 <div class="block">Tares (zeroes) the scale.</div>
+</dd>
+<dt><a href="com/lucaf/robotic_core/KERN/K700/K700.html#tare()" class="member-name-link">tare()</a> - Method in class com.lucaf.robotic_core.KERN.K700.<a href="com/lucaf/robotic_core/KERN/K700/K700.html" title="class in com.lucaf.robotic_core.KERN.K700">K700</a></dt>
+<dd>
+<div class="block">Tares the scale and waits until the reading settles near zero.</div>
 </dd>
 <dt><a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html#tare()" class="member-name-link">tare()</a> - Method in class com.lucaf.robotic_core.KERN.PCB.<a href="com/lucaf/robotic_core/KERN/PCB/PCB_3.html" title="class in com.lucaf.robotic_core.KERN.PCB">PCB_3</a></dt>
 <dd>
