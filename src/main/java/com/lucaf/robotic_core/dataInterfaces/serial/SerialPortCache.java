@@ -18,22 +18,23 @@ public class SerialPortCache {
      * @throws Exception if the connection fails
      */
     public static SerialPort getSerialPort(String com, SerialParams parameters) throws Exception {
-        if (serialPortHashMap.containsKey(com)) return serialPortHashMap.get(com);
-        SerialPort port = new SerialPort(com);
-        if (port.isOpened()) port.closePort();
-        port.openPort();
-        port.setParams(
-                parameters.getBaudrate(),
-                parameters.getDatabits(),
-                parameters.getStopbits(),
-                parameters.getParity()
-        );
-        port.setEventsMask(SerialPort.MASK_RXCHAR);
-        serialPortHashMap.put(com, port);
-        return port;
-    }
-
-    /**
+            if (serialPortHashMap.containsKey(com)) return serialPortHashMap.get(com);
+            SerialPort port = new SerialPort(com);
+            if (port.isOpened()) port.closePort();
+            port.openPort();
+            port.setParams(
+                    parameters.getBaudrate(),
+                    parameters.getDatabits(),
+                    parameters.getStopbits(),
+                    parameters.getParity()
+            );
+            port.setRTS(true);   // <-- dodano: potrebno za napajanje RS232 vmesnika nekaterih tehtnic (npr. KERN PCB)
+            port.setDTR(true);   // <-- dodano
+            port.setEventsMask(SerialPort.MASK_RXCHAR);
+            serialPortHashMap.put(com, port);
+            return port;
+        }
+            /**
      * Close all the connections
      */
     public static void closeAll() {
