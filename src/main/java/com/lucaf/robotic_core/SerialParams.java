@@ -19,6 +19,7 @@ public class SerialParams {
     protected int databits = SerialPort.DATABITS_8;
     protected int stopbits = SerialPort.STOPBITS_1;
     protected int parity = SerialPort.PARITY_NONE;
+    protected boolean linePowered = false;   // <-- dodaj to vrstico
 
     public SerialParams(int baudrate, int databits, int stopbits, int parity) {
         this.baudrate = baudrate;
