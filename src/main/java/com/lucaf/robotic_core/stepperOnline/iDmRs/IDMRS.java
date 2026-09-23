@@ -110,6 +110,7 @@ public class IDMRS extends MotorInterface {
         initState();
     }
 
+
     /**
      * Constructor of the class
      *
@@ -127,6 +128,15 @@ public class IDMRS extends MotorInterface {
      */
     public IDMRS(RegisterInterface registerInterface) {
         this(registerInterface, new HashMap<>(), null);
+    }
+
+    /**
+     * Cumulative target position. In relative positioning mode every move adds its step
+     * count, so the difference between two readings is the total number of steps
+     * commanded to the drive in between (reset to 0 by initialize/homing).
+     */
+    public long getTargetPosition() {
+        return targetPosition.get();
     }
 
     /**
