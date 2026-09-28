@@ -1,5 +1,6 @@
 package com.lucaf.robotic_core.KERN.ui;
 
+import com.lucaf.robotic_core.KERN.K700.K700;
 import com.lucaf.robotic_core.KERN.PCB.PCB_3;
 import com.lucaf.robotic_core.KERN.PLJ.PLJ_1200;
 import com.lucaf.robotic_core.dataInterfaces.impl.SerialInterface;
@@ -13,6 +14,18 @@ import java.util.function.Consumer;
  * needs to put the device in the right mode and the factory that builds the matching driver.
  */
 public enum KernScaleType {
+
+    /**
+     * KERN 770 series: ESC-prefixed polling commands and fixed-width result frames.
+     */
+    K700("KERN 770",
+            "Polling: ESC P = peso, ESC T = tara.",
+            "Uporabi 7-bit ASCII, pariteto po nastavitvah tehtnice in 1200 baud.") {
+        @Override
+        public ScaleInterface create(SerialInterface serial, Consumer<ScaleResponse> readingConsumer) {
+            return new K700(serial, readingConsumer);
+        }
+    },
 
     /**
      * KERN PCB series: polled scale, answers {@code "w"} / {@code "s"} / {@code "t"}.

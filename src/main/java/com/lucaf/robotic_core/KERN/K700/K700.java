@@ -32,11 +32,10 @@ import java.util.function.Consumer;
  * <h2>Response format</h2>
  * Every answer is a fixed-width, 14 character frame (terminator excluded), followed by {@code CR LF}:
  * <pre>
- *   S B N1 N2 N3 N4 N5 N6 N7 N8 B U1 U2 U3
+ *   S N1 N2 N3 N4 N5 N6 N7 N8 B U1 U2 U3 (with padding)
  * </pre>
  * <ul>
  *     <li>{@code S} — a space or a minus sign for negative weights</li>
- *     <li>{@code B} — a space (separator)</li>
  *     <li>{@code N1..N8} — the weight, right aligned and padded with spaces, decimal point included</li>
  *     <li>{@code B} — a space (separator)</li>
  *     <li>{@code U1..U3} — the unit ({@code "g"}, {@code "kg"}, ...), space padded</li>
@@ -88,9 +87,10 @@ public class K700 extends ScaleInterface {
     private static final char SIGN_NEGATIVE = '-';
 
     /**
-     * Position of the first character of the {@code N1..N8} weight field.
+    * Position of the first character of the {@code N1..N8} weight field. The 770 sends the first
+    * weight character immediately after the sign; there is no separator in between.
      */
-    private static final int VALUE_INDEX = 2;
+    private static final int VALUE_INDEX = 1;
 
     /**
      * Number of characters of the {@code N1..N8} weight field.
@@ -100,12 +100,12 @@ public class K700 extends ScaleInterface {
     /**
      * Position of the {@code B} field separating the weight from the unit; always a space.
      */
-    private static final int SEPARATOR_INDEX = 10;
+    private static final int SEPARATOR_INDEX = 9;
 
     /**
      * Position of the first character of the {@code U1..U3} unit field.
      */
-    private static final int UNIT_INDEX = 11;
+    private static final int UNIT_INDEX = 10;
 
     /**
      * Number of characters of the {@code U1..U3} unit field.

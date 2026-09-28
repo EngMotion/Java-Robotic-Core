@@ -15,13 +15,11 @@ public class DataTypeConversion {
             throw new IllegalArgumentException("L'array deve contenere almeno 4 byte: " + (data == null ? "null" : data.length));
         }
 
-        // Logica BIG-ENDIAN:
-        // data[0] è il MSB (Most Significant Byte) -> shift 24
-        // data[3] è il LSB (Least Significant Byte) -> shift 0
-        return ((data[0] & 0xFF) << 24) |
-                ((data[1] & 0xFF) << 16) |
-                ((data[2] & 0xFF) << 8)  |
-                ((data[3] & 0xFF));
+        int value = 0;
+        for (int i = 0; i < 4; i++) {
+            value |= (data[i] & 0xFF) << (8 * i);
+        }
+        return value;
     }
 
     public long byteArrayToLong(byte[] data) {
