@@ -97,11 +97,10 @@ loadScripts(document, 'script');</script>
  <h2>Response format</h2>
  Every answer is a fixed-width, 14 character frame (terminator excluded), followed by <code>CR LF</code>:
  <pre>
-   S B N1 N2 N3 N4 N5 N6 N7 N8 B U1 U2 U3
+   S N1 N2 N3 N4 N5 N6 N7 N8 B U1 U2 U3 (with padding)
  </pre>
  <ul>
      <li><code>S</code> — a space or a minus sign for negative weights</li>
-     <li><code>B</code> — a space (separator)</li>
      <li><code>N1..N8</code> — the weight, right aligned and padded with spaces, decimal point included</li>
      <li><code>B</code> — a space (separator)</li>
      <li><code>U1..U3</code> — the unit (<code>"g"</code>, <code>"kg"</code>, ...), space padded</li>
