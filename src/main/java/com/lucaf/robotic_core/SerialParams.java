@@ -26,4 +26,14 @@ public class SerialParams {
         this.stopbits = stopbits;
         this.parity = parity;
     }
+
+    public static SerialParams motorDefaults() {
+        return new SerialParams("/dev/ttyUSB-porta0", 1, SerialPort.BAUDRATE_19200,
+                SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+    }
+
+    public static SerialParams scaleDefaults() {
+        return new SerialParams("/dev/ttyUSB-porta1", 1, SerialPort.BAUDRATE_9600,
+                SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+    }
 }

@@ -139,7 +139,7 @@ public class ScaleConnectDialog extends JDialog {
         getRootPane().setDefaultButton(connect);
         registerEscapeToCancel();
 
-        baudrates.setSelectedItem(BAUDRATE_9600);
+        baudrates.setSelectedItem(SerialParams.scaleDefaults().getBaudrate());
         scaleTypes.addActionListener(e -> updateHint());
         updateHint();
         refreshPorts();
@@ -167,13 +167,21 @@ public class ScaleConnectDialog extends JDialog {
      */
     private void refreshPorts() {
         String previous = (String) ports.getSelectedItem();
+        String preferredPort = SerialParams.scaleDefaults().getComPort();
+        String preferredPortName = null;
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
         for (SerialPort port : SerialPort.getCommPorts()) {
-            model.addElement(port.getSystemPortName());
+            String portName = port.getSystemPortName();
+            model.addElement(portName);
+            if (preferredPort.equals(portName) || preferredPort.equals(port.getSystemPortPath())) {
+                preferredPortName = portName;
+            }
         }
         ports.setModel(model);
         if (previous != null && model.getIndexOf(previous) >= 0) {
             ports.setSelectedItem(previous);
+        } else if (preferredPortName != null) {
+            ports.setSelectedItem(preferredPortName);
         }
     }
 

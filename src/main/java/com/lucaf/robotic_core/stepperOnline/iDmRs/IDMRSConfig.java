@@ -10,10 +10,10 @@ import lombok.Setter;
 @Setter
 @Configuration
 public class IDMRSConfig extends BaseConfig {
-    protected SerialParams connection = new SerialParams();
+    protected SerialParams connection = SerialParams.motorDefaults();
     protected int turnResolution = 10000;
     protected int peakCurrent = 36;
-    protected int ratio = 1;
+    protected int ratio = 5;
     protected boolean positioningMode = true;
     protected boolean relativePositioning = true;
     protected TravelParameters travelParameters = new TravelParameters();
