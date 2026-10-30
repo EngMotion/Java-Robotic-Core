@@ -67,31 +67,52 @@ public class ConnectionModal {
     };
 
     void refresh() {
+        String previous = (String) coms.getSelectedItem();
+        String preferredPort = SerialParams.motorDefaults().getComPort();
+        String preferredPortName = null;
         SerialPort[] ports = SerialPort.getCommPorts();
         coms.removeAllItems();
         for (SerialPort port : ports) {
-            coms.addItem(port.getSystemPortName());
+            String portName = port.getSystemPortName();
+            coms.addItem(portName);
+            if (preferredPort.equals(portName) || preferredPort.equals(port.getSystemPortPath())) {
+                preferredPortName = portName;
+            }
+        }
+        boolean previousAvailable = false;
+        for (int i = 0; i < coms.getItemCount(); i++) {
+            if (previous != null && previous.equals(coms.getItemAt(i))) {
+                previousAvailable = true;
+                break;
+            }
+        }
+        if (previousAvailable) {
+            coms.setSelectedItem(previous);
+        } else if (preferredPortName != null) {
+            coms.setSelectedItem(preferredPortName);
         }
     }
 
     public ConnectionModal(Consumer<SerialParams> onConnect) {
+        SerialParams defaults = SerialParams.motorDefaults();
         refresh();
         for (int rate : baudrates) {
             baudrate.addItem(rate);
         }
-        baudrate.setSelectedItem(BAUDRATE_9600);
+        baudrate.setSelectedItem(defaults.getBaudrate());
         for (int sb : stopbits) {
             stopbit.addItem(sb);
         }
-        stopbit.setSelectedItem(STOPBITS_1);
+        stopbit.setSelectedItem(defaults.getStopbits());
         for (int db : databits) {
             databit.addItem(db);
         }
-        databit.setSelectedItem(DATABITS_8);
+        databit.setSelectedItem(defaults.getDatabits());
         for (int p : parities) {
             comboBox1.addItem(p);
         }
-        databit.setSelectedItem(PARITY_NONE);
+        comboBox1.setSelectedItem(defaults.getParity());
+        address.setValue(defaults.getUnitId());
         connect.addActionListener(e -> {
             String com = (String) coms.getSelectedItem();
             int addr = (Integer) address.getValue();
