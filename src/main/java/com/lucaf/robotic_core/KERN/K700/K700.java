@@ -14,6 +14,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * KERN 770/GS/GJ series weighing scale (internally code-named "K700"), adapted to the
@@ -75,47 +77,6 @@ public class K700 extends ScaleInterface {
      * Number of characters of a frame, terminator excluded.
      */
     private static final int FRAME_LENGTH = 14;
-
-    /**
-     * Position of the {@code S} (sign) field, either a space or {@link #SIGN_NEGATIVE}.
-     */
-    private static final int SIGN_INDEX = 0;
-
-    /**
-     * The character marking a negative weight in the {@code S} field.
-     */
-    private static final char SIGN_NEGATIVE = '-';
-
-    /**
-    * Position of the first character of the {@code N1..N8} weight field. The 770 sends the first
-    * weight character immediately after the sign; there is no separator in between.
-     */
-    private static final int VALUE_INDEX = 1;
-
-    /**
-     * Number of characters of the {@code N1..N8} weight field.
-     */
-    private static final int VALUE_LENGTH = 8;
-
-    /**
-     * Position of the {@code B} field separating the weight from the unit; always a space.
-     */
-    private static final int SEPARATOR_INDEX = 9;
-
-    /**
-     * Position of the first character of the {@code U1..U3} unit field.
-     */
-    private static final int UNIT_INDEX = 10;
-
-    /**
-     * Number of characters of the {@code U1..U3} unit field.
-     */
-    private static final int UNIT_LENGTH = 3;
-
-    /**
-     * Position where the literal text {@code "ERR"} appears in a system-error frame.
-     */
-    private static final int ERROR_MARKER_INDEX = 3;
 
     /**
      * Payload marking a system-error frame.
@@ -193,60 +154,48 @@ public class K700 extends ScaleInterface {
     }
 
     /**
+     * Weight frame: optional sign, the number (digits with at most one decimal point), then an
+     * optional unit. Whitespace between the parts is free, so the frame is read by its structure and
+     * not by fixed character positions: a weight such as {@code "12.34567"} (2 integer + 5 decimal
+     * digits) and {@code "156.1111"} (3 + 4) are both 8 characters, but the scale may pad them
+     * differently depending on the range and the number of decimals.
+     */
+    private static final Pattern WEIGHT_FRAME = Pattern.compile(
+            "^\\s*([+-])?\\s*(\\d+(?:\\.\\d*)?|\\.\\d+)(?:\\s*([A-Za-z%]{1,3}))?\\s*$");
+
+    /**
      * Decodes a single frame, terminator excluded.
+     * <p>
+     * The frame is matched against {@link #WEIGHT_FRAME} instead of being cut at fixed offsets, so it
+     * does not matter how the scale aligns the number inside the 8 character weight field.
      *
      * @param frame the frame received from the scale
      * @return the decoded response, or {@code null} if the frame does not follow the protocol
      */
     static ScaleResponse parse(String frame) {
-        if (frame == null || frame.length() != FRAME_LENGTH) {
+        if (frame == null) {
             return null;
         }
-        char sign = frame.charAt(SIGN_INDEX);
-        if ((sign == ' ' || sign == '+' || sign == SIGN_NEGATIVE) && frame.charAt(SEPARATOR_INDEX) == ' ') {
-            String digits = frame.substring(VALUE_INDEX, VALUE_INDEX + VALUE_LENGTH).trim();
-            if (isDecimal(digits)) {
-                double magnitude = Double.parseDouble(digits);
-                String unit = frame.substring(UNIT_INDEX, UNIT_INDEX + UNIT_LENGTH).trim();
-                // The 770 blanks out the unit field while the weight is still moving, so a unit
-                // means the reading has settled.
-                return ScaleResponse.weight(sign == SIGN_NEGATIVE ? -magnitude : magnitude, unit, !unit.isEmpty());
-            }
+        Matcher matcher = WEIGHT_FRAME.matcher(frame);
+        if (matcher.matches()) {
+            double magnitude = Double.parseDouble(matcher.group(2));
+            String unit = matcher.group(3) == null ? "" : matcher.group(3);
+            boolean negative = "-".equals(matcher.group(1));
+            // The 770 blanks out the unit field while the weight is still moving, so a unit
+            // means the reading has settled.
+            return ScaleResponse.weight(negative ? -magnitude : magnitude, unit, !unit.isEmpty());
         }
-        // Not a weight frame: check for the documented system-error layout ("...ERR X YZ...").
-        if (frame.regionMatches(ERROR_MARKER_INDEX, ERROR_MARKER, 0, ERROR_MARKER.length())) {
+        // Not a weight frame: documented system-error layout ("...ERR X YZ...").
+        if (frame.contains(ERROR_MARKER)) {
             return ScaleResponse.error();
         }
-        // Anything else (overload "H*", underload "L*", adjusting "C*", or an unrecognised frame)
-        // is not a usable weight — reported to the caller as an error, same as a system error.
+        // Wrong length and not a weight: line noise / partial frame, ignored by the caller.
+        if (frame.length() != FRAME_LENGTH) {
+            return null;
+        }
+        // Overload "H*", underload "L*", adjusting "C*" or an unrecognised frame of the right
+        // length: not a usable weight, reported as an error.
         return ScaleResponse.error();
-    }
-
-    /**
-     * Checks that a string is a bare decimal number: digits and at most one decimal point, nothing
-     * else. {@link Double#parseDouble} is far more tolerant than the protocol (it would happily accept
-     * {@code "1e5"}, {@code "NaN"} or {@code "+1d"}), so the field is validated before being parsed.
-     *
-     * @param value the trimmed content of the weight field
-     * @return {@code true} if the value is a plain decimal number
-     */
-    private static boolean isDecimal(String value) {
-        if (value.isEmpty()) {
-            return false;
-        }
-        boolean digitSeen = false;
-        boolean pointSeen = false;
-        for (int i = 0; i < value.length(); i++) {
-            char c = value.charAt(i);
-            if (c >= '0' && c <= '9') {
-                digitSeen = true;
-            } else if (c == '.' && !pointSeen) {
-                pointSeen = true;
-            } else {
-                return false;
-            }
-        }
-        return digitSeen;
     }
 
     /**

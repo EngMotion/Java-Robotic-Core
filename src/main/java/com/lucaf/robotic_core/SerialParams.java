@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Configuration
 public class SerialParams {
-    protected String comPort = "COM1";
+    protected String comPort = "/dev/ttyUSB-porta1";
     protected int unitId = 1;
     protected int baudrate = SerialPort.BAUDRATE_9600;
     protected int databits = SerialPort.DATABITS_8;
